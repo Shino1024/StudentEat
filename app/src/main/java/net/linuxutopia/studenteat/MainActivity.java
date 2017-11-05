@@ -12,5 +12,6 @@ public class MainActivity extends AppCompatActivity {
         // Test.
         // Second test.
         // Third test.
+        // Fourth test.
     }
 }
