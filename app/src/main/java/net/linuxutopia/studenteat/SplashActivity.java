@@ -16,9 +16,8 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    Animation titleAnimation;
-    ImageView logo;
-    TextView title;
+    private Animation titleAnimation;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
 
         titleAnimation = AnimationUtils.loadAnimation(this, R.anim.title_animation);
-        title = findViewById(R.id.title);
+        title = findViewById(R.id.splashTitle);
         title.startAnimation(titleAnimation);
     }
 

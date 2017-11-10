@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">StudentEat</string>
-    <string name="splash_title">StudentEat\ncook \&amp; share!</string>
-    <string name="logo_content_description">StudentEat logo - hamburger</string>
+    <string name="splash_title">StudentEat\ncook &amp; share!</string>
+    <string name="logo_content_description">StudentEat logo - hamburger!</string>
 </resources>
