@@ -16,7 +16,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="6"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
+
         <View
             android:layout_height="0dp"
             android:layout_width="match_parent"
@@ -37,19 +39,27 @@
             android:layout_weight="3"
             android:text="@string/splash_title"
             android:textAlignment="center"
-            android:textSize="30sp"
             tools:fontFamily="@font/atma"
             />
-        <View
+        <FrameLayout
             android:id="@+id/facebookLogin"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            />
+            >
+            <TextView
+                android:id="@+id/attempt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="placeholder"
+                />
+        </FrameLayout>
+
     </LinearLayout>
     <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
         />
+
 </LinearLayout>
