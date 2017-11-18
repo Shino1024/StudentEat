@@ -23,13 +23,12 @@ import android.widget.Toast;
 
 public class SplashActivity extends AppCompatActivity {
 
-    Animation titleAnimation;
-    TextView splashTitle;
-    Typeface custom_font;
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    int screenWidth;
-    Handler splashEndHandler = new Handler();
-    Intent mainActivityIntent;
+    private Animation titleAnimation;
+    private TextView splashTitle;
+    private Typeface custom_font;
+    private DisplayMetrics displayMetrics = new DisplayMetrics();
+    private Handler splashEndHandler = new Handler();
+    private Intent mainActivityIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
 
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenWidth = displayMetrics.widthPixels;
+        int screenWidth = displayMetrics.widthPixels;
 
         custom_font = Typeface.createFromAsset(getAssets(),"atma.ttf");
 
