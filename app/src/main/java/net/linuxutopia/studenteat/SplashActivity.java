@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private Animation titleAnimation;
     private TextView splashTitle;
-    private Typeface custom_font;
+    private Typeface titleFont;
     private DisplayMetrics displayMetrics = new DisplayMetrics();
     private Handler splashEndHandler = new Handler();
     private Intent mainActivityIntent;
@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
 
-        custom_font = Typeface.createFromAsset(getAssets(),"atma.ttf");
+        titleFont = Typeface.createFromAsset(getAssets(),"atma.ttf");
 
         mainActivityIntent = new Intent(this, MainActivity.class);
 
@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
         splashTitle = findViewById(R.id.splashTitle);
-        splashTitle.setTypeface(custom_font);
+        splashTitle.setTypeface(titleFont);
         splashTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.10f * screenWidth);
         splashTitle.startAnimation(titleAnimation);
 
