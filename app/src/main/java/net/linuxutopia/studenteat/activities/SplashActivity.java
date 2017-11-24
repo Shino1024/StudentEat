@@ -1,4 +1,4 @@
-package net.linuxutopia.studenteat;
+package net.linuxutopia.studenteat.activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -7,15 +7,11 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import net.linuxutopia.studenteat.R;
 
 /**
  * Created by jaros on 11/5/2017.
@@ -64,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
-        splashTitle = findViewById(R.id.splashTitle);
+        splashTitle = findViewById(R.id.splash_title);
         splashTitle.setTypeface(titleFont);
         splashTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.10f * screenWidth);
         splashTitle.startAnimation(titleAnimation);

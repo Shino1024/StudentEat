@@ -25,7 +25,7 @@
             android:layout_weight="2"
             />
         <ImageView
-            android:id="@+id/hamburgerLogo"
+            android:id="@id/hamburger_logo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
@@ -33,7 +33,7 @@
             android:contentDescription="@string/logo_content_description"
             />
         <TextView
-            android:id="@+id/splashTitle"
+            android:id="@id/splash_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
@@ -42,7 +42,7 @@
             tools:fontFamily="@font/atma"
             />
         <FrameLayout
-            android:id="@+id/facebookLogin"
+            android:id="@id/login"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"

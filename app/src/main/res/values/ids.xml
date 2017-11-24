@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="recents_list" type="id" />
+    <item name="hamburger_logo" type="id" />
+    <item name="splash_title" type="id" />
+    <item name="login" type="id" />
+</resources>
