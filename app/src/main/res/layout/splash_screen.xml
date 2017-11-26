@@ -39,7 +39,8 @@
             android:layout_weight="3"
             android:text="@string/splash_title"
             android:textAlignment="center"
-            tools:fontFamily="@font/atma"
+            android:fontFamily="@font/atma_font"
+            tools:typeface="@font/atma"
             />
         <FrameLayout
             android:id="@id/login"

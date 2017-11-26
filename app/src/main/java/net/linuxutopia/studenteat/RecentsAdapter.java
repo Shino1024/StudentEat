@@ -1,43 +1,55 @@
 package net.linuxutopia.studenteat;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-/**
- * Created by user on 2017-11-23.
- */
+import net.linuxutopia.studenteat.models.RecentCardModel;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHolder> {
 
-    private String[] dataSet;
+    private ArrayList<RecentCardModel> dataSet;
 
-    public RecentsAdapter(String[] dataSet) {
+    public RecentsAdapter(ArrayList<RecentCardModel> dataSet) {
         this.dataSet = dataSet;
     }
 
     @Override
     public RecentsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        return new RecentsAdapter.ViewHolder();
+
+        View inflatedLayout = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.recents_card_layout, viewGroup, false
+        );
+        return new ViewHolder(inflatedLayout);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.t.setText(dataSet.get(position).getTitle());
+        holder.t2.setText(String.format(Locale.US, "%2.2f%%", dataSet.get(position).getRating()));
 
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return dataSet.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private View v;
+        private TextView t;
+        private TextView t2;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
-            this.v = v;
+            t = v.findViewById(R.id.bulka);
+            t2 = v.findViewById(R.id.bulka2);
         }
 
     }

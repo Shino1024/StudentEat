@@ -13,15 +13,10 @@ import android.widget.TextView;
 
 import net.linuxutopia.studenteat.R;
 
-/**
- * Created by jaros on 11/5/2017.
- */
-
 public class SplashActivity extends AppCompatActivity {
 
     private Animation titleAnimation;
     private TextView splashTitle;
-    private Typeface titleFont;
     private DisplayMetrics displayMetrics = new DisplayMetrics();
     private Handler splashEndHandler = new Handler();
     private Intent mainActivityIntent;
@@ -34,9 +29,8 @@ public class SplashActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
 
-        titleFont = Typeface.createFromAsset(getAssets(),"atma.ttf");
-
         mainActivityIntent = new Intent(this, MainActivity.class);
+        mainActivityIntent.putExtra("splashDone", true);
 
         titleAnimation = AnimationUtils.loadAnimation(this, R.anim.title_animation);
         titleAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -51,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         startActivity(mainActivityIntent);
+                        finish();
                     }
                 }, 500);
             }
@@ -61,7 +56,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
         splashTitle = findViewById(R.id.splash_title);
-        splashTitle.setTypeface(titleFont);
         splashTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.10f * screenWidth);
         splashTitle.startAnimation(titleAnimation);
 
