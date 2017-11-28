@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="recents_list" type="id" />
     <item name="hamburger_logo" type="id" />
     <item name="splash_title" type="id" />
     <item name="login" type="id" />
+    <item name="recycler_holder" type="id" />
+    <item name="recents_list" type="id" />
+    <item name="recents_list_fragment" type="id" />
+    <item name="recents_list_holder" type="id" />
+    <item name="recents_card" type="id" />
+    <item name="recents_card_title" type="id" />
+    <item name="recents_card_author" type="id" />
+    <item name="recents_card_time" type="id" />
+    <item name="recents_card_rating" type="id" />
+    <item name="recents_card_difficulty" type="id" />
 </resources>

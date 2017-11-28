@@ -2,6 +2,7 @@ package net.linuxutopia.studenteat.models;
 
 public class RecentCardModel {
 
+    private String id;
     private String photo;
     private String title;
     private String author;
@@ -9,18 +10,28 @@ public class RecentCardModel {
     private Integer minutes;
     private Difficulty difficulty;
 
-    public RecentCardModel(String photo,
+    public RecentCardModel(String id,
+                           String photo,
                            String title,
                            String author,
                            Double rating,
                            Integer minutes,
                            Difficulty difficulty) {
+        this.id = id;
         this.photo = photo;
         this.title = title;
         this.author = author;
         this.rating = rating;
         this.minutes = minutes;
         this.difficulty = difficulty;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPhoto() {

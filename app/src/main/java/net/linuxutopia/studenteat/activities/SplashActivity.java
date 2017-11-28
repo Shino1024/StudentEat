@@ -17,7 +17,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private Animation titleAnimation;
     private TextView splashTitle;
-    private DisplayMetrics displayMetrics = new DisplayMetrics();
     private Handler splashEndHandler = new Handler();
     private Intent mainActivityIntent;
 
@@ -26,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
 
