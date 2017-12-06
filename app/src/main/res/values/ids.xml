@@ -3,11 +3,13 @@
     <item name="hamburger_logo" type="id" />
     <item name="splash_title" type="id" />
     <item name="login" type="id" />
+    <item name="fragment_container" type="id" />
     <item name="recycler_holder" type="id" />
-    <item name="recents_list" type="id" />
-    <item name="recents_list_fragment" type="id" />
+    <item name="recents_list_recyclerview" type="id" />
     <item name="recents_list_holder" type="id" />
+    <item name="recents_fragment_holder" type="id" />
     <item name="recents_card" type="id" />
+    <item name="card_background_image" type="id" />
     <item name="recents_card_title" type="id" />
     <item name="recents_card_author" type="id" />
     <item name="recents_card_time" type="id" />
