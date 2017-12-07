@@ -4,6 +4,7 @@
     <item name="splash_title" type="id" />
     <item name="login" type="id" />
     <item name="fragment_container" type="id" />
+
     <item name="recycler_holder" type="id" />
     <item name="recents_list_recyclerview" type="id" />
     <item name="recents_list_holder" type="id" />
@@ -15,4 +16,6 @@
     <item name="recents_card_time" type="id" />
     <item name="recents_card_rating" type="id" />
     <item name="recents_card_difficulty" type="id" />
+
+    <item name="recipe_details_pager" type="id" />
 </resources>

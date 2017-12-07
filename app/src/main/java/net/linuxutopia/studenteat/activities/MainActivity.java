@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
         fragment.setArguments(bundle);
         getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();

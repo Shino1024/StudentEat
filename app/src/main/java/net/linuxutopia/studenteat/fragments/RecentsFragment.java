@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.linuxutopia.studenteat.R;
-import net.linuxutopia.studenteat.RecentsAdapter;
+import net.linuxutopia.studenteat.adapters.RecentsAdapter;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.RecentCardModel;
 

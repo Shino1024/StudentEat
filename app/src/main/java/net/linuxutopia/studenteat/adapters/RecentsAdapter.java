@@ -1,4 +1,4 @@
-package net.linuxutopia.studenteat;
+package net.linuxutopia.studenteat.adapters;
 
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.CardView;
@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.RecentCardModel;
 
