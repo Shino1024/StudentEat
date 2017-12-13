@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
+import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
 
 public class MainActivity extends AppCompatActivity implements RecentsFragment.OnCardSelectedListener {
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
 
         setContentView(R.layout.activity_main);
 
-        loadFragment(new RecentsFragment(), null);
+        loadFragment(new RecipeDetailsFragment(), null);
     }
 
     private void loadFragment(Fragment fragment, @Nullable Bundle bundle) {

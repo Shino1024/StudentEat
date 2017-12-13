@@ -1,56 +1,31 @@
 package net.linuxutopia.studenteat.adapters;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
-import net.linuxutopia.studenteat.models.PagerLayoutProvider;
+import net.linuxutopia.studenteat.models.RecipeDetailsFragmentFactory;
 
-public class RecipeDetailsViewPagerAdapter extends PagerAdapter {
+public class RecipeDetailsViewPagerAdapter extends FragmentPagerAdapter {
 
-    private Context context;
+    RecipeDetailsFragmentFactory factory = new RecipeDetailsFragmentFactory();
 
-    public RecipeDetailsViewPagerAdapter(Context context) {
-        this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup viewGroup,
-                                  int position) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        PagerLayoutProvider pagerLayoutProvider = PagerLayoutProvider.values()[position];
-        ViewGroup layout = (ViewGroup) inflater.inflate(pagerLayoutProvider.getLayoutResourceId(),
-                viewGroup,
-                false);
-        viewGroup.addView(layout);
-        return layout;
+    public RecipeDetailsViewPagerAdapter(FragmentManager fragmentManager) {
+        super(fragmentManager);
     }
 
     @Override
-    public void destroyItem(@NonNull ViewGroup viewGroup,
-                            int position,
-                            @NonNull Object view) {
-        viewGroup.removeView((View) view);
+    public Fragment getItem(int position) {
+        return factory.getFragment(position);
     }
 
     @Override
     public int getCount() {
-        return PagerLayoutProvider.values().length;
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
+        return factory.getFragmentCount();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        PagerLayoutProvider pagerLayoutProvider = PagerLayoutProvider.values()[position];
-        return context.getString(pagerLayoutProvider.getLayoutResourceId());
+        return factory.getTitleResource(position);
     }
-
 }

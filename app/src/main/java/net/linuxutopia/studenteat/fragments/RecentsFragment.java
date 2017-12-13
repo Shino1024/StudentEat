@@ -61,7 +61,7 @@ public class RecentsFragment extends Fragment {
         difficultyMap.put(Difficulty.HARD, ResourcesCompat.getColor(getResources(), R.color.difficulty_hard, null));
         difficultyMap.put(Difficulty.EXTREME, ResourcesCompat.getColor(getResources(), R.color.difficulty_extreme, null));
 
-        adapter.setCardHeight((int)(displayMetrics.heightPixels * 0.3f));
+        adapter.setCardHeight((int) (displayMetrics.heightPixels * 0.3f));
         adapter.setDifficultyMap(difficultyMap);
         adapter.setDisplayMetrics(displayMetrics);
 

@@ -17,5 +17,20 @@
     <item name="recents_card_rating" type="id" />
     <item name="recents_card_difficulty" type="id" />
 
-    <item name="recipe_details_pager" type="id" />
+    <item name="recipe_details_app_bar_layout" type="id" />
+    <item name="recipe_details_collapsing_toolbar_layout" type="id" />
+    <item name="recipe_details_toolbar" type="id" />
+    <item name="recipe_details_view_pager" type="id" />
+    <item name="recipe_details_tabs" type="id" />
+    <item name="recipe_details_author" type="id" />
+    <item name="recipe_details_category" type="id" />
+    <item name="recipe_details_difficulty" type="id" />
+    <item name="recipe_details_time" type="id" />
+    <item name="recipe_details_rating" type="id" />
+    <item name="recipe_details_ingredients" type="id" />
+    <item name="recipe_details_steps" type="id" />
+    <item name="recipe_details_give_rating" type="id" />
+    <item name="recipe_details_leave_comment" type="id" />
+    <item name="recipe_details_submit_comment" type="id" />
+    <item name="recipe_details_comments" type="id" />
 </resources>

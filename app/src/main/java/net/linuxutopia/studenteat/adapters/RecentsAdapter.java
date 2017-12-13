@@ -64,28 +64,28 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
 
     private void prepareTitleView(TextView titleView, int position) {
         titleView.setText(dataSet.get(position).getTitle());
-        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int)(cardHeight * 0.04f));
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.04f));
         titleView.setPadding(
-                (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        (int)(cardHeight * 0.01f),
+                (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        (int) (cardHeight * 0.01f),
                         displayMetrics)),
                 0,
-                (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        (int)(cardHeight * 0.01f),
+                (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        (int) (cardHeight * 0.01f),
                         displayMetrics)),
                 0);
     }
 
     private void prepareAuthorView(TextView authorView, int position) {
         authorView.setText(dataSet.get(position).getAuthor());
-        authorView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int)(cardHeight * 0.03f));
+        authorView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.03f));
         authorView.setPadding(
-                (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        (int)(cardHeight * 0.01f),
+                (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        (int) (cardHeight * 0.01f),
                         displayMetrics)),
                 0,
-                (int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        (int)(cardHeight * 0.01f),
+                (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        (int) (cardHeight * 0.01f),
                         displayMetrics)),
                 0);
     }
@@ -96,14 +96,14 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
                 dataSet.get(position).getMinutes() / 60,
                 dataSet.get(position).getMinutes() % 60);
         timeView.setText(formattedTime);
-        timeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int)(cardHeight * 0.03f));
+        timeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.03f));
     }
 
     private void prepareRatingView(TextView ratingView, int position) {
         ratingView.setText(String.format(Locale.getDefault(),
                 "Rat.\n%.2f",
                 dataSet.get(position).getRating()));
-        ratingView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int)(cardHeight * 0.03f));
+        ratingView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.03f));
     }
 
     private void prepareDifficultyView(FrameLayout difficultyView, int position) {
