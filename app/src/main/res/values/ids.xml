@@ -10,6 +10,7 @@
     <item name="recents_list_holder" type="id" />
     <item name="recents_fragment_holder" type="id" />
     <item name="recents_card" type="id" />
+    <item name="recents_card_click_area" type="id" />
     <item name="card_background_image" type="id" />
     <item name="recents_card_title" type="id" />
     <item name="recents_card_author" type="id" />
@@ -17,10 +18,12 @@
     <item name="recents_card_rating" type="id" />
     <item name="recents_card_difficulty" type="id" />
 
+    <item name="navigation_drawer" type="id" />
     <item name="recipe_details_app_bar_layout" type="id" />
     <item name="recipe_details_collapsing_toolbar_layout" type="id" />
     <item name="recipe_details_toolbar" type="id" />
     <item name="recipe_details_view_pager" type="id" />
+    <item name="recipe_details_photo" type="id" />
     <item name="recipe_details_tabs" type="id" />
     <item name="recipe_details_author" type="id" />
     <item name="recipe_details_category" type="id" />

@@ -1,14 +1,15 @@
 package net.linuxutopia.studenteat.models;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsDescriptionFragment;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsIngredientsFragment;
+import net.linuxutopia.studenteat.fragments.RecipeDetailsStepsFragment;
 
 public class RecipeDetailsFragmentFactory {
 
-    final int FRAGMENT_COUNT = 2;
+    final int FRAGMENT_COUNT = 3;
 
     public Fragment getFragment(int position) {
         switch (position) {
@@ -16,6 +17,8 @@ public class RecipeDetailsFragmentFactory {
                 return new RecipeDetailsDescriptionFragment();
             case 1:
                 return new RecipeDetailsIngredientsFragment();
+            case 2:
+                return new RecipeDetailsStepsFragment();
             default:
                 return null;
         }
@@ -27,6 +30,8 @@ public class RecipeDetailsFragmentFactory {
                 return R.layout.recipe_details_description;
             case 1:
                 return R.layout.recipe_details_ingredients;
+            case 2:
+                return R.layout.recipe_details_steps;
             default:
                 return -1;
         }
@@ -36,8 +41,13 @@ public class RecipeDetailsFragmentFactory {
         switch (position) {
             case 0:
                 return "Description";
+                //return Resources.getSystem().getString(R.string.recipe_details_description_title);
             case 1:
-                return "Title";
+                return "Ingredients";
+                //return Resources.getSystem().getString(R.string.recipe_details_ingredients_title);
+            case 2:
+                return "Steps";
+                //return Resources.getSystem().getString(R.string.recipe_details_steps_title);
             default:
                 return "error";
         }

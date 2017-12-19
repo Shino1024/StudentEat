@@ -1,9 +1,11 @@
 package net.linuxutopia.studenteat.fragments;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;

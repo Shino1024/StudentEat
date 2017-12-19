@@ -1,12 +1,12 @@
 package net.linuxutopia.studenteat.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import net.linuxutopia.studenteat.models.RecipeDetailsFragmentFactory;
 
-public class RecipeDetailsViewPagerAdapter extends FragmentPagerAdapter {
+public class RecipeDetailsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     RecipeDetailsFragmentFactory factory = new RecipeDetailsFragmentFactory();
 
@@ -28,4 +28,5 @@ public class RecipeDetailsViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return factory.getTitleResource(position);
     }
+
 }

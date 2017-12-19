@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -9,34 +11,68 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="1000dp"
-            android:text="amazeng receep" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="1000dp"
-            android:text="amazeng receep" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="1000dp"
-            android:text="amazeng receep" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="1000dp"
-            android:text="amazeng receep" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="1000dp"
-            android:text="amazeng receep" />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:id="@id/recipe_details_author"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="amazeng receep 2" />
+            android:text="author" />
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:alignmentMode="alignBounds"
+            app:rowCount="2"
+            app:columnCount="2">
+
+            <TextView
+                android:id="@id/recipe_details_category"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="0"
+                app:layout_column="0"
+                android:text="category" />
+
+            <TextView
+                android:id="@id/recipe_details_difficulty"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="1"
+                app:layout_column="0"
+                android:text="difficulty" />
+
+            <TextView
+                android:id="@id/recipe_details_time"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="0"
+                app:layout_column="1"
+                android:text="time" />
+
+            <TextView
+                android:id="@id/recipe_details_rating"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="1"
+                app:layout_column="1"
+                android:text="rating" />
+
+        </android.support.v7.widget.GridLayout>
 
     </LinearLayout>
 

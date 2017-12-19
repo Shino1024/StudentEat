@@ -1,18 +1,26 @@
 package net.linuxutopia.studenteat.adapters;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
+import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.RecentCardModel;
 
@@ -53,6 +61,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        prepareClickArea(holder.clickArea);
         prepareRecentsCardView(holder.recentsCardView);
         prepareCardBackgroundImageView(holder.cardBackgroundImageView);
         prepareTitleView(holder.titleView, position);
@@ -60,6 +69,25 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
         prepareTimeView(holder.timeView, position);
         prepareRatingView(holder.ratingView, position);
         prepareDifficultyView(holder.difficultyView, position);
+    }
+
+    private void prepareClickArea(LinearLayout clickArea) {
+        clickArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getFragmentManager();
+                Fragment fragment = new RecipeDetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("mykey", "bulka");
+                fragment.setArguments(bundle);
+                fragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+                        .replace(R.id.fragment_container, new RecipeDetailsFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     private void prepareTitleView(TextView titleView, int position) {
@@ -118,7 +146,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
         recentsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Fill out the event callback.
+                Log.d("info", "BULKABULKABULKA");
             }
         });
     }
@@ -146,6 +174,8 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
 
         private ImageView cardBackgroundImageView;
 
+        private LinearLayout clickArea;
+
         ViewHolder(View v) {
             super(v);
             titleView = v.findViewById(R.id.recents_card_title);
@@ -155,6 +185,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
             difficultyView = v.findViewById(R.id.recents_card_difficulty);
             recentsCardView = v.findViewById(R.id.recents_card);
             cardBackgroundImageView = v.findViewById(R.id.card_background_image);
+            clickArea = v.findViewById(R.id.recents_card_click_area);
         }
 
     }
