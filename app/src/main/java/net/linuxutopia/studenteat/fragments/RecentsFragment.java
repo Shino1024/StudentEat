@@ -1,14 +1,15 @@
 package net.linuxutopia.studenteat.fragments;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,21 @@ public class RecentsFragment extends Fragment {
         adapter.setDisplayMetrics(displayMetrics);
 
         recyclerView.setAdapter(adapter);
+
+        FloatingActionButton floatingActionButton =
+                inflatedView.findViewById(R.id.add_new_recipe_button);
+        CoordinatorLayout.LayoutParams layoutParams =
+                (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
+        layoutParams.setMargins(0,
+                0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        (int) (displayMetrics.widthPixels * 0.01f),
+                        displayMetrics),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                        (int) (displayMetrics.heightPixels * 0.01f),
+                        displayMetrics));
+        floatingActionButton.setLayoutParams(layoutParams);
+
         return inflatedView;
     }
 

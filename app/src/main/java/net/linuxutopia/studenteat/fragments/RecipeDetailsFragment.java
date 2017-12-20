@@ -6,6 +6,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.adapters.RecipeDetailsViewPagerAdapter;
@@ -59,6 +61,7 @@ public class RecipeDetailsFragment extends Fragment {
         imageView.setImageResource(R.drawable.lain);
         imageView.getLayoutParams().height = displayMetrics.heightPixels / 2;
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         toolbar = inflatedView.findViewById(R.id.recipe_details_toolbar);
         //((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -77,5 +80,12 @@ public class RecipeDetailsFragment extends Fragment {
         collapsingToolbarLayout.setTitle("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
         return inflatedView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Toast.makeText(getActivity(), "destroyed view", Toast.LENGTH_SHORT).show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 }

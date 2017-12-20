@@ -7,6 +7,7 @@
 
     <item name="recycler_holder" type="id" />
     <item name="recents_list_recyclerview" type="id" />
+    <item name="add_new_recipe_button" type="id" />
     <item name="recents_list_holder" type="id" />
     <item name="recents_fragment_holder" type="id" />
     <item name="recents_card" type="id" />

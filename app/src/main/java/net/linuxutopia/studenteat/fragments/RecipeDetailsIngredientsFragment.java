@@ -6,15 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.linuxutopia.studenteat.R;
-
 public class RecipeDetailsIngredientsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater,
                              ViewGroup viewGroup,
                              Bundle savedInstanceState) {
-        View root = layoutInflater.inflate(R.layout.recipe_details_ingredients,
+        int layoutResource = getArguments().getInt("layoutResource");
+        View root = layoutInflater.inflate(layoutResource,
                 viewGroup,
                 false);
 
