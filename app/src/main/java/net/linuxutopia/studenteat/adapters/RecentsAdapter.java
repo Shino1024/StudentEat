@@ -78,7 +78,6 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
                 FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getFragmentManager();
                 Fragment fragment = new RecipeDetailsFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("mykey", "bulka");
                 fragment.setArguments(bundle);
                 fragmentManager
                         .beginTransaction()
@@ -143,12 +142,6 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
 
     private void prepareRecentsCardView(CardView recentsCardView) {
         recentsCardView.setRadius(cardHeight * 0.05f);
-        recentsCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("info", "BULKABULKABULKA");
-            }
-        });
     }
 
     private void prepareCardBackgroundImageView(ImageView cardBackgroundImageView){
@@ -176,16 +169,16 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
 
         private LinearLayout clickArea;
 
-        ViewHolder(View v) {
-            super(v);
-            titleView = v.findViewById(R.id.recents_card_title);
-            authorView = v.findViewById(R.id.recents_card_author);
-            timeView = v.findViewById(R.id.recents_card_time);
-            ratingView = v.findViewById(R.id.recents_card_rating);
-            difficultyView = v.findViewById(R.id.recents_card_difficulty);
-            recentsCardView = v.findViewById(R.id.recents_card);
-            cardBackgroundImageView = v.findViewById(R.id.card_background_image);
-            clickArea = v.findViewById(R.id.recents_card_click_area);
+        ViewHolder(View view) {
+            super(view);
+            titleView = view.findViewById(R.id.recents_card_title);
+            authorView = view.findViewById(R.id.recents_card_author);
+            timeView = view.findViewById(R.id.recents_card_time);
+            ratingView = view.findViewById(R.id.recents_card_rating);
+            difficultyView = view.findViewById(R.id.recents_card_difficulty);
+            recentsCardView = view.findViewById(R.id.recents_card);
+            cardBackgroundImageView = view.findViewById(R.id.card_background_image);
+            clickArea = view.findViewById(R.id.recents_card_click_area);
         }
 
     }

@@ -6,13 +6,19 @@ import android.app.Fragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.adapters.RecentsAdapter;
@@ -38,6 +44,8 @@ public class RecentsFragment extends Fragment {
         View inflatedView = layoutInflater.inflate(R.layout.recents_list,
                 viewGroup,
                 false);
+
+        setHasOptionsMenu(true);
 
         recyclerView = inflatedView.findViewById(R.id.recents_list_recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -77,12 +85,18 @@ public class RecentsFragment extends Fragment {
         layoutParams.setMargins(0,
                 0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        (int) (displayMetrics.widthPixels * 0.01f),
+                        (int) (displayMetrics.widthPixels * 0.02f),
                         displayMetrics),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        (int) (displayMetrics.heightPixels * 0.01f),
+                        (int) (displayMetrics.heightPixels * 0.02f),
                         displayMetrics));
         floatingActionButton.setLayoutParams(layoutParams);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "buka", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return inflatedView;
     }
@@ -101,6 +115,30 @@ public class RecentsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.action_bar_options, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.open_drawer_button:
+                DrawerLayout drawerLayout = getActivity().findViewById(R.id.navigation_drawer);
+                drawerLayout.openDrawer(Gravity.START);
+                return true;
+            case R.id.search_button:
+                Toast.makeText(getActivity(), "search", Toast.LENGTH_SHORT).show();
+                return true;
+            case android.R.id.home:
+                getFragmentManager().popBackStack();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
     }
 
     public interface OnCardSelectedListener {

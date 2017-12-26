@@ -5,6 +5,9 @@
     <item name="login" type="id" />
     <item name="fragment_container" type="id" />
 
+    <item name="open_drawer_button" type="id" />
+    <item name="search_button" type="id" />
+
     <item name="recycler_holder" type="id" />
     <item name="recents_list_recyclerview" type="id" />
     <item name="add_new_recipe_button" type="id" />
@@ -27,10 +30,26 @@
     <item name="recipe_details_photo" type="id" />
     <item name="recipe_details_tabs" type="id" />
     <item name="recipe_details_author" type="id" />
+    <item name="recipe_details_statistics_card_view" type="id" />
+    <item name="recipe_details_dish_description" type="id" />
     <item name="recipe_details_category" type="id" />
+    <item name="recipe_details_category_image" type="id" />
+    <item name="recipe_details_category_text" type="id" />
     <item name="recipe_details_difficulty" type="id" />
+    <item name="recipe_details_difficulty_image" type="id" />
+    <item name="recipe_details_difficulty_text" type="id" />
     <item name="recipe_details_time" type="id" />
+    <item name="recipe_details_time_image" type="id" />
+    <item name="recipe_details_time_text" type="id" />
     <item name="recipe_details_rating" type="id" />
+    <item name="recipe_details_rating_image" type="id" />
+    <item name="recipe_details_rating_text" type="id" />
+    <item name="recipe_details_price" type="id" />
+    <item name="recipe_details_price_image" type="id" />
+    <item name="recipe_details_price_text" type="id" />
+    <item name="recipe_details_size" type="id" />
+    <item name="recipe_details_size_image" type="id" />
+    <item name="recipe_details_size_text" type="id" />
     <item name="recipe_details_ingredients" type="id" />
     <item name="recipe_details_steps" type="id" />
     <item name="recipe_details_give_rating" type="id" />
