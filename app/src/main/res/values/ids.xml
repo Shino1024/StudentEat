@@ -23,12 +23,14 @@
     <item name="recents_card_difficulty" type="id" />
 
     <item name="navigation_drawer" type="id" />
+
     <item name="recipe_details_app_bar_layout" type="id" />
     <item name="recipe_details_collapsing_toolbar_layout" type="id" />
     <item name="recipe_details_toolbar" type="id" />
     <item name="recipe_details_view_pager" type="id" />
     <item name="recipe_details_photo" type="id" />
     <item name="recipe_details_tabs" type="id" />
+
     <item name="recipe_details_author" type="id" />
     <item name="recipe_details_statistics_card_view" type="id" />
     <item name="recipe_details_dish_description" type="id" />
@@ -52,6 +54,17 @@
     <item name="recipe_details_size_text" type="id" />
     <item name="recipe_details_ingredients" type="id" />
     <item name="recipe_details_steps" type="id" />
+
+    <item name="recipe_details_ingredients_recyclerview" type="id" />
+    <item name="recipe_details_ingredient_holder" type="id" />
+    <item name="recipe_details_ingredient_no" type="id" />
+    <item name="recipe_details_ingredient_name" type="id" />
+    <item name="recipe_details_ingredient_amount" type="id" />
+    <item name="recipe_details_ingredient_measure" type="id" />
+    <item name="recipe_details_ingredient_cost" type="id" />
+
+    <item name="recipe_details_steps_recyclerview" type="id" />
+
     <item name="recipe_details_give_rating" type="id" />
     <item name="recipe_details_leave_comment" type="id" />
     <item name="recipe_details_submit_comment" type="id" />

@@ -3,6 +3,7 @@
     <string name="splash_title">StudentEat\ncook &amp; share!</string>
     <string name="open_drawer_title">Navigation</string>
     <string name="search_title">Search</string>
+
     <string name="logo_content_description">StudentEat logo - hamburger!</string>
     <string name="recents_card_image_description">Nice thumbnail of a dish</string>
     <string name="dish_content_description">Beautiful dish</string>
@@ -10,4 +11,33 @@
     <string name="recipe_details_ingredients_title">Ingredients</string>
     <string name="recipe_details_steps_title">Steps</string>
     <string name="recipe_details_comments_title">Comments</string>
+
+    <string name="difficulty_banal">Banal</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_extreme">Extreme</string>
+
+    <string name="dish_category_salad">Salad</string>
+    <string name="dish_category_drink">Drink</string>
+    <string name="dish_category_sandwich">Sandwich</string>
+    <string name="dish_category_soup">Soup</string>
+    <string name="dish_category_dessert">Dessert</string>
+    <string name="dish_category_pizza">Pizza</string>
+    <string name="dish_category_pasta">Pasta</string>
+    <string name="dish_category_fast_food">Fast food</string>
+    <string name="dish_category_main_course">Main course</string>
+    <string name="dish_category_snack">Snack</string>
+
+    <string name="measure_type_ml" translatable="false">ml</string>
+    <string name="measure_type_cl" translatable="false">cl</string>
+    <string name="measure_type_l" translatable="false">l</string>
+    <string name="measure_type_mg" translatable="false">mg</string>
+    <string name="measure_type_g" translatable="false">g</string>
+    <string name="measure_type_kg" translatable="false">kg</string>
+    <string name="measure_type_teaspoon">Teaspoon</string>
+    <string name="measure_type_spoon">Spoon</string>
+    <string name="measure_type_cup">Cup</string>
+    <string name="measure_type_pinch">Pinch</string>
+    <string name="measure_type_piece">Snack</string>
 </resources>

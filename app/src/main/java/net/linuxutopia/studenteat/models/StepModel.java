@@ -5,9 +5,8 @@ public class StepModel {
     private String description;
     private int minutes;
 
-    public StepModel(String description, int minutes) {
-        this.description = description;
-        this.minutes = minutes;
+    public StepModel() {
+
     }
 
     public String getDescription() {

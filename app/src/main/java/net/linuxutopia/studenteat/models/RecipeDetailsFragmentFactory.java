@@ -9,7 +9,7 @@ import net.linuxutopia.studenteat.fragments.RecipeDetailsStepsFragment;
 
 public class RecipeDetailsFragmentFactory {
 
-    final int FRAGMENT_COUNT = 3;
+    private final int FRAGMENT_COUNT = 3;
 
     public Fragment getFragment(int position) {
         switch (position) {

@@ -4,21 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/recipe_details_ingredients_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="amazeng eengredyentz" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="amazeng eengredyentz 2" />
-
-    </LinearLayout>
+        android:scrollbars="vertical" />
 
 </android.support.v4.widget.NestedScrollView>

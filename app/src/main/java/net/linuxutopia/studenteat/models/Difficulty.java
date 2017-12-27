@@ -1,21 +1,23 @@
 package net.linuxutopia.studenteat.models;
 
+import net.linuxutopia.studenteat.R;
+
 public enum Difficulty {
 
-    BANAL("Banal"),
-    EASY("Easy"),
-    MEDIUM("Medium"),
-    HARD("Hard"),
-    EXTREME("Extreme");
+    BANAL(R.string.difficulty_banal),
+    EASY(R.string.difficulty_easy),
+    MEDIUM(R.string.difficulty_medium),
+    HARD(R.string.difficulty_hard),
+    EXTREME(R.string.difficulty_extreme);
 
-    private final String difficulty;
+    private final int difficultyResource;
 
-    Difficulty(String difficulty) {
-        this.difficulty = difficulty;
+    Difficulty(int difficultyResource) {
+        this.difficultyResource = difficultyResource;
     }
 
-    public String getStringDescription() {
-        return this.difficulty;
+    public int getStringResource() {
+        return this.difficultyResource;
     }
 
 }

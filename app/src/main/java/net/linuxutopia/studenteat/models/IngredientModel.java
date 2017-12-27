@@ -3,15 +3,12 @@ package net.linuxutopia.studenteat.models;
 public class IngredientModel {
 
     private String name;
-    private MeasureType measureType;
-    private String amount;
-    private double price;
+    private MeasureType measureType = MeasureType.CL;
+    private double amount;
+    private double cost;
 
-    public IngredientModel(String name, MeasureType measureType, String amount, double price) {
-        this.name = name;
-        this.measureType = measureType;
-        this.amount = amount;
-        this.price = price;
+    public IngredientModel() {
+
     }
 
     public String getName() {
@@ -30,19 +27,19 @@ public class IngredientModel {
         this.measureType = measureType;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public double getPrice() {
-        return price;
+    public double getCost() {
+        return cost;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }
