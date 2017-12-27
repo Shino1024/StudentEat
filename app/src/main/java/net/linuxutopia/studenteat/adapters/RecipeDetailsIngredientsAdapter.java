@@ -41,7 +41,7 @@ public class RecipeDetailsIngredientsAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        prepareIngredientsHolderView(holder.ingredientHolderView, position);
+        prepareIngredientHolderView(holder.ingredientHolderView, position);
         prepareNoView(holder.noView, position);
         prepareNameView(holder.nameView, position);
         prepareAmountView(holder.amountView, position);
@@ -49,12 +49,8 @@ public class RecipeDetailsIngredientsAdapter
         prepareCostView(holder.costView, position);
     }
 
-    private void prepareIngredientsHolderView(LinearLayout ingredientViewHolder, int position) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(0,
+    private void prepareIngredientHolderView(LinearLayout ingredientViewHolder, int position) {
+        ingredientViewHolder.setPadding(0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         displayMetrics.heightPixels * 0.006f,
                         displayMetrics),
@@ -62,7 +58,6 @@ public class RecipeDetailsIngredientsAdapter
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         displayMetrics.heightPixels * 0.006f,
                         displayMetrics));
-        ingredientViewHolder.setLayoutParams(layoutParams);
         if (position % 2 == 0) {
             ingredientViewHolder.setBackgroundColor(
                     ingredientViewHolder.getResources().getColor(R.color.light_black));
@@ -80,7 +75,7 @@ public class RecipeDetailsIngredientsAdapter
     private void prepareNameView(TextView nameView, int position) {
         nameView.setText(ingredients.get(position).getName());
         nameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
+                displayMetrics.heightPixels * 0.013f);
     }
 
     private void prepareAmountView(TextView amountView, int position) {
@@ -108,7 +103,7 @@ public class RecipeDetailsIngredientsAdapter
                 ingredients.get(position).getCost()
         ));
         costView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
+                displayMetrics.heightPixels * 0.012f);
     }
 
     @Override

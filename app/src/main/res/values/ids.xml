@@ -64,6 +64,10 @@
     <item name="recipe_details_ingredient_cost" type="id" />
 
     <item name="recipe_details_steps_recyclerview" type="id" />
+    <item name="recipe_details_step_holder" type="id" />
+    <item name="recipe_details_step_no" type="id" />
+    <item name="recipe_details_step_description" type="id" />
+    <item name="recipe_details_step_minutes" type="id" />
 
     <item name="recipe_details_give_rating" type="id" />
     <item name="recipe_details_leave_comment" type="id" />

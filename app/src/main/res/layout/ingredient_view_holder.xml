@@ -4,7 +4,8 @@
     android:id="@id/recipe_details_ingredient_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:gravity="center">
 
     <TextView
         android:id="@id/recipe_details_ingredient_no"
@@ -12,15 +13,20 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textStyle="bold"
-        android:gravity="start" />
+        android:gravity="center" />
 
-    <TextView
-        android:id="@id/recipe_details_ingredient_name"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:textColor="@color/full_black"
-        android:gravity="center_vertical" />
+        android:layout_height="wrap_content"
+        android:layout_weight="5">
+
+        <TextView
+            android:id="@id/recipe_details_ingredient_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/full_black" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -40,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="@color/full_black"
-                android:gravity="center" />
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:id="@id/recipe_details_ingredient_measure"
@@ -48,7 +54,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="@color/full_black"
-                android:gravity="center" />
+                android:gravity="center_horizontal" />
 
         </LinearLayout>
 
@@ -58,6 +64,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textColor="@color/full_black"
+            android:textStyle="bold"
             android:gravity="center" />
 
     </LinearLayout>

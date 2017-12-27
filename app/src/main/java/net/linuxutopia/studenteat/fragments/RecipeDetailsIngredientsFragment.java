@@ -38,23 +38,11 @@ public class RecipeDetailsIngredientsFragment extends Fragment {
 
         RecyclerView recyclerView =
                 inflatedView.findViewById(R.id.recipe_details_ingredients_recyclerview);
-        NestedScrollView.LayoutParams layoutParams =
-                (NestedScrollView.LayoutParams) recyclerView.getLayoutParams();
-        layoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                displayMetrics.widthPixels * 0.004f,
-                displayMetrics),
-                0,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        displayMetrics.widthPixels * 0.004f,
-                        displayMetrics),
-                0);
-        recyclerView.setLayoutParams(layoutParams);
 
         ArrayList<IngredientModel> models = new ArrayList<>();
 
         MeasureType measureType1;
         measureType1 = MeasureType.CUP;
-        //print(measureType1);
         IngredientModel m1 = new IngredientModel();
         m1.setAmount(4.30002);
         m1.setMeasureType(measureType1);
@@ -71,26 +59,67 @@ public class RecipeDetailsIngredientsFragment extends Fragment {
 
         MeasureType measureType3;
         measureType3 = MeasureType.KG;
-        Log.w("w", (String) getResources().getText(measureType3.getStringResource()));
         IngredientModel m3 = new IngredientModel();
         m3.setAmount(30);
         m3.setMeasureType(measureType3);
         m3.setCost(90000);
         m3.setName("nic ciekawego");
 
+        MeasureType measureType4;
+        measureType4 = MeasureType.KG;
+        IngredientModel m4 = new IngredientModel();
+        m4.setAmount(30);
+        m4.setMeasureType(measureType4);
+        m4.setCost(90000);
+        m4.setName("nic ciekawego");
+
+        MeasureType measureType5;
+        measureType5 = MeasureType.KG;
+        IngredientModel m5 = new IngredientModel();
+        m5.setAmount(30);
+        m5.setMeasureType(measureType5);
+        m5.setCost(90000);
+        m5.setName("nic ciekawego");
+
+        IngredientModel m6 = new IngredientModel();
+        m6.setAmount(30);
+        m6.setMeasureType(MeasureType.TEASPOON);
+        m6.setCost(90000);
+        m6.setName("nic ciekawego");
+
+        IngredientModel m7 = new IngredientModel();
+        m7.setAmount(30);
+        m7.setMeasureType(MeasureType.TEASPOON);
+        m7.setCost(90000);
+        m7.setName("nic ciekawego");
+
+        IngredientModel m8 = new IngredientModel();
+        m8.setAmount(30);
+        m8.setMeasureType(MeasureType.TEASPOON);
+        m8.setCost(90000);
+        m8.setName("nic ciekawego");
+
+        IngredientModel m9 = new IngredientModel();
+        m9.setAmount(30);
+        m9.setMeasureType(MeasureType.TEASPOON);
+        m9.setCost(90000);
+        m9.setName("nic ciekawego");
+
         models.add(m1);
         models.add(m2);
         models.add(m3);
+        models.add(m4);
+        models.add(m5);
+        models.add(m6);
+        models.add(m7);
+        models.add(m8);
+        models.add(m9);
         RecipeDetailsIngredientsAdapter adapter = new RecipeDetailsIngredientsAdapter(models);
         adapter.setDisplayMetrics(displayMetrics);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
         return inflatedView;
-    }
-
-    private void print(MeasureType measureType) {
-        Log.d("w", (String) getResources().getText(measureType.getStringResource()));
     }
 
 }

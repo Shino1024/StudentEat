@@ -41,7 +41,9 @@ public class RecipeDetailsFragment extends Fragment {
 
         collapsingToolbarLayout =
                 inflatedView.findViewById(R.id.recipe_details_collapsing_toolbar_layout);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.full_black));
+        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(
+                R.color.expanded_title_color
+        ));
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(
                 R.color.full_black
         ));
@@ -60,14 +62,18 @@ public class RecipeDetailsFragment extends Fragment {
 
         CoordinatorLayout.LayoutParams viewPagerLayoutParams =
                 (CoordinatorLayout.LayoutParams) viewPager.getLayoutParams();
-        viewPagerLayoutParams.setMargins((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        int calculatedMarginSideSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 displayMetrics.widthPixels * 0.004f,
-                displayMetrics),
-                0,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        displayMetrics.widthPixels * 0.004f,
-                        displayMetrics),
-                0);
+                displayMetrics);
+        int calculatedMarginTopSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                displayMetrics.heightPixels * 0.004f,
+                displayMetrics);
+        viewPagerLayoutParams.setMargins(
+                calculatedMarginSideSize,
+                calculatedMarginTopSize,
+                calculatedMarginSideSize,
+                calculatedMarginTopSize
+        );
         viewPager.setLayoutParams(viewPagerLayoutParams);
 
         tabLayout = inflatedView.findViewById(R.id.recipe_details_tabs);

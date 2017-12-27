@@ -35,9 +35,9 @@
     <string name="measure_type_mg" translatable="false">mg</string>
     <string name="measure_type_g" translatable="false">g</string>
     <string name="measure_type_kg" translatable="false">kg</string>
-    <string name="measure_type_teaspoon">Teaspoon</string>
-    <string name="measure_type_spoon">Spoon</string>
-    <string name="measure_type_cup">Cup</string>
-    <string name="measure_type_pinch">Pinch</string>
-    <string name="measure_type_piece">Snack</string>
+    <string name="measure_type_teaspoon">tsp</string>
+    <string name="measure_type_spoon">tbs</string>
+    <string name="measure_type_cup">cup</string>
+    <string name="measure_type_pinch">pch</string>
+    <string name="measure_type_piece">pcs</string>
 </resources>

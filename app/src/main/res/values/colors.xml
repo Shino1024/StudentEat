@@ -10,6 +10,7 @@
     <color name="difficulty_hard">#ff5f0a</color>
     <color name="difficulty_extreme">#e01a1a</color>
     <color name="card_font_color">#ffffff</color>
+    <color name="expanded_title_color">#ffffff</color>
     <color name="full_black">#000000</color>
     <color name="light_black">#22000000</color>
 </resources>
