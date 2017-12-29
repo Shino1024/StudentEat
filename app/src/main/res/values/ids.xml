@@ -8,11 +8,12 @@
     <item name="open_drawer_button" type="id" />
     <item name="search_button" type="id" />
 
-    <item name="recycler_holder" type="id" />
+    <item name="recents_list_recycler_holder" type="id" />
     <item name="recents_list_recyclerview" type="id" />
     <item name="add_new_recipe_button" type="id" />
     <item name="recents_list_holder" type="id" />
     <item name="recents_fragment_holder" type="id" />
+
     <item name="recents_card" type="id" />
     <item name="recents_card_click_area" type="id" />
     <item name="card_background_image" type="id" />
@@ -73,4 +74,28 @@
     <item name="recipe_details_leave_comment" type="id" />
     <item name="recipe_details_submit_comment" type="id" />
     <item name="recipe_details_comments" type="id" />
+
+    <item name="new_recipe_container" type="id" />
+    <item name="new_recipe_photo" type="id" />
+    <item name="new_recipe_name_holder" type="id" />
+    <item name="new_recipe_name_edit" type="id" />
+    <item name="new_recipe_description_holder" type="id" />
+    <item name="new_recipe_description_edit" type="id" />
+    <item name="new_recipe_difficulty_spinner_label" type="id" />
+    <item name="new_recipe_difficulty_spinner" type="id" />
+    <item name="new_recipe_category_spinner_label" type="id" />
+    <item name="new_recipe_category_spinner" type="id" />
+    <item name="new_recipe_ingredients_list" type="id" />
+    <item name="new_recipe_new_ingredient_button" type="id" />
+    <item name="new_recipe_steps_list" type="id" />
+    <item name="new_recipe_new_step_button" type="id" />
+
+    <item name="new_ingredient_amount" type="id" />
+    <item name="new_ingredient_measure_type" type="id" />
+    <item name="new_ingredient_cost" type="id" />
+    <item name="new_ingredient_remove" type="id" />
+
+    <item name="new_step_description" type="id" />
+    <item name="new_step_minutes" type="id" />
+    <item name="new_step_remove" type="id" />
 </resources>

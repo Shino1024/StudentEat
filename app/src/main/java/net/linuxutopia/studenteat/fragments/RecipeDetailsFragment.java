@@ -2,6 +2,7 @@ package net.linuxutopia.studenteat.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -28,9 +29,10 @@ public class RecipeDetailsFragment extends Fragment {
     RecipeDetailsViewPagerAdapter viewPagerAdapter;
     Toolbar toolbar;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater layoutInflater,
-                             ViewGroup viewGroup,
+                             @Nullable ViewGroup viewGroup,
                              Bundle savedInstanceState) {
         View inflatedView = layoutInflater.inflate(R.layout.recipe_details,
                 viewGroup,

@@ -3,10 +3,12 @@ package net.linuxutopia.studenteat.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -37,15 +39,23 @@ public class RecentsFragment extends Fragment {
     private RecentsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater layoutInflater,
-                             ViewGroup viewGroup,
+                             @Nullable ViewGroup viewGroup,
                              Bundle savedInstanceState) {
         View inflatedView = layoutInflater.inflate(R.layout.recents_list,
                 viewGroup,
                 false);
 
         setHasOptionsMenu(true);
+
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setDisplayHomeAsUpEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setTitle(R.string.recents_action_bar_title);
+        }
 
         recyclerView = inflatedView.findViewById(R.id.recents_list_recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -95,6 +105,12 @@ public class RecentsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "buka", Toast.LENGTH_SHORT).show();
+                getFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+                    .replace(R.id.fragment_container, new AddNewRecipeFragment())
+                    .addToBackStack(null)
+                    .commit();
             }
         });
 
@@ -121,24 +137,6 @@ public class RecentsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.action_bar_options, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.open_drawer_button:
-                DrawerLayout drawerLayout = getActivity().findViewById(R.id.navigation_drawer);
-                drawerLayout.openDrawer(Gravity.START);
-                return true;
-            case R.id.search_button:
-                Toast.makeText(getActivity(), "search", Toast.LENGTH_SHORT).show();
-                return true;
-            case android.R.id.home:
-                getFragmentManager().popBackStack();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
     }
 
     public interface OnCardSelectedListener {

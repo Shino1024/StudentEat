@@ -4,6 +4,7 @@
     <string name="open_drawer_title">Navigation</string>
     <string name="search_title">Search</string>
 
+    <string name="recents_action_bar_title">Recent recipes</string>
     <string name="logo_content_description">StudentEat logo - hamburger!</string>
     <string name="recents_card_image_description">Nice thumbnail of a dish</string>
     <string name="dish_content_description">Beautiful dish</string>
@@ -40,4 +41,19 @@
     <string name="measure_type_cup">cup</string>
     <string name="measure_type_pinch">pch</string>
     <string name="measure_type_piece">pcs</string>
+
+    <string name="new_recipe_action_bar_title">Make a new recipe</string>
+    <string name="new_recipe_photo_hint">Photo of your delicious dish</string>
+    <string name="new_recipe_name_hint">Recipe name</string>
+    <string name="new_recipe_description_hint">Brief description</string>
+    <string name="new_recipe_difficulty_spinner_hint">Difficulty of preparation</string>
+    <string name="new_recipe_category_spinner_hint">Which category?</string>
+
+    <string name="new_ingredient_amount_hint">Amount</string>
+    <string name="new_ingredient_cost_hint">Cost</string>
+    <string name="new_ingredient_remove_text">Remove</string>
+
+    <string name="new_step_description_hint">A brief description of your recipe.</string>
+    <string name="new_step_minutes_hint">How many minutes?</string>
+    <string name="new_step_remove_text">Remove</string>
 </resources>

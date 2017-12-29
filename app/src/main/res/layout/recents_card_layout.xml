@@ -15,7 +15,8 @@
             android:id="@id/card_background_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/recents_card_image_description" />
+            android:contentDescription="@string/recents_card_image_description"
+            android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@id/recents_card_click_area"

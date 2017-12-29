@@ -13,4 +13,5 @@
     <color name="expanded_title_color">#ffffff</color>
     <color name="full_black">#000000</color>
     <color name="light_black">#22000000</color>
+    <color name="image_placeholder_tint">#22000000</color>
 </resources>

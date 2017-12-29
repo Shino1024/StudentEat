@@ -2,6 +2,7 @@ package net.linuxutopia.studenteat.fragments;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,9 +25,10 @@ public class RecipeDetailsIngredientsFragment extends Fragment {
 
     DisplayMetrics displayMetrics;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater layoutInflater,
-                             ViewGroup viewGroup,
+                             @Nullable ViewGroup viewGroup,
                              Bundle savedInstanceState) {
         int layoutResource = getArguments().getInt("layoutResource");
         View inflatedView = layoutInflater.inflate(layoutResource,

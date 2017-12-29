@@ -7,6 +7,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
@@ -40,6 +43,25 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
                 .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                 .replace(R.id.fragment_container, new RecentsFragment())
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.open_drawer_button:
+                DrawerLayout drawerLayout = findViewById(R.id.navigation_drawer);
+                drawerLayout.openDrawer(Gravity.START);
+                return true;
+            case R.id.search_button:
+                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+                return true;
+            case android.R.id.home:
+                Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+                getFragmentManager().popBackStack();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
     }
 
     @Override

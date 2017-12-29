@@ -3,6 +3,7 @@ package net.linuxutopia.studenteat.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -36,9 +37,10 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
 
     Typeface typeface;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater layoutInflater,
-                             ViewGroup viewGroup,
+                             @Nullable ViewGroup viewGroup,
                              Bundle savedInstanceState) {
         int layoutResource = getArguments().getInt("layoutResource");
         inflatedView = layoutInflater.inflate(layoutResource,
