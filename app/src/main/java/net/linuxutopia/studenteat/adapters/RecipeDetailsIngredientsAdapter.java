@@ -68,22 +68,22 @@ public class RecipeDetailsIngredientsAdapter
         noView.setText(String.format(Locale.getDefault(),
                 "%02d",
                 position + 1));
-        noView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.02f);
+//        noView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.02f);
     }
 
     private void prepareNameView(TextView nameView, int position) {
         nameView.setText(ingredients.get(position).getName());
-        nameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.013f);
+//        nameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.013f);
     }
 
     private void prepareAmountView(TextView amountView, int position) {
         amountView.setText(String.format(Locale.getDefault(),
                 "%f",
                 ingredients.get(position).getAmount()).replaceAll("\\.?0*$", ""));
-        amountView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
+//        amountView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.012f);
     }
 
     private void prepareMeasureTypeView(TextView measureTypeView, int position) {
@@ -92,8 +92,8 @@ public class RecipeDetailsIngredientsAdapter
                         ingredients.get(position).getMeasureType().getStringResource()
                 )
         );
-        measureTypeView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
+//        measureTypeView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.012f);
     }
 
     private void prepareCostView(TextView costView, int position) {
@@ -102,8 +102,8 @@ public class RecipeDetailsIngredientsAdapter
                 "%.2f$",
                 ingredients.get(position).getCost()
         ));
-        costView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.012f);
+//        costView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.012f);
     }
 
     @Override

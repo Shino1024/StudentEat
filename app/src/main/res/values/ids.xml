@@ -89,7 +89,9 @@
     <item name="new_recipe_new_ingredient_button" type="id" />
     <item name="new_recipe_steps_list" type="id" />
     <item name="new_recipe_new_step_button" type="id" />
+    <item name="new_recipe_submit_button" type="id" />
 
+    <item name="new_ingredient_name" type="id" />
     <item name="new_ingredient_amount" type="id" />
     <item name="new_ingredient_measure_type" type="id" />
     <item name="new_ingredient_cost" type="id" />

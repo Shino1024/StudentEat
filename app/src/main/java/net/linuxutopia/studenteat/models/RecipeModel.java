@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class RecipeModel {
 
     private String name;
+    private String description;
     private DishCategory dishCategory;
     private Difficulty difficulty;
     private ArrayList<IngredientModel> ingredients;
@@ -20,6 +21,14 @@ public class RecipeModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public DishCategory getDishCategory() {

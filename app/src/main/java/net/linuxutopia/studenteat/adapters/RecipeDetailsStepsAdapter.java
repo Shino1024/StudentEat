@@ -62,14 +62,14 @@ public class RecipeDetailsStepsAdapter
         noView.setText(String.format(Locale.getDefault(),
                 "%02d",
                 position + 1));
-        noView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.02f);
+//        noView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.02f);
     }
 
     private void prepareDescriptionView(TextView descriptionView, int position) {
         descriptionView.setText(steps.get(position).getDescription());
-        descriptionView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
+//        descriptionView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.01f);
     }
 
     private void prepareMinutesView(TextView minutesView, int position) {
@@ -78,8 +78,8 @@ public class RecipeDetailsStepsAdapter
                 "%d min",
                 steps.get(position).getMinutes()
         ));
-        minutesView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
+//        minutesView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
+//                displayMetrics.heightPixels * 0.01f);
     }
 
     @Override

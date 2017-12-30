@@ -48,12 +48,18 @@
     <string name="new_recipe_description_hint">Brief description</string>
     <string name="new_recipe_difficulty_spinner_hint">Difficulty of preparation</string>
     <string name="new_recipe_category_spinner_hint">Which category?</string>
+    <string name="new_recipe_submit_button_text">Submit recipe</string>
 
+    <string name="new_ingredient_section_header">List of ingredients</string>
+    <string name="new_ingredient_name_hint">Ingredient name</string>
     <string name="new_ingredient_amount_hint">Amount</string>
     <string name="new_ingredient_cost_hint">Cost</string>
+    <string name="new_ingredient_add">Add new ingredient</string>
     <string name="new_ingredient_remove_text">Remove</string>
 
-    <string name="new_step_description_hint">A brief description of your recipe.</string>
+    <string name="new_step_section_header">List of steps</string>
+    <string name="new_step_description_hint">A brief description of this step</string>
     <string name="new_step_minutes_hint">How many minutes?</string>
+    <string name="new_step_add">Add new step</string>
     <string name="new_step_remove_text">Remove</string>
 </resources>

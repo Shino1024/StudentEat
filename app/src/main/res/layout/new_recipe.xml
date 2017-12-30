@@ -25,7 +25,8 @@
         <android.support.design.widget.TextInputLayout
             android:id="@id/new_recipe_name_holder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
             <EditText
                 android:id="@id/new_recipe_name_edit"
@@ -45,8 +46,7 @@
                 android:id="@id/new_recipe_description_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:singleLine="true"
+                android:inputType="textMultiLine"
                 android:hint="@string/new_recipe_description_hint" />
 
         </android.support.design.widget.TextInputLayout>
@@ -54,7 +54,9 @@
         <TextView
             android:id="@id/new_recipe_difficulty_spinner_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp" />
 
         <Spinner
             android:id="@id/new_recipe_difficulty_spinner"
@@ -64,38 +66,58 @@
         <TextView
             android:id="@id/new_recipe_category_spinner_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@id/new_recipe_category_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_ingredient_section_header"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp" />
+
         <LinearLayout
             android:id="@id/new_recipe_ingredients_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
         <Button
             android:id="@id/new_recipe_new_ingredient_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/new_ingredient_add" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_step_section_header"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp" />
 
         <LinearLayout
             android:id="@id/new_recipe_steps_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
         <Button
             android:id="@id/new_recipe_new_step_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/new_step_add" />
+
+        <Button
+            android:id="@id/new_recipe_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_recipe_submit_button_text"
+            android:layout_marginTop="20dp" />
 
     </LinearLayout>
 

@@ -108,14 +108,10 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
 
     private void prepareAuthorView() {
         authorView = inflatedView.findViewById(R.id.recipe_details_author);
-        authorView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.015f);
     }
 
     private void prepareDishDescriptionView() {
         dishDescriptionView = inflatedView.findViewById(R.id.recipe_details_dish_description);
-        dishDescriptionView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.010f);
     }
 
     private void prepareArrayListViews() {
@@ -171,8 +167,6 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
     }
 
     private void prepareStatisticsTextView(TextView textView) {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                displayMetrics.heightPixels * 0.01f);
         textView.setTypeface(typeface);
     }
 

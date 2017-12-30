@@ -88,7 +88,7 @@ public class RecentsFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton floatingActionButton =
+        final FloatingActionButton floatingActionButton =
                 inflatedView.findViewById(R.id.add_new_recipe_button);
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
@@ -111,6 +111,7 @@ public class RecentsFragment extends Fragment {
                     .replace(R.id.fragment_container, new AddNewRecipeFragment())
                     .addToBackStack(null)
                     .commit();
+                floatingActionButton.setOnClickListener(null);
             }
         });
 
