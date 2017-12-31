@@ -56,9 +56,11 @@ public class AddNewRecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.new_recipe,
+        View inflatedView = inflater.inflate(
+                R.layout.new_recipe,
                 container,
-                false);
+                false
+        );
 
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar()

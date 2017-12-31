@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
+import net.linuxutopia.studenteat.fragments.FilterSortFragment;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
 
@@ -54,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
                 return true;
             case R.id.search_button:
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+                getFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+                        .replace(R.id.fragment_container, new FilterSortFragment())
+                        .addToBackStack(null)
+                        .commit();
                 return true;
             case android.R.id.home:
                 Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();

@@ -54,12 +54,32 @@
     <string name="new_ingredient_name_hint">Ingredient name</string>
     <string name="new_ingredient_amount_hint">Amount</string>
     <string name="new_ingredient_cost_hint">Cost</string>
-    <string name="new_ingredient_add">Add new ingredient</string>
+    <string name="new_ingredient_add">Add a new ingredient</string>
     <string name="new_ingredient_remove_text">Remove</string>
 
     <string name="new_step_section_header">List of steps</string>
     <string name="new_step_description_hint">A brief description of this step</string>
     <string name="new_step_minutes_hint">How many minutes?</string>
-    <string name="new_step_add">Add new step</string>
+    <string name="new_step_add">Add a new step</string>
     <string name="new_step_remove_text">Remove</string>
+
+    <string name="filter_action_bar_title">Filter and sort</string>
+    <string name="filter_full_name_hint">Author\'s full name</string>
+    <string name="filter_time_hint">Minutes at most</string>
+    <string name="filter_price_hint">Maximum price</string>
+    <string name="filter_rating_hint">Rating at least</string>
+    <string name="filter_size_hint">Number of portions</string>
+    <string name="filter_difficulty_label">No more difficult than</string>
+    <string name="filter_categories_section_header">Pick categories</string>
+    <string name="filter_ingredients_section_header">Filter ingredients</string>
+    <string name="filter_ingredient_hint">Ingredient</string>
+    <string name="filter_ingredient_remove_text">Remove</string>
+    <string name="filter_add_ingredient_text">Filter new ingredient</string>
+    <string name="sort_label">Sort by</string>
+    <string-array name="sorting_types">
+        <item>Time</item>
+        <item>Price</item>
+        <item>Rating</item>
+    </string-array>
+    <string name="filter_submit_button_text">Submit query</string>
 </resources>

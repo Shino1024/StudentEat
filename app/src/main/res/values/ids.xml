@@ -100,4 +100,18 @@
     <item name="new_step_description" type="id" />
     <item name="new_step_minutes" type="id" />
     <item name="new_step_remove" type="id" />
+
+    <item name="filter_full_name_edit" type="id" />
+    <item name="filter_time_edit" type="id" />
+    <item name="filter_price_edit" type="id" />
+    <item name="filter_rating_edit" type="id" />
+    <item name="filter_size_edit" type="id" />
+    <item name="filter_difficulty_spinner" type="id" />
+    <item name="filter_category_check_box_holder" type="id" />
+    <item name="filter_ingredient_view_holder" type="id" />
+    <item name="filter_ingredient_edit" type="id" />
+    <item name="filter_ingredient_remove_button" type="id" />
+    <item name="filter_add_ingredient_button" type="id" />
+    <item name="sort_spinner" type="id" />
+    <item name="filter_submit_button" type="id" />
 </resources>
