@@ -3,6 +3,7 @@ package net.linuxutopia.studenteat.activities;
 import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,9 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.FilterSortFragment;
@@ -38,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
 
         drawerLayout = findViewById(R.id.navigation_drawer);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Snackbar.make(findViewById(R.id.recents_fragment_holder),
+                user == null ? "null user" : (user.getDisplayName() == null ? "null dn" : user.getDisplayName()),
+                Toast.LENGTH_SHORT).show();
 
         getFragmentManager()
                 .beginTransaction()

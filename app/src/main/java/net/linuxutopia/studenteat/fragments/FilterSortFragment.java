@@ -19,12 +19,16 @@ import android.widget.Spinner;
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
-import net.linuxutopia.studenteat.models.RecipeQueryBuilder;
+import net.linuxutopia.studenteat.utils.RecipeQueryBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class FilterSortFragment extends Fragment {
 
+    private EditText recipeNameView;
     private EditText fullNameView;
     private EditText timeView;
     private EditText priceView;
@@ -63,6 +67,8 @@ public class FilterSortFragment extends Fragment {
         }
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        recipeNameView = inflatedView.findViewById(R.id.filter_recipe_name_edit);
 
         fullNameView = inflatedView.findViewById(R.id.filter_full_name_edit);
 
@@ -127,7 +133,7 @@ public class FilterSortFragment extends Fragment {
             categoryCheckBox.setText(getResources().getText(category.getStringResource()));
             categoryCheckBox.setTextSize(TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_SP,
-                    8.0f,
+                    6.0f,
                     displayMetrics
             ));
             categoryCheckBoxes.add(categoryCheckBox);
@@ -137,7 +143,9 @@ public class FilterSortFragment extends Fragment {
 
     private void fillUpDifficultySpinner() {
         ArrayList<String> difficultyData = new ArrayList<>();
-        for (Difficulty difficulty : Difficulty.values()) {
+        List<Difficulty> reversedDifficulties = Arrays.asList(Difficulty.values());
+        Collections.reverse(reversedDifficulties);
+        for (Difficulty difficulty : reversedDifficulties) {
             difficultyData.add(getResources().getString(difficulty.getStringResource()));
         }
         ArrayAdapter<String> difficultyDataAdapter = new ArrayAdapter<>(

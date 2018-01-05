@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "431160114630",
+    "firebase_url": "https://studenteat-b23ac.firebaseio.com",
+    "project_id": "studenteat-b23ac",
+    "storage_bucket": "studenteat-b23ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431160114630:android:701dfab6cc631a0d",
+        "android_client_info": {
+          "package_name": "net.linuxutopia.studenteat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431160114630-tds84qps4et8jar2aff87oosso06ubm6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.linuxutopia.studenteat",
+            "certificate_hash": "206cf0fbc8b605108a48f5f0601fcdd5d079e7a5"
+          }
+        },
+        {
+          "client_id": "431160114630-bkmmof5kj9gh6hib9q1our5a23hkemrq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.linuxutopia.studenteat",
+            "certificate_hash": "5be421f2d253c21bb720929b32b37474ce4af6e9"
+          }
+        },
+        {
+          "client_id": "431160114630-rgqklgru7mdsmugcb0k025848jkai1u0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAavATk_ebwZ_WnqRc-ws5ODbw1zQ8V38M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431160114630-rgqklgru7mdsmugcb0k025848jkai1u0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="splash_container" type="id" />
     <item name="hamburger_logo" type="id" />
     <item name="splash_title" type="id" />
     <item name="login" type="id" />
+    <item name="login_button" type="id" />
+
     <item name="fragment_container" type="id" />
 
     <item name="open_drawer_button" type="id" />
@@ -101,6 +104,7 @@
     <item name="new_step_minutes" type="id" />
     <item name="new_step_remove" type="id" />
 
+    <item name="filter_recipe_name_edit" type="id" />
     <item name="filter_full_name_edit" type="id" />
     <item name="filter_time_edit" type="id" />
     <item name="filter_price_edit" type="id" />

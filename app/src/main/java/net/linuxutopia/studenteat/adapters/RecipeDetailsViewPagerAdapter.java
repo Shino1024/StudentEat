@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
-import net.linuxutopia.studenteat.models.RecipeDetailsFragmentFactory;
+import net.linuxutopia.studenteat.utils.RecipeDetailsFragmentFactory;
 
 public class RecipeDetailsViewPagerAdapter extends FragmentStatePagerAdapter {
 
