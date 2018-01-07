@@ -1,14 +1,7 @@
 package net.linuxutopia.studenteat.fragments;
 
 import android.app.Fragment;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -39,10 +32,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.aprilapps.easyphotopicker.EasyImage;
+
+import static android.app.Activity.RESULT_OK;
+
 public class AddNewRecipeFragment extends Fragment {
 
     private LinearLayout newRecipeLayoutContainer;
+
     private ImageView photo;
+    private TextView photoHint;
     private EditText nameView;
     private EditText descriptionView;
     private TextView difficultySpinnerLabel;
@@ -59,6 +58,10 @@ public class AddNewRecipeFragment extends Fragment {
     private Button submitButton;
 
     private DisplayMetrics displayMetrics;
+
+    public final static int RC_IMAGE_PICKER = 3;
+
+    private boolean imageLoaded = false;
 
     @Nullable
     @Override
@@ -81,6 +84,9 @@ public class AddNewRecipeFragment extends Fragment {
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
+        EasyImage.configuration(getActivity())
+                .setAllowMultiplePickInGallery(false);
+
         newRecipeLayoutContainer =
                 inflatedView.findViewById(R.id.new_recipe_container);
         ScrollView.LayoutParams layoutParams =
@@ -102,31 +108,23 @@ public class AddNewRecipeFragment extends Fragment {
         photo = inflatedView.findViewById(R.id.new_recipe_photo);
         photo.requestLayout();
         photo.getLayoutParams().height = (int) (displayMetrics.heightPixels * 0.3f);
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
+                EasyImage.openGallery(getActivity(), 0);
+            }
+        });
+
+        photoHint = inflatedView.findViewById(R.id.new_recipe_photo_hint_text);
 
         nameView = inflatedView.findViewById(R.id.new_recipe_name_edit);
 
         descriptionView = inflatedView.findViewById(R.id.new_recipe_description_edit);
 
-        int calculatedSpinnerTopMargins = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                displayMetrics.heightPixels * 0.01f,
-                displayMetrics
-        );
-
         difficultySpinnerLabel = inflatedView.findViewById(R.id.new_recipe_difficulty_spinner_label);
         difficultySpinnerLabel.setText(getResources().getText(
                 R.string.new_recipe_difficulty_spinner_hint));
-//        difficultySpinnerLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-//                displayMetrics.heightPixels * 0.01f);
-//        LinearLayout.LayoutParams difficultyViewLayoutParams =
-//                (LinearLayout.LayoutParams) difficultySpinnerLabel.getLayoutParams();
-//        difficultyViewLayoutParams.setMargins(
-//                0,
-//                calculatedSpinnerTopMargins,
-//                0,
-//                0
-//        );
-//        difficultySpinnerLabel.setLayoutParams(difficultyViewLayoutParams);
 
         difficultySpinner = inflatedView.findViewById(R.id.new_recipe_difficulty_spinner);
         fillUpDifficultySpinner();
@@ -134,19 +132,8 @@ public class AddNewRecipeFragment extends Fragment {
         dishCategorySpinnerLabel = inflatedView.findViewById(R.id.new_recipe_category_spinner_label);
         dishCategorySpinnerLabel.setText(getResources().getText(
                 R.string.new_recipe_category_spinner_hint));
-//        dishCategorySpinnerLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-//                displayMetrics.heightPixels * 0.01f);
         dishCategorySpinner = inflatedView.findViewById(R.id.new_recipe_category_spinner);
-        fillUpCategorySpinner();
-//        LinearLayout.LayoutParams categoryViewLayoutParams =
-//                (LinearLayout.LayoutParams) dishCategorySpinner.getLayoutParams();
-//        categoryViewLayoutParams.setMargins(
-//                0,
-//                0,
-//                0,
-//                calculatedSpinnerTopMargins
-//        );
-//        dishCategorySpinner.setLayoutParams(categoryViewLayoutParams);
+        fillUpDishCategorySpinner();
 
         ingredientViewGroup = inflatedView.findViewById(R.id.new_recipe_ingredients_list);
         addNewIngredient();
@@ -173,21 +160,7 @@ public class AddNewRecipeFragment extends Fragment {
             }
         });
 
-//        int calculatedTopLayoutMargin = (int) TypedValue.applyDimension(
-//                TypedValue.COMPLEX_UNIT_DIP,
-//                displayMetrics.heightPixels * 0.01f,
-//                displayMetrics
-//        );
         submitButton = inflatedView.findViewById(R.id.new_recipe_submit_button);
-//        LinearLayout.LayoutParams layoutParams1 =
-//                (LinearLayout.LayoutParams) submitButton.getLayoutParams();
-//        layoutParams1.setMargins(
-//                0,
-//                calculatedTopLayoutMargin,
-//                0,
-//                calculatedTopLayoutMargin
-//        );
-//        submitButton.setLayoutParams(layoutParams1);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -230,68 +203,6 @@ public class AddNewRecipeFragment extends Fragment {
         return inflatedView;
     }
 
-//    public Intent getPickImageChooserIntent() {
-//        Uri outputFileUri = getCaptureImageOutputUri();
-//
-//        ArrayList<Intent> allIntents = new ArrayList<>();
-//        PackageManager packageManager = getActivity().getPackageManager();
-//
-//        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//        List<ResolveInfo> cameraResolveInfoList = packageManager.queryIntentActivities(captureIntent, 0);
-//        for (ResolveInfo resolveInfo : cameraResolveInfoList) {
-//            Intent intent = new Intent(captureIntent);
-//            intent.setComponent(new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name));
-//            intent.setPackage(resolveInfo.activityInfo.packageName);
-//            if (outputFileUri != null) {
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-//            }
-//            allIntents.add(intent);
-//        }
-//
-//        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-//        galleryIntent.setType("image/*");
-//        List<ResolveInfo> galleryResolveInfoList = packageManager.queryIntentActivities(galleryIntent, 0);
-//        for (ResolveInfo resolveInfo : galleryResolveInfoList) {
-//            Intent intent = new Intent(galleryIntent);
-//            intent.setComponent(new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name));
-//            intent.setPackage(resolveInfo.activityInfo.packageName);
-//            allIntents.add(intent);
-//        }
-//
-//        Intent mainIntent = allIntents.get(allIntents.size() - 1);
-//        for (Intent intent : allIntents) {
-//            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
-//                mainIntent = intent;
-//                break;
-//            }
-//        }
-//        allIntents.remove(mainIntent);
-//
-//        Intent chooserIntent = Intent.createChooser(mainIntent, "Select source");
-//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
-//
-//        return chooserIntent;
-//    }
-//
-//    private Uri getCaptureImageOutputUri() {
-//        Uri outputFileUri = null;
-//        File getImage = getActivity().getExternalCacheDir();
-//        if (getImage != null) {
-//            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
-//        }
-//        return outputFileUri;
-//    }
-//
-//    public Uri getPickImageResultUri(Intent data) {
-//        boolean isCamera = true;
-//        if (data != null) {
-//            String action = data.getAction();
-//            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
-//        }
-//
-//        return isCamera ? getCaptureImageOutputUri() : data.getData();
-//    }
-
     private void fillUpDifficultySpinner() {
         ArrayList<String> difficultyData = new ArrayList<>();
         for (Difficulty difficulty : Difficulty.values()) {
@@ -317,7 +228,7 @@ public class AddNewRecipeFragment extends Fragment {
         });
     }
 
-    private void fillUpCategorySpinner() {
+    private void fillUpDishCategorySpinner() {
         ArrayList<String> categoryData = new ArrayList<>();
         for (DishCategory category : DishCategory.values()) {
             categoryData.add(getResources().getString(category.getStringResource()));
@@ -390,6 +301,19 @@ public class AddNewRecipeFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    public void displayDishPhoto(File imageFile) {
+        Toast.makeText(getActivity(), imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+    }
+
+    public void displayDishPhotoLoadingError(String error) {
+        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+    }
+
+    public void setImageLoaded() {
+        this.imageLoaded = true;
+        photoHint.setVisibility(View.GONE);
     }
 
 }

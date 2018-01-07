@@ -108,7 +108,7 @@ public class RecentsFragment extends Fragment {
                 getFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-                    .replace(R.id.fragment_container, new AddNewRecipeFragment())
+                    .replace(R.id.fragment_container, new AddNewRecipeFragment(), "ADD_NEW_RECIPE_FRAGMENT")
                     .addToBackStack(null)
                     .commit();
                 floatingActionButton.setOnClickListener(null);

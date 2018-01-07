@@ -11,7 +11,7 @@ public enum DishCategory {
     DESSERT(R.string.dish_category_dessert),
     PIZZA(R.string.dish_category_pizza),
     PASTA(R.string.dish_category_pasta),
-    FASTFOOD(R.string.dish_category_fast_food),
+    FAST_FOOD(R.string.dish_category_fast_food),
     MAIN_COURSE(R.string.dish_category_main_course),
     SNACK(R.string.dish_category_snack);
 

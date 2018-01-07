@@ -2,6 +2,7 @@ package net.linuxutopia.studenteat.activities;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -16,9 +17,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import net.linuxutopia.studenteat.R;
+import net.linuxutopia.studenteat.fragments.AddNewRecipeFragment;
 import net.linuxutopia.studenteat.fragments.FilterSortFragment;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
-import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
+
+import java.io.File;
+import java.util.List;
+
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class MainActivity extends AppCompatActivity implements RecentsFragment.OnCardSelectedListener {
 
@@ -93,14 +100,34 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
         }
     }
 
-    private void loadFragment(Fragment fragment, @Nullable Bundle bundle) {
-        fragment.setArguments(bundle);
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+            AddNewRecipeFragment fragment = (AddNewRecipeFragment) getFragmentManager().findFragmentByTag("ADD_NEW_RECIPE_FRAGMENT");
+            @Override
+            public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
+                fragment.setImageLoaded();
+                fragment.displayDishPhoto(imageFiles.get(0));
+            }
+
+            @Override
+            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+                fragment.displayDishPhotoLoadingError(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCanceled(EasyImage.ImageSource source, int type) {
+                switch (source) {
+                    case CAMERA:
+                        File photoFile = EasyImage.lastlyTakenButCanceledPhoto(MainActivity.this);
+                        if (photoFile != null) {
+                            photoFile.delete();
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     @Override

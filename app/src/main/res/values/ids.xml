@@ -79,7 +79,9 @@
     <item name="recipe_details_comments" type="id" />
 
     <item name="new_recipe_container" type="id" />
+    <item name="new_recipe_photo_container" type="id" />
     <item name="new_recipe_photo" type="id" />
+    <item name="new_recipe_photo_hint_text" type="id" />
     <item name="new_recipe_name_holder" type="id" />
     <item name="new_recipe_name_edit" type="id" />
     <item name="new_recipe_description_holder" type="id" />

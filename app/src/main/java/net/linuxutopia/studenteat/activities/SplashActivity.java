@@ -52,8 +52,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
-    private final static int RC_SIGN_IN = 1;
-    private final static int RC_FIREBASE_UI = 2;
+    public final static int RC_SIGN_IN = 1;
+    public final static int RC_FIREBASE_UI = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
