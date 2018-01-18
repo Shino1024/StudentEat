@@ -5,12 +5,28 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/navigation_drawer_first"
-            android:title="first" />
+            android:id="@id/navigation_drawer_recent_recipes"
+            android:title="@string/navigation_drawer_recent_recipes_text" />
 
         <item
-            android:id="@+id/navigation_drawer_second"
-            android:title="second" />
+            android:id="@id/navigation_drawer_add_new_recipe"
+            android:title="@string/navigation_drawer_add_new_recipe_text" />
+
+        <item
+            android:id="@id/navigation_drawer_filter_and_sort"
+            android:title="@string/navigation_drawer_filter_and_sort" />
+
+        <item
+            android:id="@id/navigation_drawer_my_recipes"
+            android:title="@string/navigation_drawer_my_recipes" />
+
+        <item
+            android:id="@id/navigation_drawer_favorite_recipes"
+            android:title="@string/navigation_drawer_favorite_recipes" />
+
+        <item
+            android:id="@id/navigation_drawer_display_help"
+            android:title="@string/navigation_drawer_display_help" />
 
     </group>
 

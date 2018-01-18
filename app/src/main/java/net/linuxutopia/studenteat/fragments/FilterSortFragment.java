@@ -19,6 +19,9 @@ import android.widget.Spinner;
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
+import net.linuxutopia.studenteat.models.IngredientModel;
+import net.linuxutopia.studenteat.models.RecipeModel;
+import net.linuxutopia.studenteat.models.SortType;
 import net.linuxutopia.studenteat.utils.RecipeQueryBuilder;
 
 import java.util.ArrayList;
@@ -45,6 +48,8 @@ public class FilterSortFragment extends Fragment {
     private Spinner sortSpinner;
 
     private Button submitButton;
+
+    private ArrayList<RecipeModel> recipeModels;
 
     private DisplayMetrics displayMetrics = new DisplayMetrics();
 
@@ -84,6 +89,7 @@ public class FilterSortFragment extends Fragment {
         fillUpDifficultySpinner();
 
         ingredientViewGroup = inflatedView.findViewById(R.id.filter_ingredient_view_holder);
+
         prepareCheckBoxes(inflatedView);
 
         addFilteredIngredientButton = inflatedView.findViewById(R.id.filter_add_ingredient_button);
@@ -101,6 +107,47 @@ public class FilterSortFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 RecipeQueryBuilder builder = new RecipeQueryBuilder();
+                if (!recipeNameView.getText().toString().trim().matches("")) {
+                    builder.setRecipeName(recipeNameView.getText().toString().trim());
+                }
+                if (!fullNameView.getText().toString().trim().matches("")) {
+                    builder.setFullAuthorName(fullNameView.getText().toString().trim());
+                }
+                if (!timeView.getText().toString().trim().matches("")) {
+                    builder.setMinutes(Integer.parseInt(timeView.getText().toString().trim()));
+                }
+                if (!priceView.getText().toString().trim().matches("")) {
+                    builder.setPrice(Double.parseDouble(priceView.getText().toString().trim()));
+                }
+                if (!ratingView.getText().toString().trim().matches("")) {
+                    builder.setRating(Double.parseDouble(ratingView.getText().toString().trim()));
+                }
+                if (!sizeView.getText().toString().trim().matches("")) {
+                    builder.setSize(Integer.parseInt(sizeView.getText().toString().trim()));
+                }
+                builder.setDifficulty(Difficulty.values()[difficultySpinner.getSelectedItemPosition()]);
+
+                ArrayList<DishCategory> dishCategories = new ArrayList<>();
+                for (int i = 0; i < categoryCheckBoxes.size(); ++i) {
+                    if (categoryCheckBoxes.get(i).isChecked()) {
+                        dishCategories.add(DishCategory.values()[i]);
+                    }
+                }
+                builder.setCategories(dishCategories);
+
+                ArrayList<String> ingredientNames = new ArrayList<>();
+                for (View ingredientView : ingredientViews) {
+                    EditText ingredientNameEdit =
+                            ingredientView.findViewById(R.id.filter_ingredient_edit);
+                    if (!ingredientNameEdit.getText().toString().trim().matches("")) {
+                        ingredientNames.add(ingredientNameEdit.getText().toString().trim());
+                    }
+                }
+                builder.setIngredients(ingredientNames);
+                builder.setSortType(SortType.values()[sortSpinner.getSelectedItemPosition()]);
+
+                builder.executeQueryWithActivity(getActivity());
+                recipeModels = builder.returnResultingRecipes();
             }
         });
 

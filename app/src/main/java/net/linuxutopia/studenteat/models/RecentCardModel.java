@@ -1,24 +1,22 @@
 package net.linuxutopia.studenteat.models;
 
+import java.io.File;
+
 public class RecentCardModel {
 
-    private String id;
-    private String photo;
+    private File photoFile;
     private String title;
     private String author;
     private Double rating;
     private Integer minutes;
     private Difficulty difficulty;
 
-    public RecentCardModel(String id,
-                           String photo,
+    public RecentCardModel(String photo,
                            String title,
                            String author,
                            Double rating,
                            Integer minutes,
                            Difficulty difficulty) {
-        this.id = id;
-        this.photo = photo;
         this.title = title;
         this.author = author;
         this.rating = rating;
@@ -26,20 +24,16 @@ public class RecentCardModel {
         this.difficulty = difficulty;
     }
 
-    public String getId() {
-        return id;
+    public RecentCardModel() {
+
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public File getPhotoFile() {
+        return photoFile;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPhotoFile(File photoFile) {
+        this.photoFile = photoFile;
     }
 
     public String getTitle() {

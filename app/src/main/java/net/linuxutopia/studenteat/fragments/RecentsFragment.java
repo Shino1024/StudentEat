@@ -1,26 +1,21 @@
 package net.linuxutopia.studenteat.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.adapters.RecentsAdapter;
@@ -32,8 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RecentsFragment extends Fragment {
-
-    OnCardSelectedListener listener;
 
     private RecyclerView recyclerView;
     private RecentsAdapter adapter;
@@ -64,11 +57,11 @@ public class RecentsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         ArrayList<RecentCardModel> dataSet = new ArrayList<>();
-        dataSet.add(new RecentCardModel("aaaaa", "lol", "jakis przepis", "mama", 4.5, 30, Difficulty.BANAL));
-        dataSet.add(new RecentCardModel("bbbbb", "jakies zdjecie", "w ogole jakies bardzo dlugie nie wiem jak bardzo buleczki 2", "tata", 6.5, 10, Difficulty.EASY));
-        dataSet.add(new RecentCardModel("ccccc", "znowu cos", "ziemniaki", "janusz oraz grazynka", 1.0, 2000, Difficulty.MEDIUM));
-        dataSet.add(new RecentCardModel("ddddd", "i znowu jakis przepis", "bardzo dziwny przepis", "konstantynopolitanczykiewiczowna konstantynopolitanczykowianeczka", 10.0, 300, Difficulty.HARD));
-        dataSet.add(new RecentCardModel("eeeee", "cos strasznego", "lepiej nie mowic", "nie wiadomo", 9.2, 200, Difficulty.EXTREME));
+        dataSet.add(new RecentCardModel("lol", "jakis przepis", "mama", 4.5, 30, Difficulty.BANAL));
+        dataSet.add(new RecentCardModel("jakies zdjecie", "w ogole jakies bardzo dlugie nie wiem jak bardzo buleczki 2", "tata", 6.5, 10, Difficulty.EASY));
+        dataSet.add(new RecentCardModel("znowu cos", "ziemniaki", "janusz oraz grazynka", 1.0, 2000, Difficulty.MEDIUM));
+        dataSet.add(new RecentCardModel("i znowu jakis przepis", "bardzo dziwny przepis", "konstantynopolitanczykiewiczowna konstantynopolitanczykowianeczka", 10.0, 300, Difficulty.HARD));
+        dataSet.add(new RecentCardModel("cos strasznego", "lepiej nie mowic", "nie wiadomo", 9.2, 200, Difficulty.EXTREME));
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -104,7 +97,6 @@ public class RecentsFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "buka", Toast.LENGTH_SHORT).show();
                 getFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
@@ -119,17 +111,6 @@ public class RecentsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof OnCardSelectedListener) {
-            listener = (OnCardSelectedListener) activity;
-        } else {
-            throw new ClassCastException(activity.toString()
-            + " must implement OnCardSelectedListener.");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
     }
@@ -138,10 +119,6 @@ public class RecentsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.action_bar_options, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
-    }
-
-    public interface OnCardSelectedListener {
-        public void onCardSelected(String id);
     }
 
 }

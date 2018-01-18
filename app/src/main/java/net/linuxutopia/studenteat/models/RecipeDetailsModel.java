@@ -1,8 +1,10 @@
 package net.linuxutopia.studenteat.models;
 
+import java.io.File;
+
 public class RecipeDetailsModel {
 
-    private String id;
+    private File photoFile;
     private String name;
     private String author;
     private DishCategory dishCategory;
@@ -11,17 +13,35 @@ public class RecipeDetailsModel {
     private double rating;
     private double price;
     private int size;
+    private int favorited;
+    private int cooked;
 
     public RecipeDetailsModel() {
 
     }
 
-    public String getId() {
-        return id;
+    public File getPhotoFile() {
+        return photoFile;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPhotoFile(File photoFile) {
+        this.photoFile = photoFile;
+    }
+
+    public int getFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(int favorited) {
+        this.favorited = favorited;
+    }
+
+    public int getCooked() {
+        return cooked;
+    }
+
+    public void setCooked(int cooked) {
+        this.cooked = cooked;
     }
 
     public String getName() {

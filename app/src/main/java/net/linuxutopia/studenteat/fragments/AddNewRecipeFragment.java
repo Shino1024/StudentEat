@@ -1,8 +1,19 @@
 package net.linuxutopia.studenteat.fragments;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -21,24 +32,43 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
+
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
 import net.linuxutopia.studenteat.models.IngredientModel;
 import net.linuxutopia.studenteat.models.MeasureType;
+import net.linuxutopia.studenteat.models.RecentCardModel;
 import net.linuxutopia.studenteat.models.RecipeModel;
+import net.linuxutopia.studenteat.models.StepModel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.aprilapps.easyphotopicker.EasyImage;
-
-import static android.app.Activity.RESULT_OK;
 
 public class AddNewRecipeFragment extends Fragment {
 
     private LinearLayout newRecipeLayoutContainer;
+
+    private File photoFile;
 
     private ImageView photo;
     private TextView photoHint;
@@ -48,6 +78,7 @@ public class AddNewRecipeFragment extends Fragment {
     private Spinner difficultySpinner;
     private TextView dishCategorySpinnerLabel;
     private Spinner dishCategorySpinner;
+    private TextView sizeView;
 
     private ViewGroup ingredientViewGroup;
     private ArrayList<View> ingredientViews = new ArrayList<>();
@@ -59,9 +90,16 @@ public class AddNewRecipeFragment extends Fragment {
 
     private DisplayMetrics displayMetrics;
 
-    public final static int RC_IMAGE_PICKER = 3;
+    private boolean photoLoaded = false;
+    private AlertDialog photoPickerAlertDialog;
 
-    private boolean imageLoaded = false;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    private StorageReference storageReference;
+
+    public static final int REQUEST_CODE_OPEN_CAMERA = 0x4E;
+    public static final int REQUEST_CODE_OPEN_GALLERY = 0x47;
 
     @Nullable
     @Override
@@ -111,8 +149,8 @@ public class AddNewRecipeFragment extends Fragment {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                EasyImage.openGallery(getActivity(), 0);
+                displayDialogWithResult();
+//                EasyImage.openGallery(getActivity(), 0);
             }
         });
 
@@ -134,6 +172,8 @@ public class AddNewRecipeFragment extends Fragment {
                 R.string.new_recipe_category_spinner_hint));
         dishCategorySpinner = inflatedView.findViewById(R.id.new_recipe_category_spinner);
         fillUpDishCategorySpinner();
+
+        sizeView = inflatedView.findViewById(R.id.new_recipe_size_edit);
 
         ingredientViewGroup = inflatedView.findViewById(R.id.new_recipe_ingredients_list);
         addNewIngredient();
@@ -164,8 +204,91 @@ public class AddNewRecipeFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                DatabaseReference onceReference = database.getReference("testing");
+//                onceReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot child: dataSnapshot.getChildren()) {
+//                            if (child.getKey().equals("-L2tYtrF4S7xGG49ihfE")) {
+//                                RecentCardModel test = child.getValue(RecentCardModel.class);
+//                                if (test != null) {
+//                                    Toast.makeText(getActivity(), getResources().getString(test.getDifficulty().getStringResource()), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+
+                if (
+                        !photoLoaded
+                        || nameView.getText().toString().trim().matches("")
+                        || descriptionView.getText().toString().trim().matches("")
+                        || incorrectIngredientsInput()
+                        || incorrectStepsInput()
+                        ) {
+                    Snackbar.make(newRecipeLayoutContainer,
+                            R.string.new_recipe_submit_error,
+                            Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                DatabaseReference recipeReference = database.getReference("recipes");
+                String pushedKey = recipeReference.push().getKey();
+
+                final UploadDialogFragment uploadDialogFragment = new UploadDialogFragment();
+                uploadDialogFragment.show(((AppCompatActivity) getActivity())
+                                .getSupportFragmentManager(),
+                        "UPLOAD_DIALOG");
+
+//                StorageMetadata metadata = new StorageMetadata.Builder()
+//                        .setContentType("image/*")
+//                        .build();
+                StorageReference photosReference = FirebaseStorage
+                        .getInstance()
+                        .getReference("/photos");
+                UploadTask result = photosReference.child(pushedKey)
+                        .putFile(Uri.parse(photoFile.toURI().toString()));
+                result.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                uploadDialogFragment.dismiss();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                MaterialProgressBar progressBar = uploadDialogFragment.getProgressBar();
+                                progressBar.setProgress((int) (100 *
+                                        taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()
+                                ));
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                uploadDialogFragment.dismiss();
+                                String errorMessage =
+                                        getString(R.string.new_recipe_on_failure_message_prelude)
+                                                + e.getLocalizedMessage();
+                                Snackbar.make(
+                                        getActivity().findViewById(R.id.fragment_container),
+                                        errorMessage,
+                                        Snackbar.LENGTH_SHORT
+                                ).show();
+                            }
+                        });
+
                 RecipeModel recipeModel = new RecipeModel();
+                recipeModel.setId(pushedKey);
                 recipeModel.setName(nameView.getText().toString());
+                recipeModel.setAuthor(auth.getCurrentUser() != null
+                    ? auth.getCurrentUser().getDisplayName()
+                    : "Anonymous");
                 recipeModel.setDescription(descriptionView.getText().toString());
                 recipeModel.setDifficulty(
                         Difficulty.values()[difficultySpinner.getSelectedItemPosition()]
@@ -173,7 +296,9 @@ public class AddNewRecipeFragment extends Fragment {
                 recipeModel.setDishCategory(
                         DishCategory.values()[dishCategorySpinner.getSelectedItemPosition()]
                 );
+
                 ArrayList<IngredientModel> ingredients = new ArrayList<>();
+                double price = 0.0d;
                 for (View ingredientView : ingredientViews) {
                     EditText newIngredientNameView =
                             ingredientView.findViewById(R.id.new_ingredient_name);
@@ -183,24 +308,138 @@ public class AddNewRecipeFragment extends Fragment {
                             ingredientView.findViewById(R.id.new_ingredient_measure_type);
                     EditText newIngredientCostView =
                             ingredientView.findViewById(R.id.new_ingredient_cost);
-                    if (
-                               newIngredientNameView.getText().toString().trim().length() > 0
-                            && newIngredientAmountView.getText().toString().trim().length() > 0
-                            && newIngredientCostView.getText().toString().trim().length() > 0
-                            ) {
-                        IngredientModel ingredient = new IngredientModel();
-                        ingredient.setName(newIngredientNameView.getText().toString());
-                        ingredient.setAmount(Double.parseDouble(newIngredientAmountView.getText().toString()));
-                        ingredient.setMeasureType(
-                                MeasureType.values()[newIngredientMeasureTypeView.getSelectedItemPosition()]);
-                        ingredient.setCost(Double.parseDouble(newIngredientCostView.getText().toString()));
-                        ingredients.add(ingredient);
-                    }
+                    IngredientModel ingredient = new IngredientModel();
+                    ingredient.setName(newIngredientNameView.getText().toString());
+                    ingredient.setAmount(Double.parseDouble(newIngredientAmountView.getText().toString()));
+                    ingredient.setMeasureType(
+                            MeasureType.values()[newIngredientMeasureTypeView.getSelectedItemPosition()]);
+                    price += Double.parseDouble(newIngredientCostView.getText().toString());
+                    ingredient.setCost(Double.parseDouble(newIngredientCostView.getText().toString()));
+                    ingredients.add(ingredient);
                 }
+                recipeModel.setIngredients(ingredients);
+                recipeModel.setPrice(price);
+
+                ArrayList<StepModel> steps = new ArrayList<>();
+                int minutes = 0;
+                for (View stepView : stepViews) {
+                    EditText newStepDescriptionView =
+                            stepView.findViewById(R.id.new_step_description);
+                    EditText newStepMinutesView =
+                            stepView.findViewById(R.id.new_step_minutes);
+                    StepModel step = new StepModel();
+                    step.setDescription(newStepDescriptionView.getText().toString().trim());
+                    minutes += Integer.parseInt(newStepMinutesView.getText().toString());
+                    step.setMinutes(Integer.parseInt(newStepMinutesView.getText().toString()));
+                }
+                recipeModel.setMinutes(minutes);
+
+                recipeModel.setSize(Integer.parseInt(sizeView.getText().toString()));
+                recipeModel.setRating(0.0d);
+                recipeModel.setFavorited(0);
+                recipeModel.setCooked(0);
+
+                recipeReference
+                        .child(pushedKey)
+                        .setValue(recipeModel)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Snackbar.make(
+                                        getActivity().findViewById(R.id.fragment_container),
+                                        R.string.new_recipe_on_complete_message,
+                                        Snackbar.LENGTH_SHORT
+                                ).show();
+                                getFragmentManager()
+                                        .popBackStack();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                String errorMessage =
+                                        getString(R.string.new_recipe_on_failure_message_prelude)
+                                        + e.getLocalizedMessage();
+                                Snackbar.make(
+                                        getActivity().findViewById(R.id.fragment_container),
+                                        errorMessage,
+                                        Snackbar.LENGTH_SHORT
+                                ).show();
+                            }
+                        });
             }
         });
 
         return inflatedView;
+    }
+
+    private boolean incorrectIngredientsInput() {
+        if (ingredientViews.size() == 0) {
+            return true;
+        }
+
+        for (View ingredientView : ingredientViews) {
+            EditText ingredientNameView = ingredientView.findViewById(R.id.new_ingredient_name);
+            EditText ingredientCostView = ingredientView.findViewById(R.id.new_ingredient_cost);
+            if (ingredientNameView.getText().toString().trim().matches("")
+                    || ingredientCostView.getText().toString().trim().matches("")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean incorrectStepsInput() {
+        if (stepViews.size() == 0) {
+            return true;
+        }
+
+        for (View stepView : stepViews) {
+            EditText stepDescriptionView = stepView.findViewById(R.id.new_step_description);
+            if (stepDescriptionView.getText().toString().trim().matches("")) {
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    private void displayDialogWithResult() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getResources().getString(R.string.new_recipe_photo_picker_dialog_title));
+        builder.setItems(R.array.new_recipe_photo_picker_dialog_options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case 0:
+                        if (ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.CAMERA)
+                                == PackageManager.PERMISSION_DENIED
+                                || ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                == PackageManager.PERMISSION_DENIED) {
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{Manifest.permission.CAMERA,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    0);
+                        } else {
+                            EasyImage.openCamera(getActivity(), REQUEST_CODE_OPEN_CAMERA);
+                        }
+                        break;
+                    case 1:
+                        EasyImage.openGallery(getActivity(), REQUEST_CODE_OPEN_GALLERY);
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        photoPickerAlertDialog = builder.create();
+        photoPickerAlertDialog.show();
     }
 
     private void fillUpDifficultySpinner() {
@@ -303,17 +542,48 @@ public class AddNewRecipeFragment extends Fragment {
         }
     }
 
-    public void displayDishPhoto(File imageFile) {
-        Toast.makeText(getActivity(), imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-    }
-
     public void displayDishPhotoLoadingError(String error) {
         Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
     }
 
-    public void setImageLoaded() {
-        this.imageLoaded = true;
-        photoHint.setVisibility(View.GONE);
+    public void onImageLoaded(File photoFile) {
+        if (photoFile.exists()) {
+            this.photoLoaded = true;
+            photoHint.setVisibility(View.GONE);
+            this.photoFile = photoFile;
+
+            Bitmap photoBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+            photo.setImageBitmap(photoBitmap);
+        } else {
+            Snackbar.make(newRecipeLayoutContainer,
+                    getResources().getString(R.string.new_recipe_photo_picker_unsuccessful),
+                    Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.new_recipe_photo_picker_unsuccessful_retry, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            displayDialogWithResult();
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(R.color.colorPrimary))
+                    .show();
+        }
     }
 
+    public void openCamera() {
+        EasyImage.openCamera(getActivity(), REQUEST_CODE_OPEN_CAMERA);
+    }
+
+    public void deniedOpenCameraPermissions() {
+        Snackbar.make(newRecipeLayoutContainer,
+                getResources().getString(R.string.new_recipe_camera_no_permission),
+                Snackbar.LENGTH_SHORT)
+                .setAction(R.string.new_recipe_photo_picker_unsuccessful, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        EasyImage.openCamera(getActivity(), REQUEST_CODE_OPEN_CAMERA);
+                    }
+                })
+                .setActionTextColor(getResources().getColor(R.color.colorPrimary))
+                .show();
+    }
 }

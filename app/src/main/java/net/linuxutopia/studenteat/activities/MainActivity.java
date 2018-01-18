@@ -1,9 +1,9 @@
 package net.linuxutopia.studenteat.activities;
 
-import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,7 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.AddNewRecipeFragment;
 import net.linuxutopia.studenteat.fragments.FilterSortFragment;
+import net.linuxutopia.studenteat.fragments.HelpFragment;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
+import net.linuxutopia.studenteat.utils.ActivityHelper;
 
 import java.io.File;
 import java.util.List;
@@ -27,9 +29,10 @@ import java.util.List;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class MainActivity extends AppCompatActivity implements RecentsFragment.OnCardSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,44 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
 
         setContentView(R.layout.activity_main);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         drawerLayout = findViewById(R.id.navigation_drawer);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+        navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_drawer_recent_recipes:
+                        drawerLayout.closeDrawer(Gravity.START);
+                        ActivityHelper.loadFragment(MainActivity.this, new RecentsFragment());
+                        break;
+                    case R.id.navigation_drawer_add_new_recipe:
+                        drawerLayout.closeDrawer(Gravity.START);
+                        ActivityHelper.loadFragment(MainActivity.this, new AddNewRecipeFragment());
+                        break;
+                    case R.id.navigation_drawer_filter_and_sort:
+                        drawerLayout.closeDrawer(Gravity.START);
+                        ActivityHelper.loadFragment(MainActivity.this, new FilterSortFragment());
+                        break;
+                    case R.id.navigation_drawer_my_recipes:
+                        drawerLayout.closeDrawer(Gravity.START);
+//                        ActivityHelper.loadFragment(MainActivity.this, new RecentsFragment());
+                        break;
+                    case R.id.navigation_drawer_favorite_recipes:
+                        drawerLayout.closeDrawer(Gravity.START);
+//                        ActivityHelper.loadFragment(MainActivity.this, new RecentsFragment());
+                        break;
+                    case R.id.navigation_drawer_display_help:
+                        drawerLayout.closeDrawer(Gravity.START);
+                        ActivityHelper.loadFragment(MainActivity.this, new HelpFragment());
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Snackbar.make(findViewById(R.id.recents_fragment_holder),
@@ -71,12 +108,7 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
                 return true;
             case R.id.search_button:
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
-                getFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-                        .replace(R.id.fragment_container, new FilterSortFragment())
-                        .addToBackStack(null)
-                        .commit();
+                ActivityHelper.loadFragment(this, new FilterSortFragment());
                 return true;
             case android.R.id.home:
                 Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
@@ -107,8 +139,7 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
             AddNewRecipeFragment fragment = (AddNewRecipeFragment) getFragmentManager().findFragmentByTag("ADD_NEW_RECIPE_FRAGMENT");
             @Override
             public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
-                fragment.setImageLoaded();
-                fragment.displayDishPhoto(imageFiles.get(0));
+                fragment.onImageLoaded(imageFiles.get(0));
             }
 
             @Override
@@ -131,7 +162,22 @@ public class MainActivity extends AppCompatActivity implements RecentsFragment.O
     }
 
     @Override
-    public void onCardSelected(String id) {
-        // TODO: Fill it out. It takes the recipe ID, downloads data and switches Fragments.
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case AddNewRecipeFragment.REQUEST_CODE_OPEN_CAMERA:
+                AddNewRecipeFragment fragment = (AddNewRecipeFragment) getFragmentManager().findFragmentByTag("ADD_NEW_RECIPE_FRAGMENT");
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    fragment.openCamera();
+                } else {
+                    fragment.deniedOpenCameraPermissions();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -4,6 +4,13 @@
     <string name="open_drawer_title" translatable="false">Navigation</string>
     <string name="search_title" translatable="false">Search</string>
 
+    <string name="navigation_drawer_recent_recipes_text">Recent recipes</string>
+    <string name="navigation_drawer_add_new_recipe_text">Add new recipe</string>
+    <string name="navigation_drawer_filter_and_sort">Filter and sort</string>
+    <string name="navigation_drawer_my_recipes">My recipes</string>
+    <string name="navigation_drawer_favorite_recipes">Favorite recipes</string>
+    <string name="navigation_drawer_display_help">Display help</string>
+
     <string name="recents_action_bar_title" translatable="false">Recent recipes</string>
     <string name="logo_content_description" translatable="false">StudentEat logo - hamburger!</string>
     <string name="recents_card_image_description" translatable="false">Nice thumbnail of a dish</string>
@@ -44,11 +51,25 @@
 
     <string name="new_recipe_action_bar_title" translatable="false">Make a new recipe</string>
     <string name="new_recipe_photo_hint" translatable="false">Photo of your delicious dish</string>
+    <string name="new_recipe_photo_picker_dialog_title">Pick photo from</string>
+    <string-array name="new_recipe_photo_picker_dialog_options">
+        <item>Camera</item>
+        <item>File</item>
+        <item>Cancel</item>
+    </string-array>
+    <string name="new_recipe_photo_picker_unsuccessful">Something went wrong</string>
+    <string name="new_recipe_photo_picker_unsuccessful_retry">Retry</string>
+    <string name="new_recipe_camera_no_permission">You must grant asked permissions.</string>
     <string name="new_recipe_name_hint" translatable="false">Recipe name</string>
     <string name="new_recipe_description_hint" translatable="false">Brief description</string>
+    <string name="new_recipe_size_hint">For how many people?</string>
     <string name="new_recipe_difficulty_spinner_hint" translatable="false">Difficulty of preparation</string>
     <string name="new_recipe_category_spinner_hint" translatable="false">Which category?</string>
     <string name="new_recipe_submit_button_text" translatable="false">Submit recipe</string>
+    <string name="new_recipe_submit_error">Make sure you have filled all the blanks
+    and used at least one step and one ingredient. Don't forget about the photo!</string>
+    <string name="new_recipe_on_complete_message">Recipe uploaded!</string>
+    <string name="new_recipe_on_failure_message_prelude">Error: </string>
 
     <string name="new_ingredient_section_header" translatable="false">List of ingredients</string>
     <string name="new_ingredient_name_hint" translatable="false">Ingredient name</string>
@@ -82,6 +103,18 @@
         <item>Time</item>
         <item>Price</item>
         <item>Rating</item>
+        <item>Size</item>
     </string-array>
     <string name="filter_submit_button_text" translatable="false">Submit query</string>
+
+    <string name="help_screen_action_bar_title">Help</string>
+    <string name="app_help_text">
+        Thank you for using StudentEat.\n\n
+        In order to use the application, you should have a working Internet connection.\n
+        You can see recent recipes just as you enter the app and view each recipe\'s details.\n
+        You can also create new recipes by pressing the floating + button.\n
+        Navigating the app is possible by swiping right from the left side of the screen.\n
+        If you wish to filter and sort recipes, just click the magnifying glass icon.\n\n
+        App created for Object-Oriented Programming course at AGH UST by Jarosław Bieniek (Shino1024).
+    </string>
 </resources>

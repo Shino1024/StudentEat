@@ -67,6 +67,21 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@id/new_recipe_size_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <EditText
+                android:id="@id/new_recipe_size_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/new_recipe_size_hint" />
+
+        </android.support.design.widget.TextInputLayout>
+
         <TextView
             android:id="@id/new_recipe_difficulty_spinner_label"
             android:layout_width="match_parent"

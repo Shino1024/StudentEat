@@ -11,6 +11,17 @@
     <item name="open_drawer_button" type="id" />
     <item name="search_button" type="id" />
 
+    <item name="navigation_drawer" type="id" />
+    <item name="navigation_view" type="id" />
+    <item name="navigation_drawer_user_full_name" type="id" />
+    <item name="navigation_drawer_user_email" type="id" />
+    <item name="navigation_drawer_recent_recipes" type="id" />
+    <item name="navigation_drawer_add_new_recipe" type="id" />
+    <item name="navigation_drawer_filter_and_sort" type="id" />
+    <item name="navigation_drawer_display_help" type="id" />
+    <item name="navigation_drawer_my_recipes" type="id" />
+    <item name="navigation_drawer_favorite_recipes" type="id" />
+
     <item name="recents_list_recycler_holder" type="id" />
     <item name="recents_list_recyclerview" type="id" />
     <item name="add_new_recipe_button" type="id" />
@@ -25,8 +36,6 @@
     <item name="recents_card_time" type="id" />
     <item name="recents_card_rating" type="id" />
     <item name="recents_card_difficulty" type="id" />
-
-    <item name="navigation_drawer" type="id" />
 
     <item name="recipe_details_app_bar_layout" type="id" />
     <item name="recipe_details_collapsing_toolbar_layout" type="id" />
@@ -78,6 +87,9 @@
     <item name="recipe_details_submit_comment" type="id" />
     <item name="recipe_details_comments" type="id" />
 
+    <item name="upload_dialog" type="id" />
+    <item name="upload_dialog_progress_bar" type="id" />
+
     <item name="new_recipe_container" type="id" />
     <item name="new_recipe_photo_container" type="id" />
     <item name="new_recipe_photo" type="id" />
@@ -86,6 +98,8 @@
     <item name="new_recipe_name_edit" type="id" />
     <item name="new_recipe_description_holder" type="id" />
     <item name="new_recipe_description_edit" type="id" />
+    <item name="new_recipe_size_holder" type="id" />
+    <item name="new_recipe_size_edit" type="id" />
     <item name="new_recipe_difficulty_spinner_label" type="id" />
     <item name="new_recipe_difficulty_spinner" type="id" />
     <item name="new_recipe_category_spinner_label" type="id" />
@@ -120,4 +134,6 @@
     <item name="filter_add_ingredient_button" type="id" />
     <item name="sort_spinner" type="id" />
     <item name="filter_submit_button" type="id" />
+
+    <item name="help_text" type="id" />
 </resources>
