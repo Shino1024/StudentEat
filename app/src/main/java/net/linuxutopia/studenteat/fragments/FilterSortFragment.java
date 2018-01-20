@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
+import net.linuxutopia.studenteat.models.IngredientModel;
 import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.models.SortType;
 import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
@@ -32,7 +34,9 @@ import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class FilterSortFragment extends Fragment {
 
@@ -65,7 +69,7 @@ public class FilterSortFragment extends Fragment {
 
     private Button submitButton;
 
-    private ArrayList<RecipeDetailsModel> recipes;
+    private ArrayList<RecipeDetailsModel> recipes = new ArrayList<>();
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -85,7 +89,8 @@ public class FilterSortFragment extends Fragment {
                 false
         );
 
-        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(), R.string.filter_action_bar_title);
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                R.string.filter_action_bar_title);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -231,6 +236,7 @@ public class FilterSortFragment extends Fragment {
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                recipes = new ArrayList<>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     recipes.add(child.getValue(RecipeDetailsModel.class));
                 }
@@ -242,12 +248,7 @@ public class FilterSortFragment extends Fragment {
                 filteredRecipesFragment.setArguments(resourceBundle);
                 filteredRecipesFragment.setRecipesToDisplay(recipes);
                 AppCompatActivityHelper.loadFragment(getFragmentManager(), filteredRecipesFragment);
-//                getFragmentManager()
-//                        .beginTransaction()
-//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-//                        .replace(R.id.fragment_container, filteredRecipesFragment)
-//                        .addToBackStack(null)
-//                        .commit();
+                Toast.makeText(getActivity(), "filtered and set!", Toast.LENGTH_SHORT).show();
             }
 
             // TODO: Handle it better, probably.
@@ -266,85 +267,106 @@ public class FilterSortFragment extends Fragment {
     }
 
     private void filterResults() {
-        // TODO: Use Iterable<RecipeDetailsModel>.
+        ArrayList<RecipeDetailsModel> incorrectRecipes = new ArrayList<>();
         if (recipeName != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!recipes.get(i).getName().contains(recipeName)) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (!recipe.getName().contains(recipeName)) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (author != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!recipes.get(i).getAuthor().contains(author)) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (!recipe.getAuthor().contains(author)) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (minutes != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!(recipes.get(i).getMinutes() > minutes)) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (recipe.getMinutes() > minutes) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (price != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!(recipes.get(i).getPrice() > price)) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (recipe.getPrice() > price) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (rating != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!(recipes.get(i).getRating() < rating)) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (recipe.getRating() > 0.0d && recipe.getRating() < rating) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (size != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!(recipes.get(i).getSize() > size)) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (recipe.getSize() > size) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (difficulty != null) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!(recipes.get(i).getDifficulty().ordinal() > difficulty.ordinal())) {
-                    recipes.remove(i);
+            for (RecipeDetailsModel recipe : recipes) {
+                if (recipe.getDifficulty().ordinal() > difficulty.ordinal()) {
+                    incorrectRecipes.add(recipe);
                 }
             }
         }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
 
         if (dishCategories.size() > 0) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                boolean dishCategoryFound = false;
-                for (DishCategory dishCategory : dishCategories) {
-                    if (recipes.get(i).getDishCategory() == dishCategory) {
-                        dishCategoryFound = true;
+            for (RecipeDetailsModel recipe : recipes) {
+                if (!dishCategories.contains(recipe.getDishCategory())) {
+                    incorrectRecipes.add(recipe);
+                }
+            }
+        }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
+
+        if (ingredientNames.size() > 0) {
+            ArrayList<String> lowerCaseGivenIngredients = new ArrayList<>();
+            for (String ingredientName : ingredientNames) {
+                lowerCaseGivenIngredients.add(ingredientName.toLowerCase());
+            }
+            for (RecipeDetailsModel recipe : recipes) {
+                ArrayList<String> lowerCaseRecipeIngredients = new ArrayList<>();
+                for (IngredientModel ingredient : recipe.getIngredients()) {
+                    lowerCaseRecipeIngredients.add(ingredient.getName().toLowerCase());
+                }
+                for (String givenIngredientName : lowerCaseGivenIngredients) {
+                    if (!lowerCaseRecipeIngredients.contains(givenIngredientName)) {
+                        incorrectRecipes.add(recipe);
                         break;
                     }
                 }
-                if (!dishCategoryFound) {
-                    recipes.remove(i);
-                }
             }
         }
-
-        // TODO: Is checking ingredients in query correct?
-        if (ingredientNames.size() > 0) {
-            for (int i = 0; i < recipes.size(); ++i) {
-                if (!dishCategories.contains(recipes.get(i).getDishCategory())) {
-                    recipes.remove(i);
-                }
-            }
-        }
+        recipes.removeAll(incorrectRecipes);
+        incorrectRecipes.clear();
     }
 }

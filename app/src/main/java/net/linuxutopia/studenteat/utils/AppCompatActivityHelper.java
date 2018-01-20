@@ -51,15 +51,12 @@ public class AppCompatActivityHelper {
                 .commit();
     }
 
-    public static void setBackButtonAndTitle(Activity activity, int stringResourceID) {
+    public static void setBackButtonAndTitle(Activity activity,
+                                             int stringResourceID) {
         ActionBar supportActionBar = ((AppCompatActivity) activity).getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setTitle(stringResourceID);
-            if (((AppCompatActivity) activity).getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                supportActionBar.setDisplayHomeAsUpEnabled(true);
-            } else {
-                supportActionBar.setDisplayHomeAsUpEnabled(false);
-            }
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 

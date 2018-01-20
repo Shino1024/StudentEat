@@ -92,7 +92,7 @@
     <string name="new_recipe_category_spinner_hint" translatable="false">Which category?</string>
     <string name="new_recipe_submit_button_text" translatable="false">Submit recipe</string>
     <string name="new_recipe_submit_error">Make sure you have filled all the blanks
-    and used at least one step and one ingredient. Don't forget about the photo!</string>
+    and used at least one step and one ingredient. Don\'t forget about the photo!</string>
     <string name="new_recipe_on_complete_message">Recipe uploaded!</string>
     <string name="new_recipe_on_failure_message_prelude">Error: </string>
 

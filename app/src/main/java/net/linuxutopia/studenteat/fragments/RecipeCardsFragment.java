@@ -55,7 +55,8 @@ public class RecipeCardsFragment extends Fragment {
         );
 
         int titleStringResource = getArguments().getInt("titleResource");
-        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(), titleStringResource);
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                titleStringResource);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 

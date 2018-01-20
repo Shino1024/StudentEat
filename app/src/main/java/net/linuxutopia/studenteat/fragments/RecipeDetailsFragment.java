@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -37,7 +38,7 @@ public class RecipeDetailsFragment extends Fragment {
 
     private DisplayMetrics displayMetrics;
 
-    private ImageView imageView;
+    private ImageView recipePhotoView;
 
     @Nullable
     @Override
@@ -47,6 +48,8 @@ public class RecipeDetailsFragment extends Fragment {
         View inflatedView = layoutInflater.inflate(R.layout.recipe_details,
                 viewGroup,
                 false);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -60,18 +63,19 @@ public class RecipeDetailsFragment extends Fragment {
                 R.color.full_black
         ));
 
-        imageView = inflatedView.findViewById(R.id.recipe_details_photo);
-        imageView.requestLayout();
-        imageView.getLayoutParams().height = displayMetrics.heightPixels / 2;
+        recipePhotoView = inflatedView.findViewById(R.id.recipe_details_photo);
+        recipePhotoView.requestLayout();
+        recipePhotoView.getLayoutParams().height = displayMetrics.heightPixels / 2;
         Glide
                 .with(this)
                 .load(recipeDetailsModel.getDownloadLink())
-                .into(imageView);
+                .into(recipePhotoView);
 
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        }
+//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+//        }
         toolbar = inflatedView.findViewById(R.id.recipe_details_toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         // TODO: Try to implement the back navigation button in the collapsing toolbar layout.
 
         viewPager = inflatedView.findViewById(R.id.recipe_details_view_pager);

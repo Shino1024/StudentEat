@@ -107,7 +107,8 @@ public class AddNewRecipeFragment extends Fragment {
                 false
         );
 
-        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(), R.string.new_recipe_action_bar_title);
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                R.string.new_recipe_action_bar_title);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

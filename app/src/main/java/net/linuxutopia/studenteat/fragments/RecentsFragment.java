@@ -33,6 +33,7 @@ import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class RecentsFragment extends Fragment {
@@ -58,8 +59,14 @@ public class RecentsFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
-                R.string.recents_action_bar_title);
+//        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+//                R.string.recents_action_bar_title);
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setDisplayHomeAsUpEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setTitle(R.string.loading_dialog_caption);
+        }
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -84,8 +91,6 @@ public class RecentsFragment extends Fragment {
         // TODO: Might be the cause of something weird...
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        downloadRecipes();
 
         final FloatingActionButton floatingActionButton =
                 inflatedView.findViewById(R.id.add_new_recipe_button);
@@ -141,6 +146,10 @@ public class RecentsFragment extends Fragment {
                     recipes.add(recipeDetailsModel);
                 }
                 adapter.notifyDataSetChanged();
+                if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+                    ((AppCompatActivity) getActivity()).getSupportActionBar()
+                            .setTitle(R.string.recents_action_bar_title);
+                }
 //                loadingDialogFragment.dismiss();
             }
 

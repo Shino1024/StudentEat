@@ -81,7 +81,7 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
         statisticsStrings.add(getString(recipeDetailsModel.getDishCategory().getStringResource()));
         statisticsStrings.add(String.format(
                 Locale.getDefault(),
-                "%2d:%2d",
+                "%02d:%02d",
                 recipeDetailsModel.getMinutes() / 60,
                 recipeDetailsModel.getMinutes() % 60
         ));
