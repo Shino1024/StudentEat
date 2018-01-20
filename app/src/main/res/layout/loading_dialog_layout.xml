@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@id/upload_dialog"
+    android:id="@id/loading_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="30dp"
     android:layout_marginEnd="30dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:text="@string/upload_dialog_caption"
-        android:textSize="20sp" />
+    android:orientation="horizontal">
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@id/upload_dialog_progress_bar"
-        android:layout_width="match_parent"
+        android:id="@id/loading_dialog_progress_bar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:max="100"
-        app:mpb_progressStyle="horizontal"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+        android:indeterminate="true"
+        app:mpb_progressStyle="circular"
+        style="@style/Widget.MaterialProgressBar.ProgressBar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:text="@string/loading_dialog_caption"
+        android:textSize="20sp" />
 
 </LinearLayout>

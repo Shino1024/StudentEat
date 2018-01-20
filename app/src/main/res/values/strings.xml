@@ -4,6 +4,9 @@
     <string name="open_drawer_title" translatable="false">Navigation</string>
     <string name="search_title" translatable="false">Search</string>
 
+    <string name="upload_dialog_caption">Uploading…</string>
+    <string name="loading_dialog_caption">Loading…</string>
+
     <string name="navigation_drawer_recent_recipes_text">Recent recipes</string>
     <string name="navigation_drawer_add_new_recipe_text">Add new recipe</string>
     <string name="navigation_drawer_filter_and_sort_title">Filter and sort</string>

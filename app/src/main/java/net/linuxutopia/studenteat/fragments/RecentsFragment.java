@@ -40,6 +40,8 @@ public class RecentsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecipeCardAdapter adapter;
 
+    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+
     // TODO: Auto-fill all objects where possible to avoid NullPointerException, like here!!!
     private ArrayList<RecipeDetailsModel> recipes = new ArrayList<>();
 
@@ -59,16 +61,15 @@ public class RecentsFragment extends Fragment {
         AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
                 R.string.recents_action_bar_title);
 
-        displayLoadingDialog();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
         downloadRecipes();
 
         recyclerView = inflatedView.findViewById(R.id.recents_list_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         adapter = new RecipeCardAdapter(recipes);
 
@@ -118,25 +119,30 @@ public class RecentsFragment extends Fragment {
     }
 
     private void displayLoadingDialog() {
-        //
+        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                "LOADING_DIALOG");
+        loadingDialogFragment.setCancelable(false);
     }
 
     private void downloadRecipes() {
+        displayLoadingDialog();
+
         DatabaseReference recipesReference = database.getReference("recipes");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // TODO: Asynchronous downloading will finish AFTER setting up the adapter.
                     RecipeDetailsModel recipeDetailsModel = snapshot.getValue(RecipeDetailsModel.class);
                     recipes.add(recipeDetailsModel);
                 }
                 adapter.notifyDataSetChanged();
+                loadingDialogFragment.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // TODO: Handle this somehow...
+                loadingDialogFragment.dismiss();
                 Toast.makeText(
                         getActivity(),
                         "couldn't download recipes' details",

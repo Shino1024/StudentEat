@@ -170,11 +170,6 @@ public class AddNewRecipeFragment extends Fragment {
         sizeView = inflatedView.findViewById(R.id.new_recipe_size_edit);
 
         ingredientViewGroup = inflatedView.findViewById(R.id.new_recipe_ingredients_list);
-        addNewIngredient();
-        addNewIngredient();
-        addNewIngredient();
-        Button test = ingredientViews.get(1).findViewById(R.id.new_ingredient_remove);
-        Toast.makeText(getActivity(), test.getHint(), Toast.LENGTH_LONG).show();
 
         newIngredientButton = inflatedView.findViewById(R.id.new_recipe_new_ingredient_button);
         newIngredientButton.setOnClickListener(new View.OnClickListener() {
@@ -238,13 +233,14 @@ public class AddNewRecipeFragment extends Fragment {
                 uploadDialogFragment.show(((AppCompatActivity) getActivity())
                                 .getSupportFragmentManager(),
                         "UPLOAD_DIALOG");
+                uploadDialogFragment.setCancelable(false);
 
 //                StorageMetadata metadata = new StorageMetadata.Builder()
 //                        .setContentType("image/*")
 //                        .build();
                 StorageReference photosReference = FirebaseStorage
                         .getInstance()
-                        .getReference("/photos");
+                        .getReference("photos");
                 UploadTask uploadTask = photosReference.child(pushedKey)
                         .putFile(Uri.parse(photoFile.toURI().toString()));
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

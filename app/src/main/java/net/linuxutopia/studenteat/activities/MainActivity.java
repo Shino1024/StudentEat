@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         AppCompatActivityHelper.loadFragment(new FilterSortFragment());
                         break;
                     case R.id.navigation_drawer_my_recipes:
+                        loadMyRecipes();
 //                        AppCompatActivityHelper.loadFragment(new RecentsFragment());
                         break;
                     case R.id.navigation_drawer_display_help:
@@ -103,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
                 .replace(R.id.fragment_container, new RecentsFragment())
                 .commit();
+    }
+
+    // TODO: Download recipes here and go to pre-configured RecipeCardsFragment.
+    private void loadMyRecipes() {
+        //
     }
 
     @Override

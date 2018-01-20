@@ -12,7 +12,7 @@ import net.linuxutopia.studenteat.R;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-public class UploadDialogFragment extends DialogFragment {
+public class LoadingDialogFragment extends DialogFragment {
 
     private MaterialProgressBar progressBar;
 
@@ -27,7 +27,7 @@ public class UploadDialogFragment extends DialogFragment {
                 false
         );
 
-        progressBar = inflatedView.findViewById(R.id.upload_dialog_progress_bar);
+        progressBar = inflatedView.findViewById(R.id.loading_dialog_progress_bar);
 
         return inflatedView;
     }

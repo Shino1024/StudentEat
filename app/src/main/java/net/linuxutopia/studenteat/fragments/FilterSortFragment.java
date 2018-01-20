@@ -27,7 +27,7 @@ import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
 import net.linuxutopia.studenteat.models.IngredientModel;
-import net.linuxutopia.studenteat.models.RecipeModel;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.models.SortType;
 import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
@@ -67,11 +67,14 @@ public class FilterSortFragment extends Fragment {
 
     private Button submitButton;
 
-    private ArrayList<RecipeModel> recipeModels;
+    private ArrayList<RecipeDetailsModel> recipeModels;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private DisplayMetrics displayMetrics = new DisplayMetrics();
+
+    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+
 
     @Nullable
     @Override
@@ -126,12 +129,19 @@ public class FilterSortFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                displayLoadingDialog();
                 setupFilterAndSortData();
                 getResults();
             }
         });
 
         return inflatedView;
+    }
+
+    private void displayLoadingDialog() {
+        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                "LOADING_DIALOG");
+        loadingDialogFragment.setCancelable(false);
     }
 
     private void addNewIngredient() {
@@ -223,15 +233,17 @@ public class FilterSortFragment extends Fragment {
         sortType = SortType.values()[sortSpinner.getSelectedItemPosition()];
     }
 
+    // TODO: Apply a loading dialog here, too.
     private void getResults() {
         DatabaseReference recipesReference = database.getReference("recipes");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    recipeModels.add(child.getValue(RecipeModel.class));
+                    recipeModels.add(child.getValue(RecipeDetailsModel.class));
                 }
                 filterResults();
+                loadingDialogFragment.dismiss();
                 RecipeCardsFragment filteredRecipesFragment = new RecipeCardsFragment();
                 Bundle resourceBundle = new Bundle();
                 resourceBundle.putInt("titleResource", R.string.filtered_results_action_bar_title);

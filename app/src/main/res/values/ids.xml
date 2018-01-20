@@ -89,6 +89,9 @@
     <item name="upload_dialog" type="id" />
     <item name="upload_dialog_progress_bar" type="id" />
 
+    <item name="loading_dialog" type="id" />
+    <item name="loading_dialog_progress_bar" type="id" />
+
     <item name="new_recipe_container" type="id" />
     <item name="new_recipe_photo_container" type="id" />
     <item name="new_recipe_photo" type="id" />
