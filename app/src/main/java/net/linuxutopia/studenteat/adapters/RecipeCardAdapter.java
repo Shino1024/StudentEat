@@ -1,6 +1,9 @@
 package net.linuxutopia.studenteat.adapters;
 
+import android.animation.ObjectAnimator;
+import android.app.FragmentManager;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -13,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
@@ -72,9 +77,16 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
         clickArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getFragmentManager();
                 RecipeDetailsFragment fragment = new RecipeDetailsFragment();
                 fragment.setRecipeDetailsModel(recipes.get(position));
-                AppCompatActivityHelper.loadFragment(fragment);
+                AppCompatActivityHelper.loadFragment(fragmentManager, fragment);
+//                fragmentManager
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                        .replace(R.id.fragment_container, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
                 clickArea.setOnClickListener(null);
             }
         });
@@ -134,10 +146,22 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
     private void prepareCardBackgroundImageView(ImageView cardBackgroundImageView, int position) {
         cardBackgroundImageView.requestLayout();
         cardBackgroundImageView.getLayoutParams().height = cardHeight;
-        // TODO: Does this work?
+
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0.0f);
+
+                ObjectAnimator fadeInAnimation = ObjectAnimator.ofFloat(view, "alpha", 0.0f, 1.1f);
+                fadeInAnimation.setDuration(500);
+                fadeInAnimation.start();
+            }
+        };
+
         Glide
                 .with(cardBackgroundImageView.getContext())
                 .load(recipes.get(position).getDownloadLink())
+                .transition(GenericTransitionOptions.with(animationObject))
                 .into(cardBackgroundImageView);
     }
 

@@ -101,11 +101,21 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                 "%d",
                 recipeDetailsModel.getSize()
         ));
+        statisticsStrings.add(String.format(
+                Locale.getDefault(),
+                "%d",
+                recipeDetailsModel.getFavorite()
+        ));
+        statisticsStrings.add(String.format(
+                Locale.getDefault(),
+                "%d",
+                recipeDetailsModel.getCooked()
+        ));
 
         for (LinearLayout linearLayout : containerViews) {
             prepareStatisticsContainerView(linearLayout);
         }
-        for (ImageView imageView: imageViews) {
+        for (ImageView imageView : imageViews) {
             prepareStatisticsImageView(imageView);
         }
         for (int i = 0; i < statisticsStrings.size(); ++i) {
@@ -149,10 +159,12 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
 
     private void prepareAuthorView() {
         authorView = inflatedView.findViewById(R.id.recipe_details_author);
+        authorView.setText(recipeDetailsModel.getAuthor());
     }
 
     private void prepareDishDescriptionView() {
         dishDescriptionView = inflatedView.findViewById(R.id.recipe_details_dish_description);
+        dishDescriptionView.setText(recipeDetailsModel.getDescription());
     }
 
     private void prepareArrayListViews() {
@@ -162,7 +174,9 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                 R.id.recipe_details_difficulty,
                 R.id.recipe_details_rating,
                 R.id.recipe_details_price,
-                R.id.recipe_details_size
+                R.id.recipe_details_size,
+                R.id.recipe_details_favorite,
+                R.id.recipe_details_cooked
         };
         int[] imageResources = {
                 R.id.recipe_details_category_image,
@@ -170,7 +184,9 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                 R.id.recipe_details_difficulty_image,
                 R.id.recipe_details_rating_image,
                 R.id.recipe_details_price_image,
-                R.id.recipe_details_size_image
+                R.id.recipe_details_size_image,
+                R.id.recipe_details_favorite_image,
+                R.id.recipe_details_cooked_image
         };
         int[] textResources = {
                 R.id.recipe_details_category_text,
@@ -178,7 +194,9 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                 R.id.recipe_details_difficulty_text,
                 R.id.recipe_details_rating_text,
                 R.id.recipe_details_price_text,
-                R.id.recipe_details_size_text
+                R.id.recipe_details_size_text,
+                R.id.recipe_details_favorite_text,
+                R.id.recipe_details_cooked_text
         };
 
         for (int containerResource : containerResources) {
@@ -239,7 +257,7 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // TODO: Remove the recipe and pop back the fragment stack.
                                 // TODO: Should child fragment manager be used?
-                                getChildFragmentManager().popBackStack();
+                                getActivity().getFragmentManager().popBackStack();
                             }
                 }).setNegativeButton(R.string.remove_recipe_cancel,
                         new DialogInterface.OnClickListener() {

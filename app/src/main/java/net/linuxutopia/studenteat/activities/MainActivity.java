@@ -18,11 +18,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.AddNewRecipeFragment;
 import net.linuxutopia.studenteat.fragments.FilterSortFragment;
 import net.linuxutopia.studenteat.fragments.HelpFragment;
+import net.linuxutopia.studenteat.fragments.LoadingDialogFragment;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
 import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +66,46 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(Gravity.START);
                 switch (item.getItemId()) {
                     case R.id.navigation_drawer_recent_recipes:
-                        AppCompatActivityHelper.loadFragment(new RecentsFragment());
+                        AppCompatActivityHelper.loadFragment(getFragmentManager(),
+                                new RecentsFragment());
+//                        getFragmentManager()
+//                                .beginTransaction()
+//                                .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                                .replace(R.id.fragment_container, new RecentsFragment())
+//                                .addToBackStack(null)
+//                                .commit();
                         break;
                     case R.id.navigation_drawer_add_new_recipe:
-                        AppCompatActivityHelper.loadFragment(new AddNewRecipeFragment());
+                        AppCompatActivityHelper.loadFragment(getFragmentManager(),
+                                new AddNewRecipeFragment());
+//                        getFragmentManager()
+//                                .beginTransaction()
+//                                .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                                .replace(R.id.fragment_container, new AddNewRecipeFragment())
+//                                .addToBackStack(null)
+//                                .commit();
                         break;
                     case R.id.navigation_drawer_filter_and_sort:
-                        AppCompatActivityHelper.loadFragment(new FilterSortFragment());
+                        AppCompatActivityHelper.loadFragment(getFragmentManager(),
+                                new FilterSortFragment());
+//                        getFragmentManager()
+//                                .beginTransaction()
+//                                .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                                .replace(R.id.fragment_container, new FilterSortFragment())
+//                                .addToBackStack(null)
+//                                .commit();
                         break;
                     case R.id.navigation_drawer_my_recipes:
-                        loadMyRecipes();
-//                        AppCompatActivityHelper.loadFragment(new RecentsFragment());
                         break;
                     case R.id.navigation_drawer_display_help:
-                        AppCompatActivityHelper.loadFragment(new HelpFragment());
+                        AppCompatActivityHelper.loadFragment(getFragmentManager(),
+                                new HelpFragment());
+//                        getFragmentManager()
+//                                .beginTransaction()
+//                                .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                                .replace(R.id.fragment_container, new HelpFragment())
+//                                .addToBackStack(null)
+//                                .commit();
                         break;
                     case R.id.navigation_drawer_sign_out:
                         AuthUI
@@ -83,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                "logged out?",
+                                                Toast.LENGTH_SHORT
+                                        ).show();
                                         finish();
                                     }
                                 });
@@ -94,11 +130,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Snackbar.make(findViewById(R.id.recents_fragment_holder),
-                user == null ? "null user" : (user.getDisplayName() == null ? "null dn" : user.getDisplayName()),
-                Toast.LENGTH_SHORT).show();
-
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
@@ -107,9 +138,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO: Download recipes here and go to pre-configured RecipeCardsFragment.
-    private void loadMyRecipes() {
-        //
-    }
+//    private void loadMyRecipes() {
+//        displayLoadingDialog();
+//        DatabaseReference recipesReference = database.getReference("recipes");
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -120,7 +152,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.search_button:
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
-                AppCompatActivityHelper.loadFragment(new FilterSortFragment());
+                AppCompatActivityHelper.loadFragment(getFragmentManager(),
+                        new FilterSortFragment());
+//                getFragmentManager()
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                        .replace(R.id.fragment_container, new FilterSortFragment())
+//                        .addToBackStack(null)
+//                        .commit();
                 return true;
             case android.R.id.home:
                 Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();

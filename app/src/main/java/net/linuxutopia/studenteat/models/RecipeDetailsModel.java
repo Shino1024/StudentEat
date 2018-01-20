@@ -18,7 +18,7 @@ public class RecipeDetailsModel {
     private double rating;
     private double price;
     private int size;
-    private int favorited;
+    private int favorite;
     private int cooked;
 
     public RecipeDetailsModel() {
@@ -41,12 +41,12 @@ public class RecipeDetailsModel {
         this.downloadLink = downloadLink;
     }
 
-    public int getFavorited() {
-        return favorited;
+    public int getFavorite() {
+        return favorite;
     }
 
-    public void setFavorited(int favorited) {
-        this.favorited = favorited;
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
     }
 
     public int getCooked() {

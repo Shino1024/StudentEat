@@ -24,6 +24,15 @@
     <string name="recipe_details_steps_title" translatable="false">Steps</string>
     <string name="recipe_details_comments_title" translatable="false">Comments</string>
 
+    <string name="recipe_details_category_description">Category</string>
+    <string name="recipe_details_time_description">Time to cook</string>
+    <string name="recipe_details_difficulty_description">Difficulty</string>
+    <string name="recipe_details_rating_description">Users\' rating</string>
+    <string name="recipe_details_price_description">Estimated price</string>
+    <string name="recipe_details_size_description">Number of portions</string>
+    <string name="recipe_details_favorite_description">People\'s favorite</string>
+    <string name="recipe_details_cooked_description">People who cooked it</string>
+
     <string name="recipe_details_rating_label">Your rating?</string>
     <string name="recipe_details_rating_accept">Set rating</string>
     <string name="recipe_details_set_cooked">Cooked it</string>
@@ -120,12 +129,14 @@
         <item>Price</item>
         <item>Rating</item>
         <item>Size</item>
+        <item>By favorites</item>
+        <item>By cooked number</item>
     </string-array>
     <string name="filter_submit_button_text" translatable="false">Submit query</string>
 
     <string name="filtered_results_action_bar_title">Filtered results</string>
 
-    <string name="favorited_results_action_bar_title">Favorite recipes</string>
+    <string name="favorite_results_action_bar_title">Favorite recipes</string>
 
     <string name="cooked_results_action_bar_title">My recipes</string>
 

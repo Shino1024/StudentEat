@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.linuxutopia.studenteat.R;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 public class HelpFragment extends Fragment {
 
@@ -24,12 +25,8 @@ public class HelpFragment extends Fragment {
                 false
         );
 
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(true);
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setTitle(R.string.help_screen_action_bar_title);
-        }
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                R.string.help_screen_action_bar_title);
 
         helpView = inflatedView.findViewById(R.id.help_text);
 

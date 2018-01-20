@@ -63,6 +63,12 @@
     <item name="recipe_details_size" type="id" />
     <item name="recipe_details_size_image" type="id" />
     <item name="recipe_details_size_text" type="id" />
+    <item name="recipe_details_favorite" type="id" />
+    <item name="recipe_details_favorite_image" type="id" />
+    <item name="recipe_details_favorite_text" type="id" />
+    <item name="recipe_details_cooked" type="id" />
+    <item name="recipe_details_cooked_image" type="id" />
+    <item name="recipe_details_cooked_text" type="id" />
     <item name="recipe_details_ingredients" type="id" />
     <item name="recipe_details_steps" type="id" />
     <item name="recipe_details_remove_recipe_button" type="id" />
@@ -134,7 +140,7 @@
     <item name="filter_ingredient_edit" type="id" />
     <item name="filter_ingredient_remove_button" type="id" />
     <item name="filter_add_ingredient_button" type="id" />
-    <item name="sort_spinner" type="id" />
+    <item name="filter_sort_spinner" type="id" />
     <item name="filter_submit_button" type="id" />
 
     <item name="custom_list_recycler_holder" type="id" />

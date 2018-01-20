@@ -40,7 +40,7 @@ public class RecentsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecipeCardAdapter adapter;
 
-    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+//    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 
     // TODO: Auto-fill all objects where possible to avoid NullPointerException, like here!!!
     private ArrayList<RecipeDetailsModel> recipes = new ArrayList<>();
@@ -64,14 +64,9 @@ public class RecentsFragment extends Fragment {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        downloadRecipes();
-
         recyclerView = inflatedView.findViewById(R.id.recents_list_recyclerview);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        adapter = new RecipeCardAdapter(recipes);
 
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
@@ -80,14 +75,17 @@ public class RecentsFragment extends Fragment {
         difficultyMap.put(Difficulty.HARD, ResourcesCompat.getColor(getResources(), R.color.difficulty_hard, null));
         difficultyMap.put(Difficulty.EXTREME, ResourcesCompat.getColor(getResources(), R.color.difficulty_extreme, null));
 
+        recipes = new ArrayList<>();
+        adapter = new RecipeCardAdapter(recipes);
         adapter.setCardHeight((int) (displayMetrics.heightPixels * 0.3f));
         adapter.setDifficultyMap(difficultyMap);
         adapter.setDisplayMetrics(displayMetrics);
 
         // TODO: Might be the cause of something weird...
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(adapter);
+
+        downloadRecipes();
 
         final FloatingActionButton floatingActionButton =
                 inflatedView.findViewById(R.id.add_new_recipe_button);
@@ -105,27 +103,34 @@ public class RecentsFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-                    .replace(R.id.fragment_container, new AddNewRecipeFragment(), "ADD_NEW_RECIPE_FRAGMENT")
-                    .addToBackStack(null)
-                    .commit();
+                AppCompatActivityHelper.loadFragment(getFragmentManager(),
+                        new AddNewRecipeFragment(),
+                        null,
+                        "ADD_NEW_RECIPE_FRAGMENT");
+//                getFragmentManager()
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                        .replace(R.id.fragment_container, new AddNewRecipeFragment(), "ADD_NEW_RECIPE_FRAGMENT")
+//                        .addToBackStack(null)
+//                        .commit();
+                // TODO: Really assign no setOnClickListener to FAB?
                 floatingActionButton.setOnClickListener(null);
             }
         });
 
+        downloadRecipes();
+
         return inflatedView;
     }
 
-    private void displayLoadingDialog() {
-        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-                "LOADING_DIALOG");
-        loadingDialogFragment.setCancelable(false);
-    }
+//    private void displayLoadingDialog() {
+//        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+//                "LOADING_DIALOG_RECENTS");
+//        loadingDialogFragment.setCancelable(false);
+//    }
 
     private void downloadRecipes() {
-        displayLoadingDialog();
+//        displayLoadingDialog();
 
         DatabaseReference recipesReference = database.getReference("recipes");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -136,13 +141,13 @@ public class RecentsFragment extends Fragment {
                     recipes.add(recipeDetailsModel);
                 }
                 adapter.notifyDataSetChanged();
-                loadingDialogFragment.dismiss();
+//                loadingDialogFragment.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // TODO: Handle this somehow...
-                loadingDialogFragment.dismiss();
+//                loadingDialogFragment.dismiss();
                 Toast.makeText(
                         getActivity(),
                         "couldn't download recipes' details",

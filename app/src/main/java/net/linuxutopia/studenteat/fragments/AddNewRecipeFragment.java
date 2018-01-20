@@ -51,6 +51,7 @@ import net.linuxutopia.studenteat.models.IngredientModel;
 import net.linuxutopia.studenteat.models.MeasureType;
 import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.models.StepModel;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -106,12 +107,7 @@ public class AddNewRecipeFragment extends Fragment {
                 false
         );
 
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(true);
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setTitle(R.string.new_recipe_action_bar_title);
-        }
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(), R.string.new_recipe_action_bar_title);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -144,7 +140,6 @@ public class AddNewRecipeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 displayDialogWithResult();
-//                EasyImage.openGallery(getActivity(), 0);
             }
         });
 
@@ -193,26 +188,6 @@ public class AddNewRecipeFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                DatabaseReference onceReference = database.getReference("testing");
-//                onceReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                            if (child.getKey().equals("-L2tYtrF4S7xGG49ihfE")) {
-//                                RecentCardModel test = child.getValue(RecentCardModel.class);
-//                                if (test != null) {
-//                                    Toast.makeText(getActivity(), getResources().getString(test.getDifficulty().getStringResource()), Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-
                 if (
                         !photoLoaded
                         || nameView.getText().toString().trim().matches("")
@@ -227,7 +202,7 @@ public class AddNewRecipeFragment extends Fragment {
                 }
 
                 DatabaseReference recipeReference = database.getReference("recipes");
-                String pushedKey = recipeReference.push().getKey();
+                final String pushedKey = recipeReference.push().getKey();
 
                 final UploadDialogFragment uploadDialogFragment = new UploadDialogFragment();
                 uploadDialogFragment.show(((AppCompatActivity) getActivity())
@@ -235,9 +210,6 @@ public class AddNewRecipeFragment extends Fragment {
                         "UPLOAD_DIALOG");
                 uploadDialogFragment.setCancelable(false);
 
-//                StorageMetadata metadata = new StorageMetadata.Builder()
-//                        .setContentType("image/*")
-//                        .build();
                 StorageReference photosReference = FirebaseStorage
                         .getInstance()
                         .getReference("photos");
@@ -248,6 +220,7 @@ public class AddNewRecipeFragment extends Fragment {
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 uploadDialogFragment.dismiss();
                                 downloadUri = taskSnapshot.getDownloadUrl();
+                                uploadRecipeDetails(pushedKey);
                             }
                         })
                         .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -273,95 +246,101 @@ public class AddNewRecipeFragment extends Fragment {
                                 ).show();
                             }
                         });
-
-                RecipeDetailsModel recipeDetailsModel = new RecipeDetailsModel();
-                recipeDetailsModel.setId(pushedKey);
-                recipeDetailsModel.setDownloadLink(downloadUri.toString());
-                recipeDetailsModel.setName(nameView.getText().toString());
-                recipeDetailsModel.setAuthor(auth.getCurrentUser() != null
-                    ? auth.getCurrentUser().getDisplayName()
-                    : "Anonymous");
-                recipeDetailsModel.setAuthorId(auth.getUid());
-                recipeDetailsModel.setDescription(descriptionView.getText().toString());
-                recipeDetailsModel.setDifficulty(
-                        Difficulty.values()[difficultySpinner.getSelectedItemPosition()]
-                );
-                recipeDetailsModel.setDishCategory(
-                        DishCategory.values()[dishCategorySpinner.getSelectedItemPosition()]
-                );
-
-                ArrayList<IngredientModel> ingredients = new ArrayList<>();
-                double price = 0.0d;
-                for (View ingredientView : ingredientViews) {
-                    EditText newIngredientNameView =
-                            ingredientView.findViewById(R.id.new_ingredient_name);
-                    EditText newIngredientAmountView =
-                            ingredientView.findViewById(R.id.new_ingredient_amount);
-                    Spinner newIngredientMeasureTypeView =
-                            ingredientView.findViewById(R.id.new_ingredient_measure_type);
-                    EditText newIngredientCostView =
-                            ingredientView.findViewById(R.id.new_ingredient_cost);
-                    IngredientModel ingredient = new IngredientModel();
-                    ingredient.setName(newIngredientNameView.getText().toString());
-                    ingredient.setAmount(Double.parseDouble(newIngredientAmountView.getText().toString()));
-                    ingredient.setMeasureType(
-                            MeasureType.values()[newIngredientMeasureTypeView.getSelectedItemPosition()]);
-                    price += Double.parseDouble(newIngredientCostView.getText().toString());
-                    ingredient.setCost(Double.parseDouble(newIngredientCostView.getText().toString()));
-                    ingredients.add(ingredient);
-                }
-                recipeDetailsModel.setIngredients(ingredients);
-                recipeDetailsModel.setPrice(price);
-
-                ArrayList<StepModel> steps = new ArrayList<>();
-                int minutes = 0;
-                for (View stepView : stepViews) {
-                    EditText newStepDescriptionView =
-                            stepView.findViewById(R.id.new_step_description);
-                    EditText newStepMinutesView =
-                            stepView.findViewById(R.id.new_step_minutes);
-                    StepModel step = new StepModel();
-                    step.setDescription(newStepDescriptionView.getText().toString().trim());
-                    minutes += Integer.parseInt(newStepMinutesView.getText().toString());
-                    step.setMinutes(Integer.parseInt(newStepMinutesView.getText().toString()));
-                }
-                recipeDetailsModel.setSteps(steps);
-                recipeDetailsModel.setMinutes(minutes);
-
-                recipeDetailsModel.setSize(Integer.parseInt(sizeView.getText().toString()));
-
-                recipeReference
-                        .child(pushedKey)
-                        .setValue(recipeDetailsModel)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Snackbar.make(
-                                        getActivity().findViewById(R.id.fragment_container),
-                                        R.string.new_recipe_on_complete_message,
-                                        Snackbar.LENGTH_SHORT
-                                ).show();
-                                getFragmentManager()
-                                        .popBackStack();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                String errorMessage =
-                                        getString(R.string.new_recipe_on_failure_message_prelude)
-                                        + e.getLocalizedMessage();
-                                Snackbar.make(
-                                        getActivity().findViewById(R.id.fragment_container),
-                                        errorMessage,
-                                        Snackbar.LENGTH_SHORT
-                                ).show();
-                            }
-                        });
             }
         });
 
         return inflatedView;
+    }
+
+    private void uploadRecipeDetails(String pushedKey) {
+        DatabaseReference recipeReference = database.getReference("recipes");
+        RecipeDetailsModel recipeDetailsModel = new RecipeDetailsModel();
+        recipeDetailsModel.setId(pushedKey);
+        recipeDetailsModel.setDownloadLink(downloadUri.toString());
+        recipeDetailsModel.setName(nameView.getText().toString());
+        recipeDetailsModel.setAuthor(auth.getCurrentUser() != null
+                ? auth.getCurrentUser().getDisplayName()
+                : "Anonymous");
+        recipeDetailsModel.setAuthorId(auth.getUid());
+        recipeDetailsModel.setDescription(descriptionView.getText().toString());
+        recipeDetailsModel.setDifficulty(
+                Difficulty.values()[difficultySpinner.getSelectedItemPosition()]
+        );
+        recipeDetailsModel.setDishCategory(
+                DishCategory.values()[dishCategorySpinner.getSelectedItemPosition()]
+        );
+
+        ArrayList<IngredientModel> ingredients = new ArrayList<>();
+        double price = 0.0d;
+        for (View ingredientView : ingredientViews) {
+            EditText newIngredientNameView =
+                    ingredientView.findViewById(R.id.new_ingredient_name);
+            EditText newIngredientAmountView =
+                    ingredientView.findViewById(R.id.new_ingredient_amount);
+            Spinner newIngredientMeasureTypeView =
+                    ingredientView.findViewById(R.id.new_ingredient_measure_type);
+            EditText newIngredientCostView =
+                    ingredientView.findViewById(R.id.new_ingredient_cost);
+            IngredientModel ingredient = new IngredientModel();
+            ingredient.setName(newIngredientNameView.getText().toString());
+            ingredient.setAmount(Double.parseDouble(newIngredientAmountView.getText().toString()));
+            ingredient.setMeasureType(
+                    MeasureType.values()[newIngredientMeasureTypeView.getSelectedItemPosition()]);
+            price += Double.parseDouble(newIngredientCostView.getText().toString());
+            ingredient.setCost(Double.parseDouble(newIngredientCostView.getText().toString()));
+            ingredients.add(ingredient);
+        }
+        recipeDetailsModel.setIngredients(ingredients);
+        recipeDetailsModel.setPrice(price);
+
+        ArrayList<StepModel> steps = new ArrayList<>();
+        int minutes = 0;
+        for (View stepView : stepViews) {
+            EditText newStepDescriptionView =
+                    stepView.findViewById(R.id.new_step_description);
+            EditText newStepMinutesView =
+                    stepView.findViewById(R.id.new_step_minutes);
+            StepModel step = new StepModel();
+            step.setDescription(newStepDescriptionView.getText().toString().trim());
+            minutes += Integer.parseInt(newStepMinutesView.getText().toString());
+            step.setMinutes(Integer.parseInt(newStepMinutesView.getText().toString()));
+            steps.add(step);
+        }
+        recipeDetailsModel.setSteps(steps);
+        recipeDetailsModel.setMinutes(minutes);
+
+        recipeDetailsModel.setSize(Integer.parseInt(sizeView.getText().toString()));
+
+        Toast.makeText(getActivity(), "parsed!", Toast.LENGTH_SHORT).show();
+
+        recipeReference
+                .child(pushedKey)
+                .setValue(recipeDetailsModel)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Snackbar.make(
+                                getActivity().findViewById(R.id.fragment_container),
+                                R.string.new_recipe_on_complete_message,
+                                Snackbar.LENGTH_SHORT
+                        ).show();
+                        // TODO: !!!!!!!!
+                        getFragmentManager().popBackStack();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String errorMessage =
+                                getString(R.string.new_recipe_on_failure_message_prelude)
+                                        + e.getLocalizedMessage();
+                        Snackbar.make(
+                                getActivity().findViewById(R.id.fragment_container),
+                                errorMessage,
+                                Snackbar.LENGTH_SHORT
+                        ).show();
+                    }
+                });
     }
 
     private boolean incorrectIngredientsInput() {
@@ -372,8 +351,10 @@ public class AddNewRecipeFragment extends Fragment {
         for (View ingredientView : ingredientViews) {
             EditText ingredientNameView = ingredientView.findViewById(R.id.new_ingredient_name);
             EditText ingredientCostView = ingredientView.findViewById(R.id.new_ingredient_cost);
+            EditText ingredientAmountView = ingredientView.findViewById(R.id.new_ingredient_amount);
             if (ingredientNameView.getText().toString().trim().matches("")
-                    || ingredientCostView.getText().toString().trim().matches("")) {
+                    || ingredientCostView.getText().toString().trim().matches("")
+                    || ingredientAmountView.getText().toString().trim().matches("")) {
                 return true;
             }
         }
@@ -388,12 +369,14 @@ public class AddNewRecipeFragment extends Fragment {
 
         for (View stepView : stepViews) {
             EditText stepDescriptionView = stepView.findViewById(R.id.new_step_description);
-            if (stepDescriptionView.getText().toString().trim().matches("")) {
+            EditText stepMinutesView = stepView.findViewById(R.id.new_step_minutes);
+            if (stepDescriptionView.getText().toString().trim().matches("")
+                    || stepMinutesView.getText().toString().trim().matches("")) {
                 return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     private void displayDialogWithResult() {
@@ -522,17 +505,6 @@ public class AddNewRecipeFragment extends Fragment {
         stepViewGroup.addView(newStepView);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case android.R.id.home:
-                getFragmentManager().popBackStack();
-                return true;
-            default:
-                return super.onOptionsItemSelected(menuItem);
-        }
-    }
-
     public void displayDishPhotoLoadingError(String error) {
         Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
     }
@@ -546,7 +518,7 @@ public class AddNewRecipeFragment extends Fragment {
             Bitmap photoBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
             photo.setImageBitmap(photoBitmap);
         } else {
-            Snackbar.make(newRecipeLayoutContainer,
+            Snackbar.make(getActivity().findViewById(R.id.fragment_container),
                     getResources().getString(R.string.new_recipe_photo_picker_unsuccessful),
                     Snackbar.LENGTH_SHORT)
                     .setAction(R.string.new_recipe_photo_picker_unsuccessful_retry, new View.OnClickListener() {
@@ -565,7 +537,7 @@ public class AddNewRecipeFragment extends Fragment {
     }
 
     public void deniedOpenCameraPermissions() {
-        Snackbar.make(newRecipeLayoutContainer,
+        Snackbar.make(getActivity().findViewById(R.id.fragment_container),
                 getResources().getString(R.string.new_recipe_camera_no_permission),
                 Snackbar.LENGTH_SHORT)
                 .setAction(R.string.new_recipe_photo_picker_unsuccessful, new View.OnClickListener() {

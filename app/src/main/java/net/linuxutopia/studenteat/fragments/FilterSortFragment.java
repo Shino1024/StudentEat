@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
-import net.linuxutopia.studenteat.models.IngredientModel;
 import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.models.SortType;
 import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
@@ -52,8 +50,8 @@ public class FilterSortFragment extends Fragment {
     private Double rating;
     private Integer size;
     private Difficulty difficulty;
-    private ArrayList<DishCategory> dishCategories;
-    private ArrayList<String> ingredientNames;
+    private ArrayList<DishCategory> dishCategories = new ArrayList<>();
+    private ArrayList<String> ingredientNames = new ArrayList<>();
     private SortType sortType;
 
     private Spinner difficultySpinner;
@@ -67,13 +65,13 @@ public class FilterSortFragment extends Fragment {
 
     private Button submitButton;
 
-    private ArrayList<RecipeDetailsModel> recipeModels;
+    private ArrayList<RecipeDetailsModel> recipes;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private DisplayMetrics displayMetrics = new DisplayMetrics();
 
-    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+//    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 
 
     @Nullable
@@ -87,12 +85,7 @@ public class FilterSortFragment extends Fragment {
                 false
         );
 
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(true);
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setTitle(R.string.filter_action_bar_title);
-        }
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(), R.string.filter_action_bar_title);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -123,13 +116,13 @@ public class FilterSortFragment extends Fragment {
             }
         });
 
-        sortSpinner = inflatedView.findViewById(R.id.sort_spinner);
+        sortSpinner = inflatedView.findViewById(R.id.filter_sort_spinner);
 
         submitButton = inflatedView.findViewById(R.id.filter_submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayLoadingDialog();
+//                displayLoadingDialog();
                 setupFilterAndSortData();
                 getResults();
             }
@@ -138,11 +131,11 @@ public class FilterSortFragment extends Fragment {
         return inflatedView;
     }
 
-    private void displayLoadingDialog() {
-        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-                "LOADING_DIALOG");
-        loadingDialogFragment.setCancelable(false);
-    }
+//    private void displayLoadingDialog() {
+//        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+//                "LOADING_DIALOG");
+//        loadingDialogFragment.setCancelable(false);
+//    }
 
     private void addNewIngredient() {
         final View newIngredientView = LayoutInflater.from(getActivity()).inflate(
@@ -233,23 +226,28 @@ public class FilterSortFragment extends Fragment {
         sortType = SortType.values()[sortSpinner.getSelectedItemPosition()];
     }
 
-    // TODO: Apply a loading dialog here, too.
     private void getResults() {
         DatabaseReference recipesReference = database.getReference("recipes");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    recipeModels.add(child.getValue(RecipeDetailsModel.class));
+                    recipes.add(child.getValue(RecipeDetailsModel.class));
                 }
                 filterResults();
-                loadingDialogFragment.dismiss();
+//                loadingDialogFragment.dismiss();
                 RecipeCardsFragment filteredRecipesFragment = new RecipeCardsFragment();
                 Bundle resourceBundle = new Bundle();
                 resourceBundle.putInt("titleResource", R.string.filtered_results_action_bar_title);
                 filteredRecipesFragment.setArguments(resourceBundle);
-                filteredRecipesFragment.setRecipesToDisplay(recipeModels);
-                AppCompatActivityHelper.loadFragment(filteredRecipesFragment);
+                filteredRecipesFragment.setRecipesToDisplay(recipes);
+                AppCompatActivityHelper.loadFragment(getFragmentManager(), filteredRecipesFragment);
+//                getFragmentManager()
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
+//                        .replace(R.id.fragment_container, filteredRecipesFragment)
+//                        .addToBackStack(null)
+//                        .commit();
             }
 
             // TODO: Handle it better, probably.
@@ -268,96 +266,83 @@ public class FilterSortFragment extends Fragment {
     }
 
     private void filterResults() {
+        // TODO: Use Iterable<RecipeDetailsModel>.
         if (recipeName != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!recipeModels.get(i).getName().contains(recipeName)) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!recipes.get(i).getName().contains(recipeName)) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (author != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!recipeModels.get(i).getAuthor().contains(author)) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!recipes.get(i).getAuthor().contains(author)) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (minutes != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!(recipeModels.get(i).getMinutes() > minutes)) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!(recipes.get(i).getMinutes() > minutes)) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (price != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!(recipeModels.get(i).getPrice() > price)) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!(recipes.get(i).getPrice() > price)) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (rating != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!(recipeModels.get(i).getRating() < rating)) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!(recipes.get(i).getRating() < rating)) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (size != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!(recipeModels.get(i).getSize() > size)) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!(recipes.get(i).getSize() > size)) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (difficulty != null) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                if (!(recipeModels.get(i).getDifficulty().ordinal() > difficulty.ordinal())) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!(recipes.get(i).getDifficulty().ordinal() > difficulty.ordinal())) {
+                    recipes.remove(i);
                 }
             }
         }
 
         if (dishCategories.size() > 0) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
+            for (int i = 0; i < recipes.size(); ++i) {
                 boolean dishCategoryFound = false;
                 for (DishCategory dishCategory : dishCategories) {
-                    if (recipeModels.get(i).getDishCategory() == dishCategory) {
+                    if (recipes.get(i).getDishCategory() == dishCategory) {
                         dishCategoryFound = true;
                         break;
                     }
                 }
                 if (!dishCategoryFound) {
-                    recipeModels.remove(i);
+                    recipes.remove(i);
                 }
             }
         }
 
         // TODO: Is checking ingredients in query correct?
         if (ingredientNames.size() > 0) {
-            for (int i = 0; i < recipeModels.size(); ++i) {
-                boolean allIngredientsFound = true;
-                boolean singleIngredientFound = false;
-                recipeIngredientLoop: for (IngredientModel recipeIngredient : recipeModels.get(i).getIngredients()) {
-                    singleIngredientFound = false;
-                    for (String ingredientName : ingredientNames) {
-                        if (recipeIngredient.getName().contains(ingredientName)) {
-                            singleIngredientFound = true;
-                            break recipeIngredientLoop;
-                        }
-                    }
-                    if (!singleIngredientFound) {
-                        allIngredientsFound = false;
-                    }
-                }
-                if (!allIngredientsFound) {
-                    recipeModels.remove(i);
+            for (int i = 0; i < recipes.size(); ++i) {
+                if (!dishCategories.contains(recipes.get(i).getDishCategory())) {
+                    recipes.remove(i);
                 }
             }
         }

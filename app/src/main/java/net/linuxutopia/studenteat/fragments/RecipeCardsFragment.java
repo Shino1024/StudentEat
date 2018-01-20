@@ -95,7 +95,6 @@ public class RecipeCardsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // TODO: Asynchronous downloading will finish AFTER setting up the adapter.
                     RecipeDetailsModel recipeDetailsModel = snapshot.getValue(RecipeDetailsModel.class);
                     recipes.add(recipeDetailsModel);
                 }
