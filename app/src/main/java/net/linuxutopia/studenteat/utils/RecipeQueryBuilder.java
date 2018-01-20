@@ -89,6 +89,7 @@ public class RecipeQueryBuilder {
         return this;
     }
 
+    // TODO: Should Activity be used?
     public QueryResult executeQueryWithActivity(final Activity activity) {
         recipeReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

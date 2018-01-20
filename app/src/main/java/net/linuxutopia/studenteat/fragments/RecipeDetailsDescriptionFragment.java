@@ -1,9 +1,11 @@
 package net.linuxutopia.studenteat.fragments;
 
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -11,31 +13,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.GridLayout;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RecipeDetailsDescriptionFragment extends Fragment {
 
-    View inflatedView;
+    private View inflatedView;
 
-    TextView authorView;
-    TextView dishDescriptionView;
+    private TextView authorView;
+    private TextView dishDescriptionView;
 
-    CardView statisticsCardView;
+    private CardView statisticsCardView;
 
-    ArrayList<LinearLayout> views = new ArrayList<>();
-    ArrayList<ImageView> imageViews = new ArrayList<>();
-    ArrayList<TextView> textViews = new ArrayList<>();
+    private Button removeButton;
 
-    DisplayMetrics displayMetrics;
+    private ArrayList<LinearLayout> containerViews = new ArrayList<>();
+    private ArrayList<ImageView> imageViews = new ArrayList<>();
+    private ArrayList<TextView> textViews = new ArrayList<>();
 
-    Typeface typeface;
+    private RecipeDetailsModel recipeDetailsModel;
+
+    private DisplayMetrics displayMetrics;
+
+    private Typeface typeface;
 
     @Nullable
     @Override
@@ -56,20 +64,53 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
         prepareStatisticsCardView();
 
         prepareAuthorView();
+
         prepareDishDescriptionView();
 
+        prepareRemoveRecipeView();
+
         prepareArrayListViews();
-        for (LinearLayout linearLayout : views) {
-            prepareStatisticsView(linearLayout);
+
+        prepareStatisticsView();
+
+        return inflatedView;
+    }
+
+    private void prepareStatisticsView() {
+        ArrayList<String> statisticsStrings = new ArrayList<>();
+        statisticsStrings.add(getString(recipeDetailsModel.getDishCategory().getStringResource()));
+        statisticsStrings.add(String.format(
+                Locale.getDefault(),
+                "%2d:%2d",
+                recipeDetailsModel.getMinutes() / 60,
+                recipeDetailsModel.getMinutes() % 60
+        ));
+        statisticsStrings.add(getString(recipeDetailsModel.getDifficulty().getStringResource()));
+        statisticsStrings.add(String.format(
+                Locale.getDefault(),
+                "%1.2f",
+                recipeDetailsModel.getRating()
+        ));
+        statisticsStrings.add(String.format(
+                Locale.getDefault(),
+                "%.2f$",
+                recipeDetailsModel.getPrice()
+        ));
+        statisticsStrings.add(String.format(
+                Locale.getDefault(),
+                "%d",
+                recipeDetailsModel.getSize()
+        ));
+
+        for (LinearLayout linearLayout : containerViews) {
+            prepareStatisticsContainerView(linearLayout);
         }
         for (ImageView imageView: imageViews) {
             prepareStatisticsImageView(imageView);
         }
-        for (TextView textView : textViews) {
-            prepareStatisticsTextView(textView);
+        for (int i = 0; i < statisticsStrings.size(); ++i) {
+            prepareStatisticsTextView(textViews.get(i), statisticsStrings.get(i));
         }
-
-        return inflatedView;
     }
 
     private void prepareStatisticsCardView() {
@@ -115,29 +156,43 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
     }
 
     private void prepareArrayListViews() {
-        views.add((LinearLayout) inflatedView.findViewById(R.id.recipe_details_category));
-        views.add((LinearLayout) inflatedView.findViewById(R.id.recipe_details_time));
-        views.add((LinearLayout) inflatedView.findViewById(R.id.recipe_details_difficulty));
-        views.add((LinearLayout) inflatedView.findViewById(R.id.recipe_details_rating));
-        views.add((LinearLayout) inflatedView.findViewById(R.id.recipe_details_price));
-        views.add((LinearLayout) inflatedView.findViewById(R.id.recipe_details_size));
+        int[] containerResources = {
+                R.id.recipe_details_category,
+                R.id.recipe_details_time,
+                R.id.recipe_details_difficulty,
+                R.id.recipe_details_rating,
+                R.id.recipe_details_price,
+                R.id.recipe_details_size
+        };
+        int[] imageResources = {
+                R.id.recipe_details_category_image,
+                R.id.recipe_details_time_image,
+                R.id.recipe_details_difficulty_image,
+                R.id.recipe_details_rating_image,
+                R.id.recipe_details_price_image,
+                R.id.recipe_details_size_image
+        };
+        int[] textResources = {
+                R.id.recipe_details_category_text,
+                R.id.recipe_details_time_text,
+                R.id.recipe_details_difficulty_text,
+                R.id.recipe_details_rating_text,
+                R.id.recipe_details_price_text,
+                R.id.recipe_details_size_text
+        };
 
-        imageViews.add((ImageView) inflatedView.findViewById(R.id.recipe_details_category_image));
-        imageViews.add((ImageView) inflatedView.findViewById(R.id.recipe_details_time_image));
-        imageViews.add((ImageView) inflatedView.findViewById(R.id.recipe_details_difficulty_image));
-        imageViews.add((ImageView) inflatedView.findViewById(R.id.recipe_details_rating_image));
-        imageViews.add((ImageView) inflatedView.findViewById(R.id.recipe_details_price_image));
-        imageViews.add((ImageView) inflatedView.findViewById(R.id.recipe_details_size_image));
-
-        textViews.add((TextView) inflatedView.findViewById(R.id.recipe_details_category_text));
-        textViews.add((TextView) inflatedView.findViewById(R.id.recipe_details_time_text));
-        textViews.add((TextView) inflatedView.findViewById(R.id.recipe_details_difficulty_text));
-        textViews.add((TextView) inflatedView.findViewById(R.id.recipe_details_rating_text));
-        textViews.add((TextView) inflatedView.findViewById(R.id.recipe_details_price_text));
-        textViews.add((TextView) inflatedView.findViewById(R.id.recipe_details_size_text));
+        for (int containerResource : containerResources) {
+            containerViews.add((LinearLayout) inflatedView.findViewById(containerResource));
+        }
+        for (int imageResource : imageResources) {
+            imageViews.add((ImageView) inflatedView.findViewById(imageResource));
+        }
+        for (int textResource : textResources) {
+            textViews.add((TextView) inflatedView.findViewById(textResource));
+        }
     }
 
-    private void prepareStatisticsView(LinearLayout linearLayout) {
+    private void prepareStatisticsContainerView(LinearLayout linearLayout) {
         GridLayout.LayoutParams layoutParams =
                 (GridLayout.LayoutParams) linearLayout.getLayoutParams();
         layoutParams.setMargins((int) TypedValue.applyDimension(
@@ -166,8 +221,40 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
         imageView.getLayoutParams().width = (int) (displayMetrics.heightPixels * 0.05f);
     }
 
-    private void prepareStatisticsTextView(TextView textView) {
+    private void prepareStatisticsTextView(TextView textView, String value) {
         textView.setTypeface(typeface);
+        textView.setText(value);
+    }
+
+    private void prepareRemoveRecipeView() {
+        removeButton = inflatedView.findViewById(R.id.recipe_details_remove_recipe_button);
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle(R.string.remove_recipe_question);
+                alertDialog.setPositiveButton(R.string.remove_recipe_ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // TODO: Remove the recipe and pop back the fragment stack.
+                                // TODO: Should child fragment manager be used?
+                                getChildFragmentManager().popBackStack();
+                            }
+                }).setNegativeButton(R.string.remove_recipe_cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+    }
+
+    public void setRecipeDetailsModel(RecipeDetailsModel recipeDetailsModel) {
+        this.recipeDetailsModel = recipeDetailsModel;
     }
 
 }

@@ -1,15 +1,20 @@
 package net.linuxutopia.studenteat.models;
 
-import java.io.File;
+import java.util.ArrayList;
 
 public class RecipeDetailsModel {
 
-    private File photoFile;
+    private String id;
+    private String downloadLink;
     private String name;
     private String author;
+    private String authorId;
+    private String description;
     private DishCategory dishCategory;
-    private int minutes;
     private Difficulty difficulty;
+    private ArrayList<IngredientModel> ingredients;
+    private ArrayList<StepModel> steps;
+    private int minutes;
     private double rating;
     private double price;
     private int size;
@@ -20,12 +25,20 @@ public class RecipeDetailsModel {
 
     }
 
-    public File getPhotoFile() {
-        return photoFile;
+    public String getId() {
+        return id;
     }
 
-    public void setPhotoFile(File photoFile) {
-        this.photoFile = photoFile;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDownloadLink() {
+        return downloadLink;
+    }
+
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
     }
 
     public int getFavorited() {
@@ -60,6 +73,22 @@ public class RecipeDetailsModel {
         this.author = author;
     }
 
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public DishCategory getDishCategory() {
         return dishCategory;
     }
@@ -68,20 +97,36 @@ public class RecipeDetailsModel {
         this.dishCategory = dishCategory;
     }
 
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
     public Difficulty getDifficulty() {
         return difficulty;
     }
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public ArrayList<IngredientModel> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(ArrayList<IngredientModel> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public ArrayList<StepModel> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(ArrayList<StepModel> steps) {
+        this.steps = steps;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
     }
 
     public double getRating() {

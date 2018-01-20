@@ -1,14 +1,9 @@
 package net.linuxutopia.studenteat.adapters;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +12,28 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
 import net.linuxutopia.studenteat.models.Difficulty;
-import net.linuxutopia.studenteat.models.RecentCardModel;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
-public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHolder> {
+public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.ViewHolder> {
 
-    private ArrayList<RecentCardModel> dataSet;
+    private ArrayList<RecipeDetailsModel> recipes;
     private DisplayMetrics displayMetrics;
     private int cardHeight;
     private Map<Difficulty, Integer> difficultyMap;
 
-    public RecentsAdapter(ArrayList<RecentCardModel> dataSet) {
-        this.dataSet = dataSet;
+    public RecipeCardAdapter(ArrayList<RecipeDetailsModel> recipes) {
+        this.recipes = recipes;
     }
 
     public void setCardHeight(int cardHeight) {
@@ -52,18 +49,18 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
     }
 
     @Override
-    public RecentsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecipeCardAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View inflatedLayout = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.recents_card_layout, viewGroup, false
+                R.layout.recipe_card_layout, viewGroup, false
         );
         return new ViewHolder(inflatedLayout);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        prepareClickArea(holder.clickArea);
-        prepareRecentsCardView(holder.recentsCardView);
-        prepareCardBackgroundImageView(holder.cardBackgroundImageView);
+        prepareClickArea(holder.clickArea, position);
+        prepareRecentsCardView(holder.recipeCardView);
+        prepareCardBackgroundImageView(holder.cardBackgroundImageView, position);
         prepareTitleView(holder.titleView, position);
         prepareAuthorView(holder.authorView, position);
         prepareTimeView(holder.timeView, position);
@@ -71,28 +68,20 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
         prepareDifficultyView(holder.difficultyView, position);
     }
 
-    private void prepareClickArea(final LinearLayout clickArea) {
+    private void prepareClickArea(final LinearLayout clickArea, final int position) {
         clickArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getFragmentManager();
-                Fragment fragment = new RecipeDetailsFragment();
-                Bundle bundle = new Bundle();
-                fragment.setArguments(bundle);
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-                        .replace(R.id.fragment_container, new RecipeDetailsFragment())
-                        .addToBackStack(null)
-                        .commit();
+                RecipeDetailsFragment fragment = new RecipeDetailsFragment();
+                fragment.setRecipeDetailsModel(recipes.get(position));
+                AppCompatActivityHelper.loadFragment(fragment);
                 clickArea.setOnClickListener(null);
             }
         });
     }
 
     private void prepareTitleView(TextView titleView, int position) {
-        titleView.setText(dataSet.get(position).getTitle());
-//        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.04f));
+        titleView.setText(recipes.get(position).getName());
         titleView.setPadding(
                 (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         (int) (cardHeight * 0.01f),
@@ -105,8 +94,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
     }
 
     private void prepareAuthorView(TextView authorView, int position) {
-        authorView.setText(dataSet.get(position).getAuthor());
-//        authorView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.03f));
+        authorView.setText(recipes.get(position).getAuthor());
         authorView.setPadding(
                 (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         (int) (cardHeight * 0.01f),
@@ -121,39 +109,45 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
     private void prepareTimeView(TextView timeView, int position) {
         String formattedTime = String.format(Locale.getDefault(),
                 "Time\n%2d:%02d",
-                dataSet.get(position).getMinutes() / 60,
-                dataSet.get(position).getMinutes() % 60);
+                recipes.get(position).getMinutes() / 60,
+                recipes.get(position).getMinutes() % 60);
         timeView.setText(formattedTime);
-//        timeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.03f));
     }
 
     private void prepareRatingView(TextView ratingView, int position) {
         ratingView.setText(String.format(Locale.getDefault(),
                 "Rat.\n%.2f",
-                dataSet.get(position).getRating()));
-//        ratingView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) (cardHeight * 0.03f));
+                recipes.get(position).getRating()));
     }
 
     private void prepareDifficultyView(FrameLayout difficultyView, int position) {
         difficultyView.setForeground(
                 new ColorDrawable(
                         difficultyMap.get(
-                                dataSet.get(position).getDifficulty())));
+                                recipes.get(position).getDifficulty())));
     }
 
-    private void prepareRecentsCardView(CardView recentsCardView) {
-        recentsCardView.setRadius(cardHeight * 0.05f);
+    private void prepareRecentsCardView(CardView recipeCardView) {
+        recipeCardView.setRadius(cardHeight * 0.05f);
     }
 
-    private void prepareCardBackgroundImageView(ImageView cardBackgroundImageView){
+    private void prepareCardBackgroundImageView(ImageView cardBackgroundImageView, int position) {
         cardBackgroundImageView.requestLayout();
         cardBackgroundImageView.getLayoutParams().height = cardHeight;
-        cardBackgroundImageView.setImageResource(R.drawable.splash_logo);
+        // TODO: Does this work?
+        Glide
+                .with(cardBackgroundImageView.getContext())
+                .load(recipes.get(position).getDownloadLink())
+                .into(cardBackgroundImageView);
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return recipes.size();
+    }
+
+    public void setRecipes(ArrayList<RecipeDetailsModel> recipes) {
+        this.recipes = recipes;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -164,7 +158,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
         private TextView ratingView;
         private FrameLayout difficultyView;
 
-        private CardView recentsCardView;
+        private CardView recipeCardView;
 
         private ImageView cardBackgroundImageView;
 
@@ -172,14 +166,14 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.ViewHold
 
         ViewHolder(View view) {
             super(view);
-            titleView = view.findViewById(R.id.recents_card_title);
-            authorView = view.findViewById(R.id.recents_card_author);
-            timeView = view.findViewById(R.id.recents_card_time);
-            ratingView = view.findViewById(R.id.recents_card_rating);
-            difficultyView = view.findViewById(R.id.recents_card_difficulty);
-            recentsCardView = view.findViewById(R.id.recents_card);
-            cardBackgroundImageView = view.findViewById(R.id.card_background_image);
-            clickArea = view.findViewById(R.id.recents_card_click_area);
+            titleView = view.findViewById(R.id.recipe_card_title);
+            authorView = view.findViewById(R.id.recipe_card_author);
+            timeView = view.findViewById(R.id.recipe_card_time);
+            ratingView = view.findViewById(R.id.recipe_card_rating);
+            difficultyView = view.findViewById(R.id.recipe_card_difficulty);
+            recipeCardView = view.findViewById(R.id.recipe_card);
+            cardBackgroundImageView = view.findViewById(R.id.recipe_card_background_image);
+            clickArea = view.findViewById(R.id.recipe_card_click_area);
         }
 
     }

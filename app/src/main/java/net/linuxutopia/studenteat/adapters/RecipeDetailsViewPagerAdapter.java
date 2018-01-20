@@ -5,14 +5,19 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.utils.RecipeDetailsFragmentFactory;
 
 public class RecipeDetailsViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    RecipeDetailsFragmentFactory factory = new RecipeDetailsFragmentFactory();
+    private RecipeDetailsFragmentFactory factory;
 
     public RecipeDetailsViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
+    }
+
+    public void setRecipeDetailsFactory(RecipeDetailsFragmentFactory factory) {
+        this.factory = factory;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class RecipeDetailsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return factory.getFragmentCount();
+        return factory.FRAGMENT_COUNT;
     }
 
     @Override

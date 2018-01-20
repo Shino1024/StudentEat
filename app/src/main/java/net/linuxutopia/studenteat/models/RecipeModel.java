@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class RecipeModel {
 
     private String id;
+    private String downloadLink = "";
     private String name;
     private String author;
     private String description;
@@ -13,11 +14,11 @@ public class RecipeModel {
     private ArrayList<IngredientModel> ingredients;
     private ArrayList<StepModel> steps;
     private int minutes;
-    private double rating;
+    private double rating = 0.0d;
     private double price;
     private int size;
-    private int favorited;
-    private int cooked;
+    private int favorited = 0;
+    private int cooked = 0;
 
     public RecipeModel() {
 
@@ -29,6 +30,14 @@ public class RecipeModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDownloadLink() {
+        return downloadLink;
+    }
+
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
     }
 
     public String getName() {

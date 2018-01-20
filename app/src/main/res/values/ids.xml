@@ -13,14 +13,12 @@
 
     <item name="navigation_drawer" type="id" />
     <item name="navigation_view" type="id" />
-    <item name="navigation_drawer_user_full_name" type="id" />
-    <item name="navigation_drawer_user_email" type="id" />
     <item name="navigation_drawer_recent_recipes" type="id" />
     <item name="navigation_drawer_add_new_recipe" type="id" />
     <item name="navigation_drawer_filter_and_sort" type="id" />
     <item name="navigation_drawer_display_help" type="id" />
     <item name="navigation_drawer_my_recipes" type="id" />
-    <item name="navigation_drawer_favorite_recipes" type="id" />
+    <item name="navigation_drawer_sign_out" type="id" />
 
     <item name="recents_list_recycler_holder" type="id" />
     <item name="recents_list_recyclerview" type="id" />
@@ -28,14 +26,14 @@
     <item name="recents_list_holder" type="id" />
     <item name="recents_fragment_holder" type="id" />
 
-    <item name="recents_card" type="id" />
-    <item name="recents_card_click_area" type="id" />
-    <item name="card_background_image" type="id" />
-    <item name="recents_card_title" type="id" />
-    <item name="recents_card_author" type="id" />
-    <item name="recents_card_time" type="id" />
-    <item name="recents_card_rating" type="id" />
-    <item name="recents_card_difficulty" type="id" />
+    <item name="recipe_card" type="id" />
+    <item name="recipe_card_click_area" type="id" />
+    <item name="recipe_card_background_image" type="id" />
+    <item name="recipe_card_title" type="id" />
+    <item name="recipe_card_author" type="id" />
+    <item name="recipe_card_time" type="id" />
+    <item name="recipe_card_rating" type="id" />
+    <item name="recipe_card_difficulty" type="id" />
 
     <item name="recipe_details_app_bar_layout" type="id" />
     <item name="recipe_details_collapsing_toolbar_layout" type="id" />
@@ -67,6 +65,7 @@
     <item name="recipe_details_size_text" type="id" />
     <item name="recipe_details_ingredients" type="id" />
     <item name="recipe_details_steps" type="id" />
+    <item name="recipe_details_remove_recipe_button" type="id" />
 
     <item name="recipe_details_ingredients_recyclerview" type="id" />
     <item name="recipe_details_ingredient_holder" type="id" />
@@ -82,10 +81,10 @@
     <item name="recipe_details_step_description" type="id" />
     <item name="recipe_details_step_minutes" type="id" />
 
+    <item name="recipe_details_rating_bar" type="id" />
     <item name="recipe_details_give_rating" type="id" />
-    <item name="recipe_details_leave_comment" type="id" />
-    <item name="recipe_details_submit_comment" type="id" />
-    <item name="recipe_details_comments" type="id" />
+    <item name="recipe_details_cooked_button" type="id" />
+    <item name="recipe_details_favorite_button" type="id" />
 
     <item name="upload_dialog" type="id" />
     <item name="upload_dialog_progress_bar" type="id" />
@@ -134,6 +133,18 @@
     <item name="filter_add_ingredient_button" type="id" />
     <item name="sort_spinner" type="id" />
     <item name="filter_submit_button" type="id" />
+
+    <item name="custom_list_recycler_holder" type="id" />
+    <item name="custom_recipes_list_recyclerview" type="id" />
+
+    <item name="filtered_card" type="id" />
+    <item name="filtered_card_click_area" type="id" />
+    <item name="filtered_card_background_image" type="id" />
+    <item name="filtered_card_title" type="id" />
+    <item name="filtered_card_author" type="id" />
+    <item name="filtered_card_time" type="id" />
+    <item name="filtered_card_rating" type="id" />
+    <item name="filtered_card_difficulty" type="id" />
 
     <item name="help_text" type="id" />
 </resources>

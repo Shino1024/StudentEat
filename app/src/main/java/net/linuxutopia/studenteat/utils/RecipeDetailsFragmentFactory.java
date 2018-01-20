@@ -4,21 +4,44 @@ import android.app.Fragment;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsDescriptionFragment;
+import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsIngredientsFragment;
+import net.linuxutopia.studenteat.fragments.RecipeDetailsRatingFragment;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsStepsFragment;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 
 public class RecipeDetailsFragmentFactory {
 
-    private final int FRAGMENT_COUNT = 3;
+    private RecipeDetailsModel recipeDetailsModel;
+
+    public static final int FRAGMENT_COUNT = 4;
 
     public Fragment getFragment(int position) {
         switch (position) {
             case 0:
-                return new RecipeDetailsDescriptionFragment();
+                RecipeDetailsDescriptionFragment descriptionFragment =
+                        new RecipeDetailsDescriptionFragment();
+                descriptionFragment.setRecipeDetailsModel(recipeDetailsModel);
+                return descriptionFragment;
+
             case 1:
-                return new RecipeDetailsIngredientsFragment();
+                RecipeDetailsIngredientsFragment ingredientsFragment =
+                        new RecipeDetailsIngredientsFragment();
+                ingredientsFragment.setIngredients(recipeDetailsModel.getIngredients());
+                return ingredientsFragment;
+
             case 2:
-                return new RecipeDetailsStepsFragment();
+                RecipeDetailsStepsFragment stepsFragment =
+                        new RecipeDetailsStepsFragment();
+                stepsFragment.setSteps(recipeDetailsModel.getSteps());
+                return stepsFragment;
+
+            case 3:
+                RecipeDetailsRatingFragment ratingFragment =
+                        new RecipeDetailsRatingFragment();
+                ratingFragment.setRecipeId(recipeDetailsModel.getId());
+                return ratingFragment;
+
             default:
                 return null;
         }
@@ -32,6 +55,8 @@ public class RecipeDetailsFragmentFactory {
                 return R.layout.recipe_details_ingredients;
             case 2:
                 return R.layout.recipe_details_steps;
+            case 3:
+                return R.layout.recipe_details_rating;
             default:
                 return -1;
         }
@@ -45,13 +70,14 @@ public class RecipeDetailsFragmentFactory {
                 return "Ingredients";
             case 2:
                 return "Steps";
+            case 3:
+                return "Rating";
             default:
                 return "error";
         }
     }
 
-    public int getFragmentCount() {
-        return FRAGMENT_COUNT;
+    public void setRecipeDetailsModel(RecipeDetailsModel recipeDetailsModel) {
+        this.recipeDetailsModel = recipeDetailsModel;
     }
-
 }

@@ -8,14 +8,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@id/recipe_details_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="author"
             android:textColor="@color/full_black"
             android:singleLine="true"
             android:textSize="30sp" />
@@ -58,7 +57,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@color/full_black"
-                        android:text="category"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -86,7 +84,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@color/full_black"
-                        android:text="time"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -114,7 +111,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@color/full_black"
-                        android:text="difficulty"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -142,7 +138,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@color/full_black"
-                        android:text="rating"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -170,7 +165,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@color/full_black"
-                        android:text="price"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -198,7 +192,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textColor="@color/full_black"
-                        android:text="size"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -211,8 +204,13 @@
             android:id="@id/recipe_details_dish_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="designated recipe"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@id/recipe_details_remove_recipe_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recipe_details_remove_recipe_text" />
 
     </LinearLayout>
 

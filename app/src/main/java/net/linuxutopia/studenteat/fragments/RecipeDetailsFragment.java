@@ -17,17 +17,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.adapters.RecipeDetailsViewPagerAdapter;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
+import net.linuxutopia.studenteat.utils.RecipeDetailsFragmentFactory;
 
 public class RecipeDetailsFragment extends Fragment {
 
-    AppBarLayout appBarLayout;
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    RecipeDetailsViewPagerAdapter viewPagerAdapter;
-    Toolbar toolbar;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private RecipeDetailsViewPagerAdapter viewPagerAdapter;
+    private Toolbar toolbar;
+
+    private RecipeDetailsModel recipeDetailsModel;
+
+    private DisplayMetrics displayMetrics;
+
+    private ImageView imageView;
 
     @Nullable
     @Override
@@ -38,7 +48,7 @@ public class RecipeDetailsFragment extends Fragment {
                 viewGroup,
                 false);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+        displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         collapsingToolbarLayout =
@@ -50,16 +60,25 @@ public class RecipeDetailsFragment extends Fragment {
                 R.color.full_black
         ));
 
-        ImageView imageView = inflatedView.findViewById(R.id.recipe_details_photo);
+        imageView = inflatedView.findViewById(R.id.recipe_details_photo);
         imageView.requestLayout();
-        imageView.setImageResource(R.drawable.lain);
         imageView.getLayoutParams().height = displayMetrics.heightPixels / 2;
+        Glide
+                .with(this)
+                .load(recipeDetailsModel.getDownloadLink())
+                .into(imageView);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        }
         toolbar = inflatedView.findViewById(R.id.recipe_details_toolbar);
+        // TODO: Try to implement the back navigation button in the collapsing toolbar layout.
 
         viewPager = inflatedView.findViewById(R.id.recipe_details_view_pager);
         viewPagerAdapter = new RecipeDetailsViewPagerAdapter(getChildFragmentManager());
+        RecipeDetailsFragmentFactory factory = new RecipeDetailsFragmentFactory();
+        factory.setRecipeDetailsModel(recipeDetailsModel);
+        viewPagerAdapter.setRecipeDetailsFactory(factory);
         viewPager.setAdapter(viewPagerAdapter);
 
         CoordinatorLayout.LayoutParams viewPagerLayoutParams =
@@ -82,8 +101,9 @@ public class RecipeDetailsFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
         appBarLayout = inflatedView.findViewById(R.id.recipe_details_app_bar_layout);
+
         collapsingToolbarLayout.setTitleEnabled(true);
-        collapsingToolbarLayout.setTitle("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        collapsingToolbarLayout.setTitle(recipeDetailsModel.getName());
 
         return inflatedView;
     }
@@ -93,4 +113,9 @@ public class RecipeDetailsFragment extends Fragment {
         super.onDestroyView();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
+
+    public void setRecipeDetailsModel(RecipeDetailsModel recipeDetailsModel) {
+        this.recipeDetailsModel = recipeDetailsModel;
+    }
+
 }

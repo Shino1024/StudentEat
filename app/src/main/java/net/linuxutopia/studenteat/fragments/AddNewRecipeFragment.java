@@ -37,16 +37,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import net.linuxutopia.studenteat.R;
@@ -54,8 +49,7 @@ import net.linuxutopia.studenteat.models.Difficulty;
 import net.linuxutopia.studenteat.models.DishCategory;
 import net.linuxutopia.studenteat.models.IngredientModel;
 import net.linuxutopia.studenteat.models.MeasureType;
-import net.linuxutopia.studenteat.models.RecentCardModel;
-import net.linuxutopia.studenteat.models.RecipeModel;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.models.StepModel;
 
 import java.io.File;
@@ -96,7 +90,7 @@ public class AddNewRecipeFragment extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    private StorageReference storageReference;
+    private Uri downloadUri;
 
     public static final int REQUEST_CODE_OPEN_CAMERA = 0x4E;
     public static final int REQUEST_CODE_OPEN_GALLERY = 0x47;
@@ -251,12 +245,13 @@ public class AddNewRecipeFragment extends Fragment {
                 StorageReference photosReference = FirebaseStorage
                         .getInstance()
                         .getReference("/photos");
-                UploadTask result = photosReference.child(pushedKey)
+                UploadTask uploadTask = photosReference.child(pushedKey)
                         .putFile(Uri.parse(photoFile.toURI().toString()));
-                result.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 uploadDialogFragment.dismiss();
+                                downloadUri = taskSnapshot.getDownloadUrl();
                             }
                         })
                         .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -283,17 +278,19 @@ public class AddNewRecipeFragment extends Fragment {
                             }
                         });
 
-                RecipeModel recipeModel = new RecipeModel();
-                recipeModel.setId(pushedKey);
-                recipeModel.setName(nameView.getText().toString());
-                recipeModel.setAuthor(auth.getCurrentUser() != null
+                RecipeDetailsModel recipeDetailsModel = new RecipeDetailsModel();
+                recipeDetailsModel.setId(pushedKey);
+                recipeDetailsModel.setDownloadLink(downloadUri.toString());
+                recipeDetailsModel.setName(nameView.getText().toString());
+                recipeDetailsModel.setAuthor(auth.getCurrentUser() != null
                     ? auth.getCurrentUser().getDisplayName()
                     : "Anonymous");
-                recipeModel.setDescription(descriptionView.getText().toString());
-                recipeModel.setDifficulty(
+                recipeDetailsModel.setAuthorId(auth.getUid());
+                recipeDetailsModel.setDescription(descriptionView.getText().toString());
+                recipeDetailsModel.setDifficulty(
                         Difficulty.values()[difficultySpinner.getSelectedItemPosition()]
                 );
-                recipeModel.setDishCategory(
+                recipeDetailsModel.setDishCategory(
                         DishCategory.values()[dishCategorySpinner.getSelectedItemPosition()]
                 );
 
@@ -317,8 +314,8 @@ public class AddNewRecipeFragment extends Fragment {
                     ingredient.setCost(Double.parseDouble(newIngredientCostView.getText().toString()));
                     ingredients.add(ingredient);
                 }
-                recipeModel.setIngredients(ingredients);
-                recipeModel.setPrice(price);
+                recipeDetailsModel.setIngredients(ingredients);
+                recipeDetailsModel.setPrice(price);
 
                 ArrayList<StepModel> steps = new ArrayList<>();
                 int minutes = 0;
@@ -332,16 +329,14 @@ public class AddNewRecipeFragment extends Fragment {
                     minutes += Integer.parseInt(newStepMinutesView.getText().toString());
                     step.setMinutes(Integer.parseInt(newStepMinutesView.getText().toString()));
                 }
-                recipeModel.setMinutes(minutes);
+                recipeDetailsModel.setSteps(steps);
+                recipeDetailsModel.setMinutes(minutes);
 
-                recipeModel.setSize(Integer.parseInt(sizeView.getText().toString()));
-                recipeModel.setRating(0.0d);
-                recipeModel.setFavorited(0);
-                recipeModel.setCooked(0);
+                recipeDetailsModel.setSize(Integer.parseInt(sizeView.getText().toString()));
 
                 recipeReference
                         .child(pushedKey)
-                        .setValue(recipeModel)
+                        .setValue(recipeDetailsModel)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

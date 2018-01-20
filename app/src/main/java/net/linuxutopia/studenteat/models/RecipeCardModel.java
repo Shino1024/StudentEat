@@ -1,47 +1,47 @@
 package net.linuxutopia.studenteat.models;
 
-import java.io.File;
+public class RecipeCardModel {
 
-public class RecentCardModel {
-
-    private File photoFile;
-    private String title;
+    // TODO: Add anything else, like ID?
+    private String photoDownloadLink;
+    private String name;
     private String author;
     private Double rating;
     private Integer minutes;
     private Difficulty difficulty;
 
-    public RecentCardModel(String photo,
-                           String title,
+    public RecipeCardModel(String photoDownloadLink,
+                           String name,
                            String author,
                            Double rating,
                            Integer minutes,
                            Difficulty difficulty) {
-        this.title = title;
+        this.photoDownloadLink = photoDownloadLink;
+        this.name = name;
         this.author = author;
         this.rating = rating;
         this.minutes = minutes;
         this.difficulty = difficulty;
     }
 
-    public RecentCardModel() {
+    public RecipeCardModel() {
 
     }
 
-    public File getPhotoFile() {
-        return photoFile;
+    public String getPhotoDownloadLink() {
+        return photoDownloadLink;
     }
 
-    public void setPhotoFile(File photoFile) {
-        this.photoFile = photoFile;
+    public void setPhotoDownloadLink(String photoDownloadLink) {
+        this.photoDownloadLink = photoDownloadLink;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String title) {
+        this.name = name;
     }
 
     public String getAuthor() {

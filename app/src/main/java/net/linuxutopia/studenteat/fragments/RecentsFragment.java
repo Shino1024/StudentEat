@@ -7,6 +7,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -16,11 +17,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.linuxutopia.studenteat.R;
-import net.linuxutopia.studenteat.adapters.RecentsAdapter;
+import net.linuxutopia.studenteat.adapters.RecipeCardAdapter;
 import net.linuxutopia.studenteat.models.Difficulty;
-import net.linuxutopia.studenteat.models.RecentCardModel;
+import net.linuxutopia.studenteat.models.RecipeDetailsModel;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +38,12 @@ import java.util.Map;
 public class RecentsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecentsAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecipeCardAdapter adapter;
+
+    // TODO: Auto-fill all objects where possible to avoid NullPointerException, like here!!!
+    private ArrayList<RecipeDetailsModel> recipes = new ArrayList<>();
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Nullable
     @Override
@@ -43,30 +56,21 @@ public class RecentsFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(false);
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setTitle(R.string.recents_action_bar_title);
-        }
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                R.string.recents_action_bar_title);
+
+        displayLoadingDialog();
+        downloadRecipes();
 
         recyclerView = inflatedView.findViewById(R.id.recents_list_recyclerview);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        ArrayList<RecentCardModel> dataSet = new ArrayList<>();
-        dataSet.add(new RecentCardModel("lol", "jakis przepis", "mama", 4.5, 30, Difficulty.BANAL));
-        dataSet.add(new RecentCardModel("jakies zdjecie", "w ogole jakies bardzo dlugie nie wiem jak bardzo buleczki 2", "tata", 6.5, 10, Difficulty.EASY));
-        dataSet.add(new RecentCardModel("znowu cos", "ziemniaki", "janusz oraz grazynka", 1.0, 2000, Difficulty.MEDIUM));
-        dataSet.add(new RecentCardModel("i znowu jakis przepis", "bardzo dziwny przepis", "konstantynopolitanczykiewiczowna konstantynopolitanczykowianeczka", 10.0, 300, Difficulty.HARD));
-        dataSet.add(new RecentCardModel("cos strasznego", "lepiej nie mowic", "nie wiadomo", 9.2, 200, Difficulty.EXTREME));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        adapter = new RecentsAdapter(dataSet);
+        adapter = new RecipeCardAdapter(recipes);
 
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
@@ -78,6 +82,9 @@ public class RecentsFragment extends Fragment {
         adapter.setCardHeight((int) (displayMetrics.heightPixels * 0.3f));
         adapter.setDifficultyMap(difficultyMap);
         adapter.setDisplayMetrics(displayMetrics);
+
+        // TODO: Might be the cause of something weird...
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
 
@@ -108,6 +115,35 @@ public class RecentsFragment extends Fragment {
         });
 
         return inflatedView;
+    }
+
+    private void displayLoadingDialog() {
+        //
+    }
+
+    private void downloadRecipes() {
+        DatabaseReference recipesReference = database.getReference("recipes");
+        recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // TODO: Asynchronous downloading will finish AFTER setting up the adapter.
+                    RecipeDetailsModel recipeDetailsModel = snapshot.getValue(RecipeDetailsModel.class);
+                    recipes.add(recipeDetailsModel);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: Handle this somehow...
+                Toast.makeText(
+                        getActivity(),
+                        "couldn't download recipes' details",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
     }
 
     @Override

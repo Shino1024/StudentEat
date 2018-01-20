@@ -13,6 +13,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,7 +24,7 @@ import net.linuxutopia.studenteat.fragments.AddNewRecipeFragment;
 import net.linuxutopia.studenteat.fragments.FilterSortFragment;
 import net.linuxutopia.studenteat.fragments.HelpFragment;
 import net.linuxutopia.studenteat.fragments.RecentsFragment;
-import net.linuxutopia.studenteat.utils.ActivityHelper;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.io.File;
 import java.util.List;
@@ -55,30 +58,33 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout.closeDrawer(Gravity.START);
                 switch (item.getItemId()) {
                     case R.id.navigation_drawer_recent_recipes:
-                        drawerLayout.closeDrawer(Gravity.START);
-                        ActivityHelper.loadFragment(MainActivity.this, new RecentsFragment());
+                        AppCompatActivityHelper.loadFragment(new RecentsFragment());
                         break;
                     case R.id.navigation_drawer_add_new_recipe:
-                        drawerLayout.closeDrawer(Gravity.START);
-                        ActivityHelper.loadFragment(MainActivity.this, new AddNewRecipeFragment());
+                        AppCompatActivityHelper.loadFragment(new AddNewRecipeFragment());
                         break;
                     case R.id.navigation_drawer_filter_and_sort:
-                        drawerLayout.closeDrawer(Gravity.START);
-                        ActivityHelper.loadFragment(MainActivity.this, new FilterSortFragment());
+                        AppCompatActivityHelper.loadFragment(new FilterSortFragment());
                         break;
                     case R.id.navigation_drawer_my_recipes:
-                        drawerLayout.closeDrawer(Gravity.START);
-//                        ActivityHelper.loadFragment(MainActivity.this, new RecentsFragment());
-                        break;
-                    case R.id.navigation_drawer_favorite_recipes:
-                        drawerLayout.closeDrawer(Gravity.START);
-//                        ActivityHelper.loadFragment(MainActivity.this, new RecentsFragment());
+//                        AppCompatActivityHelper.loadFragment(new RecentsFragment());
                         break;
                     case R.id.navigation_drawer_display_help:
-                        drawerLayout.closeDrawer(Gravity.START);
-                        ActivityHelper.loadFragment(MainActivity.this, new HelpFragment());
+                        AppCompatActivityHelper.loadFragment(new HelpFragment());
+                        break;
+                    case R.id.navigation_drawer_sign_out:
+                        AuthUI
+                                .getInstance()
+                                .signOut(getApplicationContext())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        finish();
+                                    }
+                                });
                         break;
                     default:
                         break;
@@ -108,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.search_button:
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
-                ActivityHelper.loadFragment(this, new FilterSortFragment());
+                AppCompatActivityHelper.loadFragment(new FilterSortFragment());
                 return true;
             case android.R.id.home:
                 Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();

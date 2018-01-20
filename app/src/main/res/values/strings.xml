@@ -6,19 +6,32 @@
 
     <string name="navigation_drawer_recent_recipes_text">Recent recipes</string>
     <string name="navigation_drawer_add_new_recipe_text">Add new recipe</string>
-    <string name="navigation_drawer_filter_and_sort">Filter and sort</string>
-    <string name="navigation_drawer_my_recipes">My recipes</string>
-    <string name="navigation_drawer_favorite_recipes">Favorite recipes</string>
-    <string name="navigation_drawer_display_help">Display help</string>
+    <string name="navigation_drawer_filter_and_sort_title">Filter and sort</string>
+    <string name="navigation_drawer_my_recipes_title">My recipes</string>
+    <string name="navigation_drawer_favorite_recipes_title">Favorite recipes</string>
+    <string name="navigation_drawer_display_help_title">Display help</string>
+    <string name="navigation_drawer_sign_out_title">Sign out</string>
 
     <string name="recents_action_bar_title" translatable="false">Recent recipes</string>
     <string name="logo_content_description" translatable="false">StudentEat logo - hamburger!</string>
-    <string name="recents_card_image_description" translatable="false">Nice thumbnail of a dish</string>
+    <string name="card_image_description" translatable="false">Nice thumbnail of a dish</string>
     <string name="dish_content_description" translatable="false">Beautiful dish</string>
     <string name="recipe_details_description_title" translatable="false">Description</string>
     <string name="recipe_details_ingredients_title" translatable="false">Ingredients</string>
     <string name="recipe_details_steps_title" translatable="false">Steps</string>
     <string name="recipe_details_comments_title" translatable="false">Comments</string>
+
+    <string name="recipe_details_rating_label">Your rating?</string>
+    <string name="recipe_details_rating_accept">Set rating</string>
+    <string name="recipe_details_set_cooked">Cooked it</string>
+    <string name="recipe_details_set_not_cooked">Didn\'t cook it</string>
+    <string name="recipe_details_set_favorite">My favorite</string>
+    <string name="recipe_details_set_not_favorite">Not my favorite</string>
+    <string name="recipe_details_no_rating_set_message">Press the stars to give rating.</string>
+    <string name="recipe_details_remove_recipe_text">Remove this recipe</string>
+    <string name="remove_recipe_question">Are you sure you want to remove it?</string>
+    <string name="remove_recipe_ok">OK</string>
+    <string name="remove_recipe_cancel">Cancel</string>
 
     <string name="difficulty_banal" translatable="false">Banal</string>
     <string name="difficulty_easy" translatable="false">Easy</string>
@@ -106,6 +119,12 @@
         <item>Size</item>
     </string-array>
     <string name="filter_submit_button_text" translatable="false">Submit query</string>
+
+    <string name="filtered_results_action_bar_title">Filtered results</string>
+
+    <string name="favorited_results_action_bar_title">Favorite recipes</string>
+
+    <string name="cooked_results_action_bar_title">My recipes</string>
 
     <string name="help_screen_action_bar_title">Help</string>
     <string name="app_help_text">
