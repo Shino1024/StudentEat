@@ -41,6 +41,8 @@ public class RecentsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecipeCardAdapter adapter;
 
+    private View inflatedView;
+
 //    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 
     // TODO: Auto-fill all objects where possible to avoid NullPointerException, like here!!!
@@ -53,7 +55,7 @@ public class RecentsFragment extends Fragment {
     public View onCreateView(LayoutInflater layoutInflater,
                              @Nullable ViewGroup viewGroup,
                              Bundle savedInstanceState) {
-        View inflatedView = layoutInflater.inflate(R.layout.recents_list,
+        inflatedView = layoutInflater.inflate(R.layout.recents_list,
                 viewGroup,
                 false);
 
@@ -112,13 +114,6 @@ public class RecentsFragment extends Fragment {
                         new AddNewRecipeFragment(),
                         null,
                         "ADD_NEW_RECIPE_FRAGMENT");
-//                getFragmentManager()
-//                        .beginTransaction()
-//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-//                        .replace(R.id.fragment_container, new AddNewRecipeFragment(), "ADD_NEW_RECIPE_FRAGMENT")
-//                        .addToBackStack(null)
-//                        .commit();
-                // TODO: Really assign no setOnClickListener to FAB?
                 floatingActionButton.setOnClickListener(null);
             }
         });
@@ -146,8 +141,9 @@ public class RecentsFragment extends Fragment {
                     recipes.add(recipeDetailsModel);
                 }
                 adapter.notifyDataSetChanged();
-                if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-                    ((AppCompatActivity) getActivity()).getSupportActionBar()
+                AppCompatActivity referenceActivity = ((AppCompatActivity) inflatedView.getContext());
+                if (referenceActivity.getSupportActionBar() != null) {
+                    referenceActivity.getSupportActionBar()
                             .setTitle(R.string.recents_action_bar_title);
                 }
 //                loadingDialogFragment.dismiss();
@@ -164,11 +160,6 @@ public class RecentsFragment extends Fragment {
                 ).show();
             }
         });
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override

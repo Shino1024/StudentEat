@@ -85,21 +85,21 @@ public class RecipeDetailsFragment extends Fragment {
         viewPagerAdapter.setRecipeDetailsFactory(factory);
         viewPager.setAdapter(viewPagerAdapter);
 
-        CoordinatorLayout.LayoutParams viewPagerLayoutParams =
-                (CoordinatorLayout.LayoutParams) viewPager.getLayoutParams();
-        int calculatedMarginSideSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                displayMetrics.widthPixels * 0.004f,
-                displayMetrics);
-        int calculatedMarginTopSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                displayMetrics.heightPixels * 0.004f,
-                displayMetrics);
-        viewPagerLayoutParams.setMargins(
-                calculatedMarginSideSize,
-                calculatedMarginTopSize,
-                calculatedMarginSideSize,
-                calculatedMarginTopSize
-        );
-        viewPager.setLayoutParams(viewPagerLayoutParams);
+//        CoordinatorLayout.LayoutParams viewPagerLayoutParams =
+//                (CoordinatorLayout.LayoutParams) viewPager.getLayoutParams();
+//        int calculatedMarginSideSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+//                displayMetrics.widthPixels * 0.004f,
+//                displayMetrics);
+//        int calculatedMarginTopSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+//                displayMetrics.heightPixels * 0.004f,
+//                displayMetrics);
+//        viewPagerLayoutParams.setMargins(
+//                calculatedMarginSideSize,
+//                calculatedMarginTopSize,
+//                calculatedMarginSideSize,
+//                calculatedMarginTopSize
+//        );
+//        viewPager.setLayoutParams(viewPagerLayoutParams);
 
         tabLayout = inflatedView.findViewById(R.id.recipe_details_tabs);
         tabLayout.setupWithViewPager(viewPager);
