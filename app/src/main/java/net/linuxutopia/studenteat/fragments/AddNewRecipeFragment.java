@@ -19,7 +19,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +62,7 @@ public class AddNewRecipeFragment extends Fragment {
 
     private File photoFile;
 
-    private ImageView photo;
+    private ImageView photoView;
     private TextView photoHint;
     private EditText nameView;
     private EditText descriptionView;
@@ -133,10 +132,10 @@ public class AddNewRecipeFragment extends Fragment {
         );
         newRecipeLayoutContainer.setLayoutParams(layoutParams);
 
-        photo = inflatedView.findViewById(R.id.new_recipe_photo);
-        photo.requestLayout();
-        photo.getLayoutParams().height = (int) (displayMetrics.heightPixels * 0.3f);
-        photo.setOnClickListener(new View.OnClickListener() {
+        photoView = inflatedView.findViewById(R.id.new_recipe_photo);
+        photoView.requestLayout();
+        photoView.getLayoutParams().height = (int) (displayMetrics.heightPixels * 0.3f);
+        photoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 displayDialogWithResult();
@@ -195,11 +194,10 @@ public class AddNewRecipeFragment extends Fragment {
                         || incorrectIngredientsInput()
                         || incorrectStepsInput()
                         ) {
-                    Toast.makeText(
-                            getActivity(),
-                            R.string.new_recipe_submit_error,
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    AppCompatActivityHelper.displayErrorInToast(
+                            (AppCompatActivity) getActivity(),
+                            getString(R.string.new_recipe_submit_error)
+                    );
                     return;
                 }
 
@@ -238,15 +236,10 @@ public class AddNewRecipeFragment extends Fragment {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 uploadDialogFragment.dismiss();
-                                String errorMessage =
-                                        getString(R.string.new_recipe_on_failure_message_prelude)
-                                                + " "
-                                                + e.getLocalizedMessage();
-                                Toast.makeText(
-                                        getActivity(),
-                                        errorMessage,
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                AppCompatActivityHelper.displayErrorInToast(
+                                        (AppCompatActivity) getActivity(),
+                                        e.getLocalizedMessage()
+                                );
                             }
                         });
             }
@@ -339,6 +332,11 @@ public class AddNewRecipeFragment extends Fragment {
                         );
                     }
                 });
+
+//        DatabaseReference ratingsReference = database.getReference("ratings");
+//        ratingsReference.child(recipeDetailsModel.getId())
+//        DatabaseReference cookedReference = database.getReference("cooked");
+//        DatabaseReference favoriteReference = database.getReference("favorite");
     }
 
     private boolean incorrectIngredientsInput() {
@@ -496,7 +494,10 @@ public class AddNewRecipeFragment extends Fragment {
     }
 
     public void displayDishPhotoLoadingError(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+        AppCompatActivityHelper.displayErrorInToast(
+                (AppCompatActivity) getActivity(),
+                error
+        );
     }
 
     public void onImageLoaded(File photoFile) {
@@ -506,7 +507,7 @@ public class AddNewRecipeFragment extends Fragment {
             this.photoFile = photoFile;
 
             Bitmap photoBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-            photo.setImageBitmap(photoBitmap);
+            photoView.setImageBitmap(photoBitmap);
         } else {
             AppCompatActivityHelper.displayErrorInToast(
                     (AppCompatActivity) getActivity(),

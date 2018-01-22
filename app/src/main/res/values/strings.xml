@@ -35,10 +35,10 @@
 
     <string name="recipe_details_rating_label">Your rating?</string>
     <string name="recipe_details_rating_accept">Set rating</string>
-    <string name="recipe_details_set_cooked">Cooked it</string>
-    <string name="recipe_details_set_not_cooked">Didn\'t cook it</string>
-    <string name="recipe_details_set_favorite">My favorite</string>
-    <string name="recipe_details_set_not_favorite">Not my favorite</string>
+    <string name="recipe_details_set_cooked">Didn\'t cook it</string>
+    <string name="recipe_details_set_not_cooked">Cooked it</string>
+    <string name="recipe_details_set_favorite">Not my favorite</string>
+    <string name="recipe_details_set_not_favorite">My favorite</string>
     <string name="recipe_details_no_rating_set_message">Press the stars to give rating.</string>
     <string name="recipe_details_remove_recipe_text">Remove this recipe</string>
     <string name="remove_recipe_question">Are you sure you want to remove it?</string>

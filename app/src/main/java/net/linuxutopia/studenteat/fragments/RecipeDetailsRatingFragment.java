@@ -3,6 +3,7 @@ package net.linuxutopia.studenteat.fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import net.linuxutopia.studenteat.R;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 public class RecipeDetailsRatingFragment extends Fragment {
 
@@ -34,6 +36,9 @@ public class RecipeDetailsRatingFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference cookedReference;
     private DatabaseReference favoriteReference;
+
+    private boolean isCooked;
+    private boolean isFavorite;
 
     // TODO: Check for rating/cooked/favorite statuses first and configure the corresponding views appropriately.
     @Nullable
@@ -57,52 +62,26 @@ public class RecipeDetailsRatingFragment extends Fragment {
         cookedButton = inflatedView.findViewById(R.id.recipe_details_cooked_button);
         favoriteButton = inflatedView.findViewById(R.id.recipe_details_favorite_button);
 
-        updateViews();
+        prepareViews();
 
         giveRatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (ratingBar.getRating() > 0.0) {
-//                    updateRating(ratingBar.getRating());
-//                } else {
-//                    Toast.makeText(getActivity(),
-//                            R.string.recipe_details_no_rating_set_message,
-//                            Toast.LENGTH_SHORT).show();
-//                }
+                updateRating();
             }
         });
 
         cookedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                cookedReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        //
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                        // oh
-//                    }
-//                });
+                toggleCooked();
             }
         });
 
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                favoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        //
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                        // error
-//                    }
-//                });
+                toggleFavorite();
             }
         });
 
@@ -113,46 +92,56 @@ public class RecipeDetailsRatingFragment extends Fragment {
         this.recipeId = recipeId;
     }
 
-    private void updateFavoritesView() {
+    private void prepareFavoritesView() {
         DatabaseReference favoriteReference = database.getReference("favorites");
         favoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(recipeId).hasChild(userId)) {
-                    favoriteButton.setText(R.string.recipe_details_set_not_favorite);
-                } else {
                     favoriteButton.setText(R.string.recipe_details_set_favorite);
+                    isFavorite = true;
+                } else {
+                    favoriteButton.setText(R.string.recipe_details_set_not_favorite);
+                    isFavorite = false;
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // error
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
             }
         });
     }
 
-    private void updateCookedView() {
+    private void prepareCookedView() {
         DatabaseReference cookedReference = database.getReference("cooked");
         cookedReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(recipeId).hasChild(userId)) {
-                    cookedButton.setText(R.string.recipe_details_set_not_cooked);
-                } else {
                     cookedButton.setText(R.string.recipe_details_set_cooked);
+                    isCooked = true;
+                } else {
+                    cookedButton.setText(R.string.recipe_details_set_not_cooked);
+                    isCooked = false;
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // error
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
             }
         });
     }
 
-    private void updateRatingView() {
-        DatabaseReference recipesReference = database.getReference("rating");
+    private void prepareRatingView() {
+        DatabaseReference recipesReference = database.getReference("ratings");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -170,53 +159,135 @@ public class RecipeDetailsRatingFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // error
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
             }
         });
     }
 
-    private void updateViews() {
-        updateFavoritesView();
-        updateCookedView();
-        updateRatingView();
+    private void prepareViews() {
+        prepareFavoritesView();
+        prepareCookedView();
+        prepareRatingView();
     }
 
-    private void updateRating(float rating) {
+    private void updateRating() {
         // TODO: Finish updating the rating.
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             return;
         }
         String userId = user.getUid();
-        DatabaseReference ratingsRecipeReference = database.getReference("ratings").child(recipeId);
-        ratingsRecipeReference.child(userId).setValue(rating);
-        final DatabaseReference recipeReference = database.getReference("recipes").child(recipeId);
-        ratingsRecipeReference.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        float rating = ratingBar.getRating();
+
+        DatabaseReference ratingsReference = database.getReference("ratings");
+        ratingsReference.child(recipeId).child(userId).setValue(rating);
+        final DatabaseReference recipeReference = database.getReference("recipes");
+        ratingsReference.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long count = dataSnapshot.getChildrenCount();
-                long sum = 0;
+                Double sum = 0.0d;
                 for (DataSnapshot userRatingSnapshot : dataSnapshot.getChildren()) {
-                    sum += (long) userRatingSnapshot.getValue();
+                    if (userRatingSnapshot.getValue() instanceof Double) {
+                        sum += userRatingSnapshot.getValue(Double.class);
+                    } else {
+                        sum += userRatingSnapshot.getValue(Double.class).doubleValue();
+                    }
                 }
-                Double calculatedRating = (((double) sum) / (double) count);
-                recipeReference.child("rating").setValue(calculatedRating);
+                Double calculatedRating = (sum / (double) count);
+                recipeReference.child(recipeId).child("rating").setValue(calculatedRating);
+                Toast.makeText(
+                        getActivity(),
+                        "Rating settt",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(),
-                        "something went wrong with setting up the rating",
-                        Toast.LENGTH_SHORT).show();
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
             }
         });
     }
 
     private void toggleCooked() {
-        //
+        // TODO: Finish updating the rating.
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+        final String userId = user.getUid();
+
+        final DatabaseReference cookedReference = database.getReference("cooked");
+        final DatabaseReference recipeReference = database.getReference("recipes");
+        recipeReference.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long cookedNumber = dataSnapshot.child("cooked").getValue(Long.class);
+                if (isCooked) {
+                    isCooked = false;
+                    cookedReference.child(recipeId).child(userId).removeValue();
+                    recipeReference.child(recipeId).child("cooked").setValue(cookedNumber - 1);
+                    cookedButton.setText(R.string.recipe_details_set_not_cooked);
+                } else {
+                    isCooked = true;
+                    cookedReference.child(recipeId).child(userId).setValue(true);
+                    recipeReference.child(recipeId).child("cooked").setValue(cookedNumber + 1);
+                    cookedButton.setText(R.string.recipe_details_set_cooked);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
+            }
+        });
     }
 
     private void toggleFavorite() {
-        //
+        // TODO: Finish updating the rating.
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+        final String userId = user.getUid();
+
+        final DatabaseReference favoriteReference = database.getReference("favorite");
+        final DatabaseReference recipeReference = database.getReference("recipes");
+        recipeReference.child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long favoriteNumber = dataSnapshot.child("favorite").getValue(Long.class);
+                if (isFavorite) {
+                    isFavorite = false;
+                    favoriteReference.child(recipeId).child(userId).removeValue();
+                    recipeReference.child(recipeId).child("favorite").setValue(favoriteNumber - 1);
+                    favoriteButton.setText(R.string.recipe_details_set_not_favorite);
+                } else {
+                    isFavorite = true;
+                    favoriteReference.child(recipeId).child(userId).setValue(true);
+                    recipeReference.child(recipeId).child("favorite").setValue(favoriteNumber + 1);
+                    favoriteButton.setText(R.string.recipe_details_set_favorite);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
+            }
+        });
     }
 }

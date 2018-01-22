@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -31,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.RecipeDetailsModel;
+import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -270,8 +272,14 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                             @Override
                             public void onClick(final DialogInterface dialogInterface, int i) {
                                 DatabaseReference recipeReference = database.getReference("recipes");
-                                StorageReference recipePhotoReference = storage.getReference("recipes");
+                                DatabaseReference ratingsReference = database.getReference("ratings");
+                                DatabaseReference cookedReference = database.getReference("cooked");
+                                DatabaseReference favoriteReference = database.getReference("favorite");
+                                StorageReference recipePhotoReference = storage.getReference("photos");
                                 recipeReference.child(recipeDetailsModel.getId()).removeValue();
+                                ratingsReference.child(recipeDetailsModel.getId()).removeValue();
+                                cookedReference.child(recipeDetailsModel.getId()).removeValue();
+                                favoriteReference.child(recipeDetailsModel.getId()).removeValue();
                                 recipePhotoReference.child(recipeDetailsModel.getId())
                                         .delete()
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -288,15 +296,10 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        String errorMessage =
+                                        AppCompatActivityHelper.displayErrorInToast(
+                                                (AppCompatActivity) getActivity(),
                                                 getString(R.string.new_recipe_on_failure_message_prelude)
-                                                        + " "
-                                                        + e.getLocalizedMessage();
-                                        Toast.makeText(
-                                                getActivity(),
-                                                errorMessage,
-                                                Toast.LENGTH_SHORT
-                                        ).show();
+                                        );
                                         dialogInterface.dismiss();
                                     }
                                 });

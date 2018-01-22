@@ -39,8 +39,6 @@ public class RecipeCardsFragment extends Fragment {
 
     private View inflatedView;
 
-    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
-
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -62,10 +60,7 @@ public class RecipeCardsFragment extends Fragment {
                 titleStringResource);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-//        displayLoadingDialog();
-//        downloadRecipes();
-
+        
         // TODO: REEEEEEEfactor this.
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
@@ -85,39 +80,6 @@ public class RecipeCardsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return inflatedView;
-    }
-
-    private void displayLoadingDialog() {
-        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-                "LOADING_DIALOG");
-        // TODO: Make sure this really works.
-        loadingDialogFragment.setCancelable(false);
-    }
-
-    private void downloadRecipes() {
-        DatabaseReference recipesReference = database.getReference("recipes");
-        recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    RecipeDetailsModel recipeDetailsModel = snapshot.getValue(RecipeDetailsModel.class);
-                    recipes.add(recipeDetailsModel);
-                }
-                adapter.notifyDataSetChanged();
-                loadingDialogFragment.dismiss();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO: Handle this somehow...
-                loadingDialogFragment.dismiss();
-                Toast.makeText(
-                        getActivity(),
-                        "couldn't download recipes' details",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        });
     }
 
     public void setRecipesToDisplay(ArrayList<RecipeDetailsModel> recipes) {
