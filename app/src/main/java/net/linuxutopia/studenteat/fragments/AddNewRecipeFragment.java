@@ -307,8 +307,6 @@ public class AddNewRecipeFragment extends Fragment {
 
         recipeDetailsModel.setSize(Integer.parseInt(sizeView.getText().toString()));
 
-        Toast.makeText(getActivity(), "parsed!", Toast.LENGTH_SHORT).show();
-
         recipeReference
                 .child(pushedKey)
                 .setValue(recipeDetailsModel)

@@ -95,6 +95,7 @@
     and used at least one step and one ingredient. Don\'t forget about the photo!</string>
     <string name="new_recipe_on_complete_message">Recipe uploaded!</string>
     <string name="new_recipe_on_failure_message_prelude">Error: </string>
+    <string name="recipe_details_new_rating_set">Rating sent!</string>
 
     <string name="recipe_description_remove_complete">Recipe removed!</string>
     <string name="recipe_not_found_error">Recipe not found!</string>
@@ -151,4 +152,6 @@
         If you wish to filter and sort recipes, just click the magnifying glass icon.\n\n
         App created for Object-Oriented Programming course at AGH UST by Jarosław Bieniek (Shino1024).
     </string>
+
+    <string name="logged_out_message">Logged out</string>
 </resources>

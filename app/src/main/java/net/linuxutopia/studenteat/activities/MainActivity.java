@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Toast.makeText(
                                                 getApplicationContext(),
-                                                "logged out?",
+                                                R.string.logged_out_message,
                                                 Toast.LENGTH_SHORT
                                         ).show();
                                         finish();
@@ -136,13 +136,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.search_button:
-                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 AppCompatActivityHelper.loadFragment(getFragmentManager(),
                         new FilterSortFragment());
                 return true;
 
             case android.R.id.home:
-                Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
                 getFragmentManager().popBackStack();
                 return true;
 

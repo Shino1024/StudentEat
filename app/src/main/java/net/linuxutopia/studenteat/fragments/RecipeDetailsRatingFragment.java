@@ -40,7 +40,6 @@ public class RecipeDetailsRatingFragment extends Fragment {
     private boolean isCooked;
     private boolean isFavorite;
 
-    // TODO: Check for rating/cooked/favorite statuses first and configure the corresponding views appropriately.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -174,7 +173,6 @@ public class RecipeDetailsRatingFragment extends Fragment {
     }
 
     private void updateRating() {
-        // TODO: Finish updating the rating.
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             return;
@@ -202,7 +200,7 @@ public class RecipeDetailsRatingFragment extends Fragment {
                 recipeReference.child(recipeId).child("rating").setValue(calculatedRating);
                 Toast.makeText(
                         getActivity(),
-                        "Rating settt",
+                        R.string.recipe_details_new_rating_set,
                         Toast.LENGTH_SHORT
                 ).show();
             }
@@ -218,7 +216,6 @@ public class RecipeDetailsRatingFragment extends Fragment {
     }
 
     private void toggleCooked() {
-        // TODO: Finish updating the rating.
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             return;
@@ -255,7 +252,6 @@ public class RecipeDetailsRatingFragment extends Fragment {
     }
 
     private void toggleFavorite() {
-        // TODO: Finish updating the rating.
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             return;

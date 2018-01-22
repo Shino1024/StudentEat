@@ -13,7 +13,6 @@ import net.linuxutopia.studenteat.R;
 
 public class AppCompatActivityHelper {
 
-    // TODO: getFragmentManager or getSupportFragmentManager.
     public static void loadFragment(FragmentManager fragmentManager, Fragment fragment) {
         fragmentManager
                 .beginTransaction()
