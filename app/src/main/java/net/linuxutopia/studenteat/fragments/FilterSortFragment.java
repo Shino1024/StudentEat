@@ -58,7 +58,6 @@ public class FilterSortFragment extends Fragment {
     private Difficulty difficulty;
     private ArrayList<DishCategory> dishCategories = new ArrayList<>();
     private ArrayList<String> ingredientNames = new ArrayList<>();
-    private SortType sortType;
 
     private Spinner difficultySpinner;
     private ViewGroup ingredientViewGroup;
@@ -220,8 +219,6 @@ public class FilterSortFragment extends Fragment {
                 ingredientNames.add(ingredientNameEdit.getText().toString().trim());
             }
         }
-
-        sortType = SortType.values()[sortSpinner.getSelectedItemPosition()];
     }
 
     private void getResults() {
@@ -229,20 +226,23 @@ public class FilterSortFragment extends Fragment {
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                recipes = new ArrayList<>();
+                ArrayList<RecipeDetailsModel> filteredRecipes = new ArrayList<>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     RecipeDetailsModel recipe = child.getValue(RecipeDetailsModel.class);
+
+//                    Toast.makeText(getActivity(), "/" + recipeNameView.getText().toString() + "/", Toast.LENGTH_SHORT).show();
+//
                     if (recipeMeetsConditions(recipe)) {
-                        recipes.add(recipe);
+                        filteredRecipes.add(recipe);
                     }
                 }
                 RecipeCardsFragment filteredRecipesFragment = new RecipeCardsFragment();
                 Bundle resourceBundle = new Bundle();
                 resourceBundle.putInt("titleResource", R.string.filtered_results_action_bar_title);
                 filteredRecipesFragment.setArguments(resourceBundle);
-                RecipeComparator.sortRecipesBy(recipes,
+                RecipeComparator.sortRecipesBy(filteredRecipes,
                         SortType.values()[sortSpinner.getSelectedItemPosition()]);
-                filteredRecipesFragment.setRecipesToDisplay(recipes);
+                filteredRecipesFragment.setRecipesToDisplay(filteredRecipes);
                 AppCompatActivityHelper.loadFragment(getFragmentManager(), filteredRecipesFragment);
             }
 
@@ -294,18 +294,20 @@ public class FilterSortFragment extends Fragment {
         }
 
         if (difficulty != null) {
-            if (recipe.getDifficulty().ordinal() > difficulty.ordinal()) {
+            if (recipe.getDifficulty().ordinal() <= difficulty.ordinal()) {
                 return false;
             }
         }
 
         if (dishCategories.size() > 0) {
+            Toast.makeText(getActivity(), "oh no 7", Toast.LENGTH_SHORT).show();
             if (!dishCategories.contains(recipe.getDishCategory())) {
                 return false;
             }
         }
 
         if (ingredientNames.size() > 0) {
+            Toast.makeText(getActivity(), "oh no 8", Toast.LENGTH_SHORT).show();
             ArrayList<String> lowerCaseGivenIngredients = new ArrayList<>();
             for (String ingredientName : ingredientNames) {
                 lowerCaseGivenIngredients.add(ingredientName.toLowerCase());

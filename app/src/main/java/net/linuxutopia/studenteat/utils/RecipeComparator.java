@@ -35,6 +35,9 @@ public class RecipeComparator {
                 Collections.sort(recipes, favoriteNumberComparator);
                 break;
 
+            case NOTHING:
+                break;
+
             default:
                 break;
         }
