@@ -239,7 +239,6 @@ public class FilterSortFragment extends Fragment {
                 filteredRecipesFragment.setArguments(resourceBundle);
                 filteredRecipesFragment.setRecipesToDisplay(recipes);
                 AppCompatActivityHelper.loadFragment(getFragmentManager(), filteredRecipesFragment);
-                Toast.makeText(getActivity(), "filtered and set!", Toast.LENGTH_SHORT).show();
             }
 
             // TODO: Handle it better, probably.

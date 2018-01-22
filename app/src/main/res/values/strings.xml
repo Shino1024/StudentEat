@@ -139,9 +139,7 @@
 
     <string name="filtered_results_action_bar_title">Filtered results</string>
 
-    <string name="favorite_results_action_bar_title">Favorite recipes</string>
-
-    <string name="cooked_results_action_bar_title">My recipes</string>
+    <string name="my_results_action_bar_title">My recipes</string>
 
     <string name="help_screen_action_bar_title">Help</string>
     <string name="app_help_text">
