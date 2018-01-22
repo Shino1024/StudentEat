@@ -46,6 +46,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             android:background="@color/colorPrimary"
+            app:tabTextColor="@color/dark_black"
             app:tabGravity="center"
             app:tabMode="scrollable" />
 

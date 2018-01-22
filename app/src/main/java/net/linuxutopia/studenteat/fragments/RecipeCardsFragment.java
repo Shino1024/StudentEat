@@ -37,6 +37,8 @@ public class RecipeCardsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecipeCardAdapter adapter;
 
+    private View inflatedView;
+
     private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -48,7 +50,7 @@ public class RecipeCardsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(
+        inflatedView = inflater.inflate(
                 R.layout.recipe_cards_list,
                 container,
                 false
@@ -56,6 +58,7 @@ public class RecipeCardsFragment extends Fragment {
 
         int titleStringResource = getArguments().getInt("titleResource");
         AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                true,
                 titleStringResource);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -63,6 +66,7 @@ public class RecipeCardsFragment extends Fragment {
 //        displayLoadingDialog();
 //        downloadRecipes();
 
+        // TODO: REEEEEEEfactor this.
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
         difficultyMap.put(Difficulty.EASY, ResourcesCompat.getColor(getResources(), R.color.difficulty_easy, null));

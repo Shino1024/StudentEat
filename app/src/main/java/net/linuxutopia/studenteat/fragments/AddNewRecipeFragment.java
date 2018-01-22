@@ -11,14 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -108,6 +106,7 @@ public class AddNewRecipeFragment extends Fragment {
         );
 
         AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                true,
                 R.string.new_recipe_action_bar_title);
 
         displayMetrics = new DisplayMetrics();
@@ -196,9 +195,11 @@ public class AddNewRecipeFragment extends Fragment {
                         || incorrectIngredientsInput()
                         || incorrectStepsInput()
                         ) {
-                    Snackbar.make(newRecipeLayoutContainer,
+                    Toast.makeText(
+                            getActivity(),
                             R.string.new_recipe_submit_error,
-                            Snackbar.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                     return;
                 }
 
@@ -239,11 +240,12 @@ public class AddNewRecipeFragment extends Fragment {
                                 uploadDialogFragment.dismiss();
                                 String errorMessage =
                                         getString(R.string.new_recipe_on_failure_message_prelude)
+                                                + " "
                                                 + e.getLocalizedMessage();
-                                Snackbar.make(
-                                        getActivity().findViewById(R.id.fragment_container),
+                                Toast.makeText(
+                                        getActivity(),
                                         errorMessage,
-                                        Snackbar.LENGTH_SHORT
+                                        Toast.LENGTH_SHORT
                                 ).show();
                             }
                         });
@@ -320,26 +322,21 @@ public class AddNewRecipeFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Snackbar.make(
-                                getActivity().findViewById(R.id.fragment_container),
+                        Toast.makeText(
+                                getActivity(),
                                 R.string.new_recipe_on_complete_message,
-                                Snackbar.LENGTH_SHORT
+                                Toast.LENGTH_SHORT
                         ).show();
-                        // TODO: !!!!!!!!
                         getFragmentManager().popBackStack();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        String errorMessage =
-                                getString(R.string.new_recipe_on_failure_message_prelude)
-                                        + e.getLocalizedMessage();
-                        Snackbar.make(
-                                getActivity().findViewById(R.id.fragment_container),
-                                errorMessage,
-                                Snackbar.LENGTH_SHORT
-                        ).show();
+                        AppCompatActivityHelper.displayErrorInToast(
+                                (AppCompatActivity) getActivity(),
+                                e.getMessage()
+                        );
                     }
                 });
     }
@@ -402,11 +399,14 @@ public class AddNewRecipeFragment extends Fragment {
                             EasyImage.openCamera(getActivity(), REQUEST_CODE_OPEN_CAMERA);
                         }
                         break;
+
                     case 1:
                         EasyImage.openGallery(getActivity(), REQUEST_CODE_OPEN_GALLERY);
                         break;
+
                     case 2:
                         break;
+
                     default:
                         break;
                 }
@@ -429,17 +429,6 @@ public class AddNewRecipeFragment extends Fragment {
         );
         difficultyDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         difficultySpinner.setAdapter(difficultyDataAdapter);
-        difficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), getResources().getText(Difficulty.values()[i].getStringResource()), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void fillUpDishCategorySpinner() {
@@ -519,17 +508,10 @@ public class AddNewRecipeFragment extends Fragment {
             Bitmap photoBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
             photo.setImageBitmap(photoBitmap);
         } else {
-            Snackbar.make(getActivity().findViewById(R.id.fragment_container),
-                    getResources().getString(R.string.new_recipe_photo_picker_unsuccessful),
-                    Snackbar.LENGTH_SHORT)
-                    .setAction(R.string.new_recipe_photo_picker_unsuccessful_retry, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            displayDialogWithResult();
-                        }
-                    })
-                    .setActionTextColor(getResources().getColor(R.color.colorPrimary))
-                    .show();
+            AppCompatActivityHelper.displayErrorInToast(
+                    (AppCompatActivity) getActivity(),
+                    getString(R.string.new_recipe_photo_picker_unsuccessful)
+            );
         }
     }
 
@@ -538,16 +520,9 @@ public class AddNewRecipeFragment extends Fragment {
     }
 
     public void deniedOpenCameraPermissions() {
-        Snackbar.make(getActivity().findViewById(R.id.fragment_container),
-                getResources().getString(R.string.new_recipe_camera_no_permission),
-                Snackbar.LENGTH_SHORT)
-                .setAction(R.string.new_recipe_photo_picker_unsuccessful, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        EasyImage.openCamera(getActivity(), REQUEST_CODE_OPEN_CAMERA);
-                    }
-                })
-                .setActionTextColor(getResources().getColor(R.color.colorPrimary))
-                .show();
+        AppCompatActivityHelper.displayErrorInToast(
+                (AppCompatActivity) getActivity(),
+                getString(R.string.new_recipe_camera_no_permission)
+        );
     }
 }

@@ -32,6 +32,7 @@ import net.linuxutopia.studenteat.models.RecipeDetailsModel;
 import net.linuxutopia.studenteat.utils.AppCompatActivityHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -43,9 +44,6 @@ public class RecentsFragment extends Fragment {
 
     private View inflatedView;
 
-//    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
-
-    // TODO: Auto-fill all objects where possible to avoid NullPointerException, like here!!!
     private ArrayList<RecipeDetailsModel> recipes = new ArrayList<>();
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -61,14 +59,9 @@ public class RecentsFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-//        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
-//                R.string.recents_action_bar_title);
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setDisplayHomeAsUpEnabled(false);
-            ((AppCompatActivity) getActivity()).getSupportActionBar()
-                    .setTitle(R.string.loading_dialog_caption);
-        }
+        AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                false,
+                R.string.recents_action_bar_title);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -77,6 +70,7 @@ public class RecentsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        // TODO: You know what to do.
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
         difficultyMap.put(Difficulty.EASY, ResourcesCompat.getColor(getResources(), R.color.difficulty_easy, null));
@@ -90,7 +84,6 @@ public class RecentsFragment extends Fragment {
         adapter.setDifficultyMap(difficultyMap);
         adapter.setDisplayMetrics(displayMetrics);
 
-        // TODO: Might be the cause of something weird...
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -123,15 +116,7 @@ public class RecentsFragment extends Fragment {
         return inflatedView;
     }
 
-//    private void displayLoadingDialog() {
-//        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-//                "LOADING_DIALOG_RECENTS");
-//        loadingDialogFragment.setCancelable(false);
-//    }
-
     private void downloadRecipes() {
-//        displayLoadingDialog();
-
         DatabaseReference recipesReference = database.getReference("recipes");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -140,24 +125,21 @@ public class RecentsFragment extends Fragment {
                     RecipeDetailsModel recipeDetailsModel = snapshot.getValue(RecipeDetailsModel.class);
                     recipes.add(recipeDetailsModel);
                 }
+                Collections.reverse(recipes);
                 adapter.notifyDataSetChanged();
                 AppCompatActivity referenceActivity = ((AppCompatActivity) inflatedView.getContext());
                 if (referenceActivity.getSupportActionBar() != null) {
                     referenceActivity.getSupportActionBar()
                             .setTitle(R.string.recents_action_bar_title);
                 }
-//                loadingDialogFragment.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // TODO: Handle this somehow...
-//                loadingDialogFragment.dismiss();
-                Toast.makeText(
-                        getActivity(),
-                        "couldn't download recipes' details",
-                        Toast.LENGTH_SHORT
-                ).show();
+                AppCompatActivityHelper.displayErrorInToast(
+                        (AppCompatActivity) getActivity(),
+                        databaseError.getDetails()
+                );
             }
         });
     }

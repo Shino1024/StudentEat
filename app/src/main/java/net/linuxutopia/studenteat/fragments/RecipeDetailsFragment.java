@@ -34,6 +34,8 @@ public class RecipeDetailsFragment extends Fragment {
     private RecipeDetailsViewPagerAdapter viewPagerAdapter;
     private Toolbar toolbar;
 
+    private View inflatedView;
+
     private RecipeDetailsModel recipeDetailsModel;
 
     private DisplayMetrics displayMetrics;
@@ -45,7 +47,7 @@ public class RecipeDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater layoutInflater,
                              @Nullable ViewGroup viewGroup,
                              Bundle savedInstanceState) {
-        View inflatedView = layoutInflater.inflate(R.layout.recipe_details,
+        inflatedView = layoutInflater.inflate(R.layout.recipe_details,
                 viewGroup,
                 false);
 
@@ -71,12 +73,8 @@ public class RecipeDetailsFragment extends Fragment {
                 .load(recipeDetailsModel.getDownloadLink())
                 .into(recipePhotoView);
 
-//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-//            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-//        }
         toolbar = inflatedView.findViewById(R.id.recipe_details_toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        // TODO: Try to implement the back navigation button in the collapsing toolbar layout.
+        toolbar.setNavigationIcon(R.drawable.back);
 
         viewPager = inflatedView.findViewById(R.id.recipe_details_view_pager);
         viewPagerAdapter = new RecipeDetailsViewPagerAdapter(getChildFragmentManager());
@@ -84,22 +82,6 @@ public class RecipeDetailsFragment extends Fragment {
         factory.setRecipeDetailsModel(recipeDetailsModel);
         viewPagerAdapter.setRecipeDetailsFactory(factory);
         viewPager.setAdapter(viewPagerAdapter);
-
-//        CoordinatorLayout.LayoutParams viewPagerLayoutParams =
-//                (CoordinatorLayout.LayoutParams) viewPager.getLayoutParams();
-//        int calculatedMarginSideSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-//                displayMetrics.widthPixels * 0.004f,
-//                displayMetrics);
-//        int calculatedMarginTopSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-//                displayMetrics.heightPixels * 0.004f,
-//                displayMetrics);
-//        viewPagerLayoutParams.setMargins(
-//                calculatedMarginSideSize,
-//                calculatedMarginTopSize,
-//                calculatedMarginSideSize,
-//                calculatedMarginTopSize
-//        );
-//        viewPager.setLayoutParams(viewPagerLayoutParams);
 
         tabLayout = inflatedView.findViewById(R.id.recipe_details_tabs);
         tabLayout.setupWithViewPager(viewPager);

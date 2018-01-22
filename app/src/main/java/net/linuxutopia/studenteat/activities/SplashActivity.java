@@ -42,17 +42,17 @@ public class SplashActivity extends AppCompatActivity {
     private Animation titleAnimation;
     private TextView splashTitle;
 
-    private SignInButton signInButton;
+//    private SignInButton signInButton;
 
     private Handler splashEndHandler = new Handler();
     private Intent mainActivityIntent;
 
-    private GoogleSignInOptions googleSignInOptions;
-    private GoogleSignInClient googleSignInClient;
+//    private GoogleSignInOptions googleSignInOptions;
+//    private GoogleSignInClient googleSignInClient;
 
-    private FirebaseAuth firebaseAuth;
+//    private FirebaseAuth firebaseAuth;
 
-    public final static int RC_SIGN_IN = 1;
+//    public final static int RC_SIGN_IN = 1;
     public final static int RC_FIREBASE_UI = 2;
 
     @Override
@@ -64,15 +64,15 @@ public class SplashActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
 
-        googleSignInOptions = new GoogleSignInOptions.Builder(
-                GoogleSignInOptions.DEFAULT_SIGN_IN
-        )
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-
-        firebaseAuth = FirebaseAuth.getInstance();
+//        googleSignInOptions = new GoogleSignInOptions.Builder(
+//                GoogleSignInOptions.DEFAULT_SIGN_IN
+//        )
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+//
+//        firebaseAuth = FirebaseAuth.getInstance();
 
         mainActivityIntent = new Intent(this, MainActivity.class);
         mainActivityIntent.putExtra("splashDone", true);
@@ -156,73 +156,45 @@ public class SplashActivity extends AppCompatActivity {
 //        });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case RC_SIGN_IN:
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                try {
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    firebaseAuthWithGoogle(account);
-                } catch (ApiException exception) {
-                    Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case RC_FIREBASE_UI:
-                if (resultCode == RESULT_OK) {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    Snackbar.make(findViewById(R.id.splash_container),
-                            user == null ? "null user" : (user.getDisplayName() == null ? "null dn" : user.getDisplayName()),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Snackbar.make(findViewById(R.id.splash_container),
-                            "nooooo",
-                            Toast.LENGTH_SHORT).show();
-                }
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Toast.makeText(this, "logged in as " + firebaseAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-//    private void googleSignIn() {
-//        Intent signInIntent = googleSignInClient.getSignInIntent();
-//        startActivityForResult(signInIntent, RC_SIGN_IN);
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        switch (requestCode) {
+//            case RC_SIGN_IN:
+//                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//                try {
+//                    GoogleSignInAccount account = task.getResult(ApiException.class);
+//                    firebaseAuthWithGoogle(account);
+//                } catch (ApiException exception) {
+//                    Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            case RC_FIREBASE_UI:
+//                break;
+//
+//            default:
+//                break;
+//        }
 //    }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        Toast.makeText(this, "before sign in to firebase", Toast.LENGTH_SHORT).show();
-        firebaseAuth.signInWithCredential(authCredential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Snackbar.make(findViewById(R.id.splash_container),
-                                    user == null ? "null" : (user.getDisplayName() == null ? "nullDN" : user.getDisplayName()),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Snackbar.make(findViewById(R.id.splash_container),
-                                    task.getException() == null ? "null ex" : task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        FirebaseAuth.getInstance().signOut();
-    }
+//    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+//        AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+//        firebaseAuth.signInWithCredential(authCredential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseUser user = firebaseAuth.getCurrentUser();
+//                            Snackbar.make(findViewById(R.id.splash_container),
+//                                    user == null ? "null" : (user.getDisplayName() == null ? "nullDN" : user.getDisplayName()),
+//                                    Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Snackbar.make(findViewById(R.id.splash_container),
+//                                    task.getException() == null ? "null ex" : task.getException().getMessage(),
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
 }

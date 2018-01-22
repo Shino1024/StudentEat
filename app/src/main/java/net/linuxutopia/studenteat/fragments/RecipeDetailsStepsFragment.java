@@ -39,21 +39,6 @@ public class RecipeDetailsStepsFragment extends Fragment {
                 inflatedView.findViewById(R.id.recipe_details_steps_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-//        ArrayList<StepModel> steps = new ArrayList<>();
-//
-//        StepModel s1 = new StepModel();
-//        s1.setDescription("basjdbuiashdiuhasdiuashuashdwqewew");
-//        s1.setMinutes(300);
-//        StepModel s2 = new StepModel();
-//        s2.setDescription("buka");
-//        s2.setMinutes(1);
-//        StepModel s3 = new StepModel();
-//        s3.setDescription("asjaskjdojiosudonfubeawsodbfwebuodfneoidjioaqoijqwhdjfhsiufhdskfjsldijrwejopfjaeslijd;oskodjjfglgdsfljdlkfjhweihfoiwhjdoihjasljfdsoiAAAAAAAAlisd");
-//        s3.setMinutes(10);
-//        steps.add(s1);
-//        steps.add(s2);
-//        steps.add(s3);
-
         RecipeDetailsStepsAdapter adapter = new RecipeDetailsStepsAdapter(steps);
         adapter.setDisplayMetrics(displayMetrics);
         recyclerView.setAdapter(adapter);

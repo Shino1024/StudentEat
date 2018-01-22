@@ -75,9 +75,6 @@ public class FilterSortFragment extends Fragment {
 
     private DisplayMetrics displayMetrics = new DisplayMetrics();
 
-//    private final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -90,6 +87,7 @@ public class FilterSortFragment extends Fragment {
         );
 
         AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                true,
                 R.string.filter_action_bar_title);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -135,12 +133,6 @@ public class FilterSortFragment extends Fragment {
 
         return inflatedView;
     }
-
-//    private void displayLoadingDialog() {
-//        loadingDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-//                "LOADING_DIALOG");
-//        loadingDialogFragment.setCancelable(false);
-//    }
 
     private void addNewIngredient() {
         final View newIngredientView = LayoutInflater.from(getActivity()).inflate(
@@ -241,7 +233,6 @@ public class FilterSortFragment extends Fragment {
                     recipes.add(child.getValue(RecipeDetailsModel.class));
                 }
                 filterResults();
-//                loadingDialogFragment.dismiss();
                 RecipeCardsFragment filteredRecipesFragment = new RecipeCardsFragment();
                 Bundle resourceBundle = new Bundle();
                 resourceBundle.putInt("titleResource", R.string.filtered_results_action_bar_title);
@@ -257,10 +248,10 @@ public class FilterSortFragment extends Fragment {
                 String errorMessage =
                         getResources().getString(R.string.new_recipe_on_failure_message_prelude)
                                 + databaseError.getDetails();
-                Snackbar.make(
-                        getActivity().findViewById(R.id.fragment_container),
+                Toast.makeText(
+                        getActivity(),
                         errorMessage,
-                        Snackbar.LENGTH_SHORT
+                        Toast.LENGTH_SHORT
                 ).show();
             }
         });

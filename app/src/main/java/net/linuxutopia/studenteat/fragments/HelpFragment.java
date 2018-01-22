@@ -16,16 +16,19 @@ public class HelpFragment extends Fragment {
 
     private TextView helpView;
 
+    private View inflatedView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(
+        inflatedView = inflater.inflate(
                 R.layout.help_text,
                 container,
                 false
         );
 
         AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
+                true,
                 R.string.help_screen_action_bar_title);
 
         helpView = inflatedView.findViewById(R.id.help_text);

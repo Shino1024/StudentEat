@@ -96,6 +96,9 @@
     <string name="new_recipe_on_complete_message">Recipe uploaded!</string>
     <string name="new_recipe_on_failure_message_prelude">Error: </string>
 
+    <string name="recipe_description_remove_complete">Recipe removed!</string>
+    <string name="recipe_not_found_error">Recipe not found!</string>
+
     <string name="new_ingredient_section_header" translatable="false">List of ingredients</string>
     <string name="new_ingredient_name_hint" translatable="false">Ingredient name</string>
     <string name="new_ingredient_amount_hint" translatable="false">Amount</string>

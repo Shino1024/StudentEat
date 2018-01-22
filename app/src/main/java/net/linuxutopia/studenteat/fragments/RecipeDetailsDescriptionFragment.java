@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
@@ -17,6 +19,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.models.RecipeDetailsModel;
@@ -44,6 +55,9 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
     private DisplayMetrics displayMetrics;
 
     private Typeface typeface;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     @Nullable
     @Override
@@ -254,10 +268,38 @@ public class RecipeDetailsDescriptionFragment extends Fragment {
                 alertDialog.setPositiveButton(R.string.remove_recipe_ok,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // TODO: Remove the recipe and pop back the fragment stack.
-                                // TODO: Should child fragment manager be used?
-                                getActivity().getFragmentManager().popBackStack();
+                            public void onClick(final DialogInterface dialogInterface, int i) {
+                                DatabaseReference recipeReference = database.getReference("recipes");
+                                StorageReference recipePhotoReference = storage.getReference("recipes");
+                                recipeReference.child(recipeDetailsModel.getId()).removeValue();
+                                recipePhotoReference.child(recipeDetailsModel.getId())
+                                        .delete()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText(
+                                                        getActivity(),
+                                                        R.string.recipe_description_remove_complete,
+                                                        Toast.LENGTH_SHORT
+                                                ).show();
+                                                dialogInterface.dismiss();
+                                                getActivity().getFragmentManager().popBackStack();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        String errorMessage =
+                                                getString(R.string.new_recipe_on_failure_message_prelude)
+                                                        + " "
+                                                        + e.getLocalizedMessage();
+                                        Toast.makeText(
+                                                getActivity(),
+                                                errorMessage,
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                        dialogInterface.dismiss();
+                                    }
+                                });
                             }
                 }).setNegativeButton(R.string.remove_recipe_cancel,
                         new DialogInterface.OnClickListener() {

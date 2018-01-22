@@ -19,6 +19,11 @@ import android.widget.TextView;
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.transition.ViewPropertyTransition;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.linuxutopia.studenteat.R;
 import net.linuxutopia.studenteat.fragments.RecipeDetailsFragment;
@@ -36,6 +41,8 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
     private DisplayMetrics displayMetrics;
     private int cardHeight;
     private Map<Difficulty, Integer> difficultyMap;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     public RecipeCardAdapter(ArrayList<RecipeDetailsModel> recipes) {
         this.recipes = recipes;
@@ -76,17 +83,34 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
     private void prepareClickArea(final LinearLayout clickArea, final int position) {
         clickArea.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getFragmentManager();
-                RecipeDetailsFragment fragment = new RecipeDetailsFragment();
-                fragment.setRecipeDetailsModel(recipes.get(position));
-                AppCompatActivityHelper.loadFragment(fragmentManager, fragment);
-//                fragmentManager
-//                        .beginTransaction()
-//                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right)
-//                        .replace(R.id.fragment_container, fragment)
-//                        .addToBackStack(null)
-//                        .commit();
+            public void onClick(final View view) {
+                DatabaseReference recipeReference
+                        = database.getReference("recipes");
+                recipeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(recipes.get(position).getId())) {
+                            FragmentManager fragmentManager =
+                                    ((AppCompatActivity) view.getContext()).getFragmentManager();
+                            RecipeDetailsFragment fragment = new RecipeDetailsFragment();
+                            fragment.setRecipeDetailsModel(recipes.get(position));
+                            AppCompatActivityHelper.loadFragment(fragmentManager, fragment);
+                        } else {
+                            AppCompatActivityHelper.displayErrorInToast(
+                                    ((AppCompatActivity) view.getContext()),
+                                    view.getResources().getString(R.string.recipe_not_found_error)
+                            );
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        AppCompatActivityHelper.displayErrorInToast(
+                                (AppCompatActivity) view.getContext(),
+                                databaseError.getDetails()
+                        );
+                    }
+                });
                 clickArea.setOnClickListener(null);
             }
         });
@@ -168,10 +192,6 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Vi
     @Override
     public int getItemCount() {
         return recipes.size();
-    }
-
-    public void setRecipes(ArrayList<RecipeDetailsModel> recipes) {
-        this.recipes = recipes;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

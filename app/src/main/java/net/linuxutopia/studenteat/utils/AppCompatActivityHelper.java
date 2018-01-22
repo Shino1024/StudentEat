@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import net.linuxutopia.studenteat.R;
 
@@ -52,18 +53,25 @@ public class AppCompatActivityHelper {
     }
 
     public static void setBackButtonAndTitle(Activity activity,
+                                             boolean shouldShow,
                                              int stringResourceID) {
         ActionBar supportActionBar = ((AppCompatActivity) activity).getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setTitle(stringResourceID);
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayHomeAsUpEnabled(shouldShow);
         }
     }
 
-    // TODO: Try to port displayLoadingDialog to here.
-//    private void displayLoadingDialog(LoadingDialogFragment loadingDialogFragment) {
-//        loadingDialogFragment.show(loadingDialogFragment.getActivity().getSupportFragmentManager(),
-//                "LOADING_DIALOG");
-//        loadingDialogFragment.setCancelable(false);
-//    }
+    public static void displayErrorInToast(AppCompatActivity appCompatActivity,
+                                           String actualErrorMessage) {
+        String errorMessage =
+                appCompatActivity.getString(R.string.new_recipe_on_failure_message_prelude)
+                        + " "
+                        + actualErrorMessage;
+        Toast.makeText(
+                appCompatActivity,
+                errorMessage,
+                Toast.LENGTH_SHORT
+        ).show();
+    }
 }

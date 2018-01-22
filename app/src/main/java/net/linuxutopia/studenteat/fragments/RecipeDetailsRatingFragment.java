@@ -113,15 +113,15 @@ public class RecipeDetailsRatingFragment extends Fragment {
         this.recipeId = recipeId;
     }
 
-    private void updateViews() {
-        DatabaseReference favoriteReference = database.getReference("favorite");
+    private void updateFavoritesView() {
+        DatabaseReference favoriteReference = database.getReference("favorites");
         favoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(recipeId).hasChild(userId)) {
-                    favoriteButton.setText(R.string.recipe_details_set_favorite);
-                } else {
                     favoriteButton.setText(R.string.recipe_details_set_not_favorite);
+                } else {
+                    favoriteButton.setText(R.string.recipe_details_set_favorite);
                 }
             }
 
@@ -130,15 +130,17 @@ public class RecipeDetailsRatingFragment extends Fragment {
                 // error
             }
         });
+    }
 
+    private void updateCookedView() {
         DatabaseReference cookedReference = database.getReference("cooked");
         cookedReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(recipeId).hasChild(userId)) {
-                    cookedButton.setText(R.string.recipe_details_set_cooked);
-                } else {
                     cookedButton.setText(R.string.recipe_details_set_not_cooked);
+                } else {
+                    cookedButton.setText(R.string.recipe_details_set_cooked);
                 }
             }
 
@@ -147,13 +149,23 @@ public class RecipeDetailsRatingFragment extends Fragment {
                 // error
             }
         });
+    }
 
-        DatabaseReference recipesReference = database.getReference("recipes");
+    private void updateRatingView() {
+        DatabaseReference recipesReference = database.getReference("rating");
         recipesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                float rating = dataSnapshot.child(recipeId).child("rating").getValue(Double.class).floatValue();
-                ratingBar.setRating(rating);
+                if (dataSnapshot.child(recipeId).hasChild(userId)) {
+                    Double ratingDouble = dataSnapshot.child(recipeId).child(userId).getValue(Double.class);
+                    if (ratingDouble != null) {
+                        ratingBar.setRating(ratingDouble.floatValue());
+                    } else {
+                        ratingBar.setRating(0.0f);
+                    }
+                } else {
+                    ratingBar.setRating(0.0f);
+                }
             }
 
             @Override
@@ -161,6 +173,12 @@ public class RecipeDetailsRatingFragment extends Fragment {
                 // error
             }
         });
+    }
+
+    private void updateViews() {
+        updateFavoritesView();
+        updateCookedView();
+        updateRatingView();
     }
 
     private void updateRating(float rating) {
