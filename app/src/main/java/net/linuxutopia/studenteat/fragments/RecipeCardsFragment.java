@@ -60,8 +60,17 @@ public class RecipeCardsFragment extends Fragment {
                 titleStringResource);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        
-        // TODO: REEEEEEEfactor this.
+
+        prepareRecyclerWithAdapter();
+
+        return inflatedView;
+    }
+
+    public void setRecipesToDisplay(ArrayList<RecipeDetailsModel> recipes) {
+        this.recipes = recipes;
+    }
+
+    private void prepareRecyclerWithAdapter() {
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
         difficultyMap.put(Difficulty.EASY, ResourcesCompat.getColor(getResources(), R.color.difficulty_easy, null));
@@ -78,11 +87,5 @@ public class RecipeCardsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-
-        return inflatedView;
-    }
-
-    public void setRecipesToDisplay(ArrayList<RecipeDetailsModel> recipes) {
-        this.recipes = recipes;
     }
 }

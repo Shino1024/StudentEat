@@ -61,7 +61,7 @@ public class RecipeDetailsRatingFragment extends Fragment {
         cookedButton = inflatedView.findViewById(R.id.recipe_details_cooked_button);
         favoriteButton = inflatedView.findViewById(R.id.recipe_details_favorite_button);
 
-        prepareViews();
+        prepareViewsValues();
 
         giveRatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +166,7 @@ public class RecipeDetailsRatingFragment extends Fragment {
         });
     }
 
-    private void prepareViews() {
+    private void prepareViewsValues() {
         prepareFavoritesView();
         prepareCookedView();
         prepareRatingView();

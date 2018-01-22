@@ -229,13 +229,11 @@ public class FilterSortFragment extends Fragment {
                 ArrayList<RecipeDetailsModel> filteredRecipes = new ArrayList<>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     RecipeDetailsModel recipe = child.getValue(RecipeDetailsModel.class);
-
-//                    Toast.makeText(getActivity(), "/" + recipeNameView.getText().toString() + "/", Toast.LENGTH_SHORT).show();
-//
                     if (recipeMeetsConditions(recipe)) {
                         filteredRecipes.add(recipe);
                     }
                 }
+
                 RecipeCardsFragment filteredRecipesFragment = new RecipeCardsFragment();
                 Bundle resourceBundle = new Bundle();
                 resourceBundle.putInt("titleResource", R.string.filtered_results_action_bar_title);
@@ -331,5 +329,4 @@ public class FilterSortFragment extends Fragment {
 
         return true;
     }
-
 }

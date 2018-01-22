@@ -46,6 +46,8 @@ public class RecentsFragment extends Fragment {
 
     private ArrayList<RecipeDetailsModel> recipes = new ArrayList<>();
 
+    private DisplayMetrics displayMetrics = new DisplayMetrics();
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Nullable
@@ -59,18 +61,26 @@ public class RecentsFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
         AppCompatActivityHelper.setBackButtonAndTitle(getActivity(),
                 false,
                 R.string.recents_action_bar_title);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        prepareRecyclerWithAdapter();
 
+        prepareFloatingActionButton();
+
+        downloadRecipes();
+
+        return inflatedView;
+    }
+
+    private void prepareRecyclerWithAdapter() {
         recyclerView = inflatedView.findViewById(R.id.recents_list_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // TODO: You know what to do.
         Map<Difficulty, Integer> difficultyMap = new HashMap<>();
         difficultyMap.put(Difficulty.BANAL, ResourcesCompat.getColor(getResources(), R.color.difficulty_banal, null));
         difficultyMap.put(Difficulty.EASY, ResourcesCompat.getColor(getResources(), R.color.difficulty_easy, null));
@@ -87,6 +97,9 @@ public class RecentsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void prepareFloatingActionButton() {
         final FloatingActionButton floatingActionButton =
                 inflatedView.findViewById(R.id.add_new_recipe_button);
         CoordinatorLayout.LayoutParams layoutParams =
@@ -110,10 +123,6 @@ public class RecentsFragment extends Fragment {
                 floatingActionButton.setOnClickListener(null);
             }
         });
-
-        downloadRecipes();
-
-        return inflatedView;
     }
 
     private void downloadRecipes() {

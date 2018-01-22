@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

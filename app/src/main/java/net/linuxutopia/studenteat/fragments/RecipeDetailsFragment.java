@@ -74,7 +74,6 @@ public class RecipeDetailsFragment extends Fragment {
                 .into(recipePhotoView);
 
         toolbar = inflatedView.findViewById(R.id.recipe_details_toolbar);
-        toolbar.setNavigationIcon(R.drawable.back);
 
         viewPager = inflatedView.findViewById(R.id.recipe_details_view_pager);
         viewPagerAdapter = new RecipeDetailsViewPagerAdapter(getChildFragmentManager());

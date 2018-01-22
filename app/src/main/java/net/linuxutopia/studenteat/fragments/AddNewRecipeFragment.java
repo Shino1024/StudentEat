@@ -330,11 +330,6 @@ public class AddNewRecipeFragment extends Fragment {
                         );
                     }
                 });
-
-//        DatabaseReference ratingsReference = database.getReference("ratings");
-//        ratingsReference.child(recipeDetailsModel.getId())
-//        DatabaseReference cookedReference = database.getReference("cooked");
-//        DatabaseReference favoriteReference = database.getReference("favorite");
     }
 
     private boolean incorrectIngredientsInput() {
@@ -381,12 +376,7 @@ public class AddNewRecipeFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
                     case 0:
-                        if (ContextCompat.checkSelfPermission(getActivity(),
-                                Manifest.permission.CAMERA)
-                                == PackageManager.PERMISSION_DENIED
-                                || ContextCompat.checkSelfPermission(getActivity(),
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                == PackageManager.PERMISSION_DENIED) {
+                        if (permissionsGranted()) {
                             ActivityCompat.requestPermissions(getActivity(),
                                     new String[]{Manifest.permission.CAMERA,
                                             Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -411,6 +401,15 @@ public class AddNewRecipeFragment extends Fragment {
 
         photoPickerAlertDialog = builder.create();
         photoPickerAlertDialog.show();
+    }
+
+    private boolean permissionsGranted() {
+        return ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED
+                || ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED;
     }
 
     private void fillUpDifficultySpinner() {
